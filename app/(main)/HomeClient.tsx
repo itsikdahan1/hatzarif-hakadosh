@@ -79,22 +79,22 @@ function GlobalCampaignProgress({ campaigns }: { campaigns: any[] }) {
       animate={{ opacity: 1, y: 0 }}
       className="max-w-4xl mx-auto px-4 mb-20"
     >
-      <div className="bg-charcoal text-white rounded-[3rem] p-10 md:p-14 shadow-2xl relative overflow-hidden group">
+      <div className="bg-charcoal text-white rounded-[2rem] md:rounded-[3rem] p-6 sm:p-10 md:p-14 shadow-2xl relative overflow-hidden group">
         <div className="absolute top-0 right-0 w-64 h-64 bg-gold-warm/10 rounded-full -mr-32 -mt-32 transition-transform group-hover:scale-110" />
         <div className="relative z-10">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-10">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-8">
             <div>
               <div className="inline-flex items-center gap-2 bg-gold-warm/20 text-gold-warm px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest mb-4">
                 <Trophy size={12} /> יעד קהילתי
               </div>
-              <h3 className="text-4xl md:text-5xl font-bold mb-2">{activeCampaign.title}</h3>
+              <h3 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-2">{activeCampaign.title}</h3>
               <p className="text-white/40 font-bold max-w-md">{activeCampaign.description}</p>
             </div>
             <div className="text-right">
               <p className="text-white/40 text-xs font-black uppercase tracking-widest mb-1">גויס עד כה</p>
               <div className="flex items-baseline gap-2">
-                <span className="text-5xl font-black font-sans tracking-tight">₪{activeCampaign.current?.toLocaleString()}</span>
-                <span className="text-white/20 text-lg">/ ₪{activeCampaign.target?.toLocaleString()}</span>
+                <span className="text-3xl sm:text-4xl md:text-5xl font-black font-sans tracking-tight">₪{activeCampaign.current?.toLocaleString()}</span>
+                <span className="text-white/20 text-sm md:text-lg">/ ₪{activeCampaign.target?.toLocaleString()}</span>
               </div>
             </div>
           </div>
@@ -401,7 +401,7 @@ export function HomeClient() {
                   <Calendar size={14} className="text-gold-warm/80" />
                   <span className="text-xs font-bold uppercase tracking-[0.25em] text-white/50 font-mono">{shabbatInfo.hebrewDate}</span>
                 </div>
-                <div className="text-4xl md:text-6xl font-serif font-black leading-tight" style={{background: 'linear-gradient(135deg, #d4af37 0%, #f5e38a 50%, #d4af37 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text'}}>
+                <div className="text-3xl sm:text-4xl md:text-6xl font-serif font-black leading-tight" style={{background: 'linear-gradient(135deg, #d4af37 0%, #f5e38a 50%, #d4af37 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text'}}>
                   {shabbatInfo.parashaName}
                 </div>
                 {shabbatInfo.pirkeiAvotChapter && (
@@ -474,7 +474,7 @@ export function HomeClient() {
           <div className="max-w-7xl mx-auto px-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               <motion.div whileHover={{ y: -10 }}>
-                <Link href="/lessons" className="bg-alabaster p-10 rounded-[3rem] border border-charcoal/5 hover:border-gold-warm/30 transition-all cursor-pointer group shadow-sm block">
+                <Link href="/lessons" className="bg-alabaster p-6 sm:p-8 md:p-10 rounded-[2rem] md:rounded-[3rem] border border-charcoal/5 hover:border-gold-warm/30 transition-all cursor-pointer group shadow-sm block">
                   <div className="w-16 h-16 bg-gold-warm/10 rounded-2xl flex items-center justify-center text-gold-warm group-hover:bg-gold-warm group-hover:text-white transition-all mb-8">
                     <BookOpen size={32} />
                   </div>
@@ -485,7 +485,7 @@ export function HomeClient() {
               </motion.div>
 
               <motion.div whileHover={{ y: -10 }}>
-                <Link href="/memorials" className="bg-charcoal p-10 rounded-[3rem] text-white transition-all cursor-pointer group shadow-xl block">
+                <Link href="/memorials" className="bg-charcoal p-6 sm:p-8 md:p-10 rounded-[2rem] md:rounded-[3rem] text-white transition-all cursor-pointer group shadow-xl block">
                   <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center text-gold-warm mb-8">
                     <Heart size={32} />
                   </div>
@@ -496,7 +496,7 @@ export function HomeClient() {
               </motion.div>
 
               <motion.div whileHover={{ y: -10 }}>
-                <Link href="/youth" className="bg-slate-blue p-10 rounded-[3rem] text-white transition-all cursor-pointer group shadow-xl block">
+                <Link href="/youth" className="bg-slate-blue p-6 sm:p-8 md:p-10 rounded-[2rem] md:rounded-[3rem] text-white transition-all cursor-pointer group shadow-xl block">
                   <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center text-gold-warm mb-8">
                     <Coffee size={32} />
                   </div>
@@ -507,7 +507,7 @@ export function HomeClient() {
               </motion.div>
 
               <motion.div whileHover={{ y: -10 }}>
-                <Link href="/business" className="bg-alabaster p-10 rounded-[3rem] border border-charcoal/5 hover:border-gold-warm/30 transition-all cursor-pointer group shadow-sm block">
+                <Link href="/business" className="bg-alabaster p-6 sm:p-8 md:p-10 rounded-[2rem] md:rounded-[3rem] border border-charcoal/5 hover:border-gold-warm/30 transition-all cursor-pointer group shadow-sm block">
                   <div className="w-16 h-16 bg-gold-warm/10 rounded-2xl flex items-center justify-center text-gold-warm group-hover:bg-gold-warm group-hover:text-white transition-all mb-8">
                     <Briefcase size={32} />
                   </div>
@@ -523,45 +523,45 @@ export function HomeClient() {
         {/* סקציה: לוח זמנים */}
         <section id="schedule" className="py-24 bg-background border-t border-charcoal/5">
           <div className="max-w-5xl mx-auto px-4 text-center mb-24">
-            <h2 className="text-4xl md:text-5xl font-bold mb-12">לוח זמנים ושיעורים</h2>
-            
-            <div className="mb-20 bg-white rounded-[3rem] shadow-xl overflow-hidden border border-charcoal/5 text-right">
-              <div className="bg-gold-warm text-white p-8">
+            <h2 className="text-3xl md:text-5xl font-bold mb-12">לוח זמנים ושיעורים</h2>
+
+            <div className="mb-10 md:mb-20 bg-white rounded-[2rem] md:rounded-[3rem] shadow-xl overflow-hidden border border-charcoal/5 text-right">
+              <div className="bg-gold-warm text-white p-6 sm:p-8">
                 <h3 className="text-2xl font-bold">עדכונים שבועיים</h3>
               </div>
-              <div className="p-10 md:p-16">
+              <div className="p-6 sm:p-8 md:p-16">
                 <div className="flex flex-col md:flex-row justify-between items-start gap-8">
                   <div className="flex-grow">
-                    <div className="flex items-center gap-4 mb-4">
+                    <div className="flex flex-wrap items-center gap-3 mb-4">
                       <span className="bg-gold-warm/10 text-gold-warm px-4 py-1 rounded-full text-sm font-bold">יום שני</span>
-                      <h4 className="text-2xl font-bold">{SYNAGOGUE_INFO.schedule.mondaySpecial.title}</h4>
+                      <h4 className="text-lg sm:text-2xl font-bold">{SYNAGOGUE_INFO.schedule.mondaySpecial.title}</h4>
                     </div>
                     <p className="text-charcoal/60 leading-relaxed mb-6">
                       {SYNAGOGUE_INFO.schedule.mondaySpecial.description}
                     </p>
-                    <div className="flex items-center gap-6 text-sm font-bold text-charcoal/40">
+                    <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm font-bold text-charcoal/40">
                       <span className="flex items-center gap-2"><Heart size={16} /> {SYNAGOGUE_INFO.youthSection.rabbiName}</span>
                       <span className="flex items-center gap-2"><Coffee size={16} /> קפה וכיבוד</span>
                     </div>
                   </div>
-                  <div className="text-left shrink-0">
-                    <span className="text-4xl font-bold font-mono tracking-tighter text-gold-warm">{SYNAGOGUE_INFO.schedule.mondaySpecial.time}</span>
+                  <div className="shrink-0">
+                    <span className="text-2xl sm:text-4xl font-bold font-mono tracking-tighter text-gold-warm">{SYNAGOGUE_INFO.schedule.mondaySpecial.time}</span>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-[3rem] shadow-xl overflow-hidden border border-charcoal/5">
-              <div className="p-10 md:p-16">
-                <div className="space-y-10">
+            <div className="bg-white rounded-[2rem] md:rounded-[3rem] shadow-xl overflow-hidden border border-charcoal/5">
+              <div className="p-5 sm:p-8 md:p-16">
+                <div className="space-y-8 sm:space-y-10">
                   {SYNAGOGUE_INFO.schedule.prayers.map((prayer: any, idx: number) => (
                     <div key={idx} className="flex justify-between items-center group">
                       <div className="text-right">
-                        <span className="text-xl font-bold group-hover:text-gold-warm transition-colors block">{prayer.name}</span>
+                        <span className="text-base sm:text-xl font-bold group-hover:text-gold-warm transition-colors block">{prayer.name}</span>
                         {prayer.note && <span className="text-sm text-charcoal/40 italic">{prayer.note}</span>}
                       </div>
-                      <div className="flex-grow border-b border-dotted border-charcoal/10 mx-8" />
-                      <span className="text-3xl font-bold font-mono tracking-tighter text-charcoal">{prayer.time}</span>
+                      <div className="flex-grow border-b border-dotted border-charcoal/10 mx-3 sm:mx-8" />
+                      <span className="text-xl sm:text-3xl font-bold font-mono tracking-tighter text-charcoal">{prayer.time}</span>
                     </div>
                   ))}
                 </div>
@@ -586,7 +586,7 @@ export function HomeClient() {
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="inline-block">
                 <Link
                   href="/donation"
-                  className="bg-charcoal text-white px-10 py-5 rounded-full font-bold text-xl flex items-center gap-3 shadow-2xl hover:bg-gold-warm transition-all"
+                  className="bg-charcoal text-white px-6 sm:px-10 py-3 sm:py-5 rounded-full font-bold text-base sm:text-xl flex items-center gap-3 shadow-2xl hover:bg-gold-warm transition-all"
                 >
                   <HandCoins size={24} /> תרומה ותמיכה בפעילות
                 </Link>
