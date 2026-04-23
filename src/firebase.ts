@@ -13,32 +13,10 @@ const firebaseConfig = {
 
 const isConfigured = !!firebaseConfig.apiKey;
 
-let app: FirebaseApp | null = null;
-let _auth: Auth | null = null;
-let _db: Firestore | null = null;
-
-function getApp(): FirebaseApp {
-  if (!app) {
-    app = initializeApp(firebaseConfig);
-  }
-  return app;
-}
-
-export const auth: Auth = new Proxy({} as Auth, {
-  get(_, prop) {
-    if (!isConfigured) return undefined;
-    if (!_auth) _auth = getAuth(getApp());
-    return (_auth as any)[prop];
-  },
-});
-
-export const db: Firestore = new Proxy({} as Firestore, {
-  get(_, prop) {
-    if (!isConfigured) return undefined;
-    if (!_db) _db = getFirestore(getApp(), process.env.NEXT_PUBLIC_FIREBASE_DATABASE_ID);
-    return (_db as any)[prop];
-  },
-});
+// Initialize Firebase only when env vars are present (safe for build time)
+const app: FirebaseApp = isConfigured ? initializeApp(firebaseConfig) : (null as any);
+export const auth: Auth = isConfigured ? getAuth(app) : (null as any);
+export const db: Firestore = isConfigured ? getFirestore(app, process.env.NEXT_PUBLIC_FIREBASE_DATABASE_ID!) : (null as any);
 
 export enum OperationType {
   CREATE = 'create',
