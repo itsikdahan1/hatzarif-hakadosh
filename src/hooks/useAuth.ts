@@ -21,7 +21,7 @@ export function useAuth() {
           setIsAdmin(userDoc.data().role === 'admin');
         } else {
           // Check if it's the default admin email
-          if (currentUser.email === "d0559296626@gmail.com" && currentUser.emailVerified) {
+          if ((currentUser.email === "d0559296626@gmail.com" || currentUser.email === "itsikdahan1@gmail.com") && currentUser.emailVerified) {
             setIsAdmin(true);
           }
         }

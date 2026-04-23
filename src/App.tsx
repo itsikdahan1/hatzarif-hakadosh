@@ -926,7 +926,7 @@ export default function App() {
               loop
               playsInline
               className="w-full h-full object-cover scale-105"
-              src="https://cdn.pixabay.com/video/2022/08/05/127447-737069612_large.mp4"
+              src="/hero-video.mp4"
             />
             <div className="absolute inset-0 bg-charcoal/60" />
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-charcoal/20 to-charcoal/80" />
@@ -1035,20 +1035,30 @@ export default function App() {
 
         {/* סקציה: פרשת השבוע */}
         {shabbatInfo && (
-          <section className="py-16 bg-gradient-to-b from-charcoal to-charcoal/95 text-white border-t border-charcoal/5 relative overflow-hidden">
-            <div className="absolute inset-0 opacity-5">
-              <div className="absolute top-10 right-10 w-64 h-64 border border-white/20 rounded-full" />
-              <div className="absolute bottom-10 left-10 w-48 h-48 border border-white/20 rounded-full" />
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 border border-white/10 rounded-full" />
+          <section className="py-16 relative overflow-hidden text-white" style={{background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%)'}}>
+            {/* טקסטורה גיאומטרית */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              <svg className="absolute inset-0 w-full h-full opacity-[0.04]" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <pattern id="parasha-grid" width="60" height="60" patternUnits="userSpaceOnUse">
+                    <path d="M 60 0 L 0 0 0 60" fill="none" stroke="white" strokeWidth="0.5"/>
+                  </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#parasha-grid)" />
+              </svg>
+              <div className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full border border-white/5" />
+              <div className="absolute -bottom-24 -left-24 w-[400px] h-[400px] rounded-full border border-white/5" />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full border border-white/[0.03]" />
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full" style={{background: 'radial-gradient(ellipse, rgba(212,175,55,0.08) 0%, transparent 70%)'}} />
             </div>
             <div className="max-w-4xl mx-auto px-4 relative z-10">
               {/* פרשת השבוע + תאריך */}
               <div className="text-center mb-10">
-                <div className="inline-flex items-center gap-3 bg-white/10 border border-white/10 px-5 py-2 rounded-full mb-6">
-                  <Calendar size={14} className="text-gold-warm" />
-                  <span className="text-xs font-bold uppercase tracking-[0.2em] text-white/60">{shabbatInfo.hebrewDate}</span>
+                <div className="inline-flex items-center gap-3 bg-white/5 border border-white/10 px-5 py-2 rounded-full mb-6 backdrop-blur-sm">
+                  <Calendar size={14} className="text-gold-warm/80" />
+                  <span className="text-xs font-bold uppercase tracking-[0.25em] text-white/50 font-mono">{shabbatInfo.hebrewDate}</span>
                 </div>
-                <div className="text-4xl md:text-6xl font-serif font-black text-gold-warm leading-tight">
+                <div className="text-4xl md:text-6xl font-serif font-black leading-tight" style={{background: 'linear-gradient(135deg, #d4af37 0%, #f5e38a 50%, #d4af37 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text'}}>
                   {shabbatInfo.parashaName}
                 </div>
                 {shabbatInfo.pirkeiAvotChapter && (

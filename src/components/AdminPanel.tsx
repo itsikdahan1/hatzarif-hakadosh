@@ -74,7 +74,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
       setIsLoggedIn(!!user);
       if (user) {
         // Simple admin check for demo - in production this would be a Firestore check or Custom Claim
-        if (user.email === "d0559296626@gmail.com") {
+        if (user.email === "d0559296626@gmail.com" || user.email === "itsikdahan1@gmail.com") {
           setIsAdmin(true);
         } else {
           try {

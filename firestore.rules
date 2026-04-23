@@ -71,7 +71,8 @@ service cloud.firestore {
 
     function isAdmin() {
       return isAuthenticated() &&
-        (request.auth.token.email == "d0559296626@gmail.com" || 
+        (request.auth.token.email == "d0559296626@gmail.com" ||
+         request.auth.token.email == "itsikdahan1@gmail.com" || 
          (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
           get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin" &&
           request.auth.token.email_verified == true));
@@ -210,7 +211,7 @@ service cloud.firestore {
     }
 
     match /custom_donations/{donationId} {
-      allow read: if isAdmin();
+      allow read: if true;
       allow create: if true; // Public can donate, but validation is strict
       allow update, delete: if isAdmin();
     }
