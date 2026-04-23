@@ -179,6 +179,35 @@ function DynamicScheduleWidget({ prayers }: { prayers: any[] }) {
   );
 }
 
+function HeroBackground() {
+  const [videoFailed, setVideoFailed] = useState(false);
+
+  if (videoFailed) {
+    return (
+      <img
+        src={SYNAGOGUE_INFO.synagogueGallery[0]}
+        alt=""
+        className="w-full h-full object-cover scale-105 grayscale"
+        referrerPolicy="no-referrer"
+      />
+    );
+  }
+
+  return (
+    <video
+      autoPlay
+      muted
+      loop
+      playsInline
+      className="w-full h-full object-cover scale-105"
+      onError={() => setVideoFailed(true)}
+    >
+      <source src="https://cdn.pixabay.com/video/2022/08/05/127447-737069612_large.mp4" type="video/mp4" />
+      <source src="https://cdn.pixabay.com/video/2023/01/06/143972-786733618_large.mp4" type="video/mp4" />
+    </video>
+  );
+}
+
 export function HomeClient() {
   const [prayers, setPrayers] = useState<any[]>([]);
   const [lessons, setLessons] = useState<any[]>([]);
@@ -254,14 +283,7 @@ export function HomeClient() {
         {/* סקציה 1: המגנט הראשי (The Hero Section) */}
         <section className="relative min-h-[100vh] flex flex-col items-center justify-center overflow-hidden py-20">
           <div className="absolute inset-0 z-0">
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="w-full h-full object-cover scale-105"
-              src="https://videos.pexels.com/video-files/5986039/5986039-uhd_2560_1440_25fps.mp4"
-            />
+            <HeroBackground />
             <div className="absolute inset-0 bg-charcoal/60" />
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-charcoal/20 to-charcoal/80" />
           </div>
@@ -282,17 +304,6 @@ export function HomeClient() {
               
               <div className="mb-16">
                 <DynamicScheduleWidget prayers={prayers} />
-              </div>
-
-              <div className="flex justify-center gap-6 mb-20">
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Link 
-                    href="/donation"
-                    className="bg-charcoal text-white px-10 py-5 rounded-full font-bold text-xl flex items-center gap-3 shadow-2xl hover:bg-gold-warm transition-all"
-                  >
-                    <HandCoins size={24} /> תרומה ותמיכה בפעילות
-                  </Link>
-                </motion.div>
               </div>
 
               <GlobalCampaignProgress campaigns={campaigns} />
@@ -562,6 +573,28 @@ export function HomeClient() {
                 {SYNAGOGUE_INFO.schedule.note}
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* סקציה: תרומה */}
+        <section className="py-20 bg-gradient-to-b from-charcoal/[0.03] to-background border-t border-charcoal/5">
+          <div className="max-w-2xl mx-auto px-4 text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <h3 className="text-2xl md:text-3xl font-bold mb-6 text-charcoal">רוצה להיות שותף בפעילות?</h3>
+              <p className="text-charcoal/50 mb-10 leading-relaxed">כל תרומה מחזקת את הקהילה, את השיעורים ואת הפעילות השבועית בצריף הקדוש.</p>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="inline-block">
+                <Link
+                  href="/donation"
+                  className="bg-charcoal text-white px-10 py-5 rounded-full font-bold text-xl flex items-center gap-3 shadow-2xl hover:bg-gold-warm transition-all"
+                >
+                  <HandCoins size={24} /> תרומה ותמיכה בפעילות
+                </Link>
+              </motion.div>
+            </motion.div>
           </div>
         </section>
       </main>

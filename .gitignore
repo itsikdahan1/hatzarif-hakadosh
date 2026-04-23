@@ -8,3 +8,6 @@ coverage/
 .env*
 !.env.example
 next-env.d.ts
+firebase-applet-config.json
+firebase-blueprint.json
+tsconfig.tsbuildinfo
