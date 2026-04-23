@@ -1,0 +1,223 @@
+// ===============================================================
+// Assumed Data Model
+// ===============================================================
+//
+// Collection: prayers
+// Fields:
+//   - name: string (required)
+//   - time: string (required, HH:mm)
+//   - type: string (required, 'weekday' or 'shabbat')
+//   - order: number (optional)
+//
+// Collection: businesses
+// Fields:
+//   - name: string (required)
+//   - category: string (required)
+//   - description: string (required)
+//   - image: string (optional)
+//   - whatsapp: string (required)
+//   - approved: bool (optional)
+//   - ownerUid: string (optional)
+//
+// Collection: users
+// Fields:
+//   - email: string (required)
+//   - role: string (required, 'admin' or 'user')
+//   - displayName: string (optional)
+//
+// Collection: lessons
+// Fields:
+//   - title: string (required)
+//   - lecturer: string (required)
+//   - day: string (required)
+//   - time: string (required)
+//   - location: string (optional)
+//   - topic: string (optional)
+//
+// Collection: dedications
+// Fields:
+//   - content: string (required)
+//   - donorName: string (optional)
+//   - type: string (required, 'memorial', 'success', 'honor')
+//   - date: string (optional)
+//
+// Collection: memorials
+// Fields:
+//   - name: string (required)
+//   - date: string (required)
+//   - description: string (optional)
+//
+// ===============================================================
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default-deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+        (request.auth.token.email == "d0559296626@gmail.com" || 
+         (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin" &&
+          request.auth.token.email_verified == true));
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // ===============================================================
+    // Domain Validators
+    // ===============================================================
+
+    function isValidPrayer(data) {
+      return data.keys().hasAll(['name', 'time', 'type']) &&
+             data.name is string && data.name.size() > 0 && data.name.size() < 100 &&
+             data.time is string && data.time.matches("^[0-2][0-9]:[0-5][0-9]$") &&
+             data.type in ['weekday', 'shabbat'];
+    }
+
+    function isValidBusiness(data) {
+      return data.keys().hasAll(['name', 'category', 'description', 'whatsapp']) &&
+             data.name is string && data.name.size() > 0 && data.name.size() < 100 &&
+             data.description is string && data.description.size() > 0 && data.description.size() < 2000 &&
+             data.whatsapp is string && data.whatsapp.size() > 0 && data.whatsapp.size() < 20;
+    }
+
+    function isValidLesson(data) {
+      return data.keys().hasAll(['title', 'lecturer', 'day', 'time']) &&
+             data.title is string && data.title.size() > 0 && data.title.size() < 200 &&
+             data.lecturer is string && data.lecturer.size() > 0 && data.lecturer.size() < 100;
+    }
+
+    function isValidDedication(data) {
+      return data.keys().hasAll(['content', 'type']) &&
+             data.content is string && data.content.size() > 0 && data.content.size() < 1000 &&
+             data.type in ['memorial', 'success', 'honor'];
+    }
+
+    function isValidMemorial(data) {
+      return data.keys().hasAll(['name', 'date']) &&
+             data.name is string && data.name.size() > 0 && data.name.size() < 100 &&
+             data.date is string && data.date.size() > 0 && data.date.size() < 100;
+    }
+
+    function isValidCampaign(data) {
+      return data.keys().hasAll(['title', 'target', 'current', 'category']) &&
+             data.title is string && data.title.size() > 0 && data.title.size() < 200 &&
+             data.target is number && data.current is number;
+    }
+
+    function isValidAnnouncement(data) {
+      return data.keys().hasAll(['title', 'content']) &&
+             data.title is string && data.title.size() > 0 && data.title.size() < 200 &&
+             data.content is string && data.content.size() > 0 && data.content.size() < 5000;
+    }
+
+    function isValidAnnualCircle(data) {
+      return data.keys().hasAll(['title', 'price']) &&
+             data.title is string && data.title.size() > 0 && data.title.size() < 200 &&
+             data.price is number;
+    }
+
+    function isValidCustomDonation(data) {
+      return data.keys().hasAll(['amount', 'purpose']) &&
+             data.amount is number && data.amount > 0 &&
+             data.purpose is string && data.purpose.size() > 0 && data.purpose.size() < 1000;
+    }
+
+    function isValidImpactStat(data) {
+      return data.keys().hasAll(['title', 'value', 'icon']) &&
+             data.title is string && data.title.size() > 0 && data.title.size() < 100 &&
+             data.value is string && data.value.size() > 0 && data.value.size() < 100;
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+
+    match /prayers/{prayerId} {
+      allow read: if true;
+      allow write: if isAdmin() && isValidPrayer(incoming());
+    }
+
+    match /businesses/{businessId} {
+      allow read: if true;
+      allow create: if isAuthenticated() && isValidBusiness(incoming());
+      allow update: if (isAdmin() || isOwner(resource.data.ownerUid)) && isValidBusiness(incoming());
+      allow delete: if isAdmin() || isOwner(resource.data.ownerUid);
+    }
+
+    match /users/{userId} {
+      allow get: if isOwner(userId) || isAdmin();
+      allow list: if isAdmin();
+      allow create: if isAuthenticated() && incoming().role == 'user' && isOwner(userId);
+      allow update: if isAdmin() || (isOwner(userId) && incoming().role == existing().role);
+      allow delete: if isAdmin();
+    }
+
+    match /lessons/{lessonId} {
+      allow read: if true;
+      allow write: if isAdmin() && isValidLesson(incoming());
+    }
+
+    match /dedications/{dedicationId} {
+      allow read: if true;
+      allow write: if isAdmin() && isValidDedication(incoming());
+    }
+
+    match /memorials/{memorialId} {
+      allow read: if true;
+      allow write: if isAdmin() && isValidMemorial(incoming());
+    }
+
+    match /campaigns/{campaignId} {
+      allow read: if true;
+      allow write: if isAdmin() && isValidCampaign(incoming());
+    }
+
+    match /announcements/{announcementId} {
+      allow read: if true;
+      allow write: if isAdmin() && isValidAnnouncement(incoming());
+    }
+
+    match /annual_circle/{circleId} {
+      allow read: if true;
+      allow write: if isAdmin() && isValidAnnualCircle(incoming());
+    }
+
+    match /custom_donations/{donationId} {
+      allow read: if isAdmin();
+      allow create: if true; // Public can donate, but validation is strict
+      allow update, delete: if isAdmin();
+    }
+
+    match /impact_stats/{statId} {
+      allow read: if true;
+      allow write: if isAdmin() && isValidImpactStat(incoming());
+    }
+  }
+}

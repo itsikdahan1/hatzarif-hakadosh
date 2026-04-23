@@ -1,0 +1,195 @@
+{
+  "entities": {
+    "PrayerTime": {
+      "title": "Prayer Time",
+      "description": "A scheduled prayer time",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Name of the prayer (e.g., Shacharit)" },
+        "time": { "type": "string", "description": "Time in HH:mm format" },
+        "type": { "type": "string", "enum": ["weekday", "shabbat"], "description": "Type of day" },
+        "order": { "type": "number", "description": "Display order" }
+      },
+      "required": ["name", "time", "type"]
+    },
+    "Business": {
+      "title": "Community Business",
+      "description": "A business owned by a community member",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "description": { "type": "string" },
+        "image": { "type": "string" },
+        "whatsapp": { "type": "string" },
+        "approved": { "type": "boolean" },
+        "ownerUid": { "type": "string" }
+      },
+      "required": ["name", "category", "description", "whatsapp"]
+    },
+    "User": {
+      "title": "User Profile",
+      "description": "User profile and permissions",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "user"] },
+        "displayName": { "type": "string" }
+      },
+      "required": ["email", "role"]
+    },
+    "Lesson": {
+      "title": "Torah Lesson",
+      "description": "A scheduled Torah lesson (Shiur)",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "Title of the lesson" },
+        "lecturer": { "type": "string", "description": "Name of the lecturer" },
+        "day": { "type": "string", "description": "Day of the week or frequency" },
+        "time": { "type": "string", "description": "Time of the lesson" },
+        "location": { "type": "string", "description": "Where it takes place" },
+        "topic": { "type": "string", "description": "General topic" }
+      },
+      "required": ["title", "lecturer", "day", "time"]
+    },
+    "Dedication": {
+      "title": "Dedication",
+      "description": "A dedication for a day of learning or project",
+      "type": "object",
+      "properties": {
+        "content": { "type": "string" },
+        "donorName": { "type": "string" },
+        "type": { "type": "string", "enum": ["memorial", "success", "honor"] },
+        "date": { "type": "string" },
+        "hebrewDate": { "type": "string" },
+        "active": { "type": "boolean" }
+      },
+      "required": ["content", "type"]
+    },
+    "Memorial": {
+      "title": "Memorial",
+      "description": "A memorial entry (Yahrzeit)",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "date": { "type": "string" },
+        "hebrewDate": { "type": "string" },
+        "description": { "type": "string" },
+        "today": { "type": "boolean" }
+      },
+      "required": ["name", "date"]
+    },
+    "Campaign": {
+      "title": "Donation Campaign",
+      "description": "A specific fundraising campaign",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "target": { "type": "number" },
+        "current": { "type": "number" },
+        "category": { "type": "string" },
+        "image": { "type": "string" },
+        "endDate": { "type": "string" },
+        "active": { "type": "boolean" }
+      },
+      "required": ["title", "target", "current", "category"]
+    },
+    "Announcement": {
+      "title": "Urgent Announcement",
+      "description": "Urgent notification for prayer time changes or community news",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "isUrgent": { "type": "boolean" },
+        "active": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "content"]
+    },
+    "AnnualCircleDonation": {
+      "title": "Annual Circle Donation",
+      "description": "Fixed donations for Jewish year cycle events (e.g., Rosh Hashanah, Pesach)",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "price": { "type": "number" },
+        "description": { "type": "string" },
+        "icon": { "type": "string" },
+        "order": { "type": "number" }
+      },
+      "required": ["title", "price"]
+    },
+    "CustomDonation": {
+      "title": "Custom Donation Entry",
+      "description": "A donation with custom text and amount (not tied to a campaign)",
+      "type": "object",
+      "properties": {
+        "donorName": { "type": "string" },
+        "amount": { "type": "number" },
+        "purpose": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" }
+      },
+      "required": ["amount", "purpose"]
+    },
+    "ImpactStat": {
+      "title": "Impact Statistic",
+      "description": "Statistics shown on the hero section",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "value": { "type": "string" },
+        "icon": { "type": "string" },
+        "order": { "type": "number" }
+      },
+      "required": ["title", "value", "icon"]
+    }
+  },
+  "firestore": {
+    "/prayers/{prayerId}": {
+      "schema": "PrayerTime",
+      "description": "Collection of prayer times"
+    },
+    "/businesses/{businessId}": {
+      "schema": "Business",
+      "description": "Collection of community businesses"
+    },
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles and roles"
+    },
+    "/lessons/{lessonId}": {
+      "schema": "Lesson",
+      "description": "Collection of Torah lessons"
+    },
+    "/dedications/{dedicationId}": {
+      "schema": "Dedication",
+      "description": "Collection of dedications"
+    },
+    "/memorials/{memorialId}": {
+      "schema": "Memorial",
+      "description": "Collection of memorial entries"
+    },
+    "/campaigns/{campaignId}": {
+      "schema": "Campaign",
+      "description": "Collection of fundraising campaigns"
+    },
+    "/announcements/{announcementId}": {
+      "schema": "Announcement",
+      "description": "Collection of community announcements and urgent alerts"
+    },
+    "/annual_circle/{circleId}": {
+      "schema": "AnnualCircleDonation",
+      "description": "Collection of annual circle donation types"
+    },
+    "/custom_donations/{donationId}": {
+      "schema": "CustomDonation",
+      "description": "Collection of custom donations made by users"
+    },
+    "/impact_stats/{statId}": {
+      "schema": "ImpactStat",
+      "description": "Collection of impact statistics"
+    }
+  }
+}
