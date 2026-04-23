@@ -1,6 +1,6 @@
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import { initializeApp, FirebaseApp } from 'firebase/app';
+import { Auth, getAuth } from 'firebase/auth';
+import { Firestore, getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -11,10 +11,34 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
-export const db = getFirestore(app, process.env.NEXT_PUBLIC_FIREBASE_DATABASE_ID);
+const isConfigured = !!firebaseConfig.apiKey;
+
+let app: FirebaseApp | null = null;
+let _auth: Auth | null = null;
+let _db: Firestore | null = null;
+
+function getApp(): FirebaseApp {
+  if (!app) {
+    app = initializeApp(firebaseConfig);
+  }
+  return app;
+}
+
+export const auth: Auth = new Proxy({} as Auth, {
+  get(_, prop) {
+    if (!isConfigured) return undefined;
+    if (!_auth) _auth = getAuth(getApp());
+    return (_auth as any)[prop];
+  },
+});
+
+export const db: Firestore = new Proxy({} as Firestore, {
+  get(_, prop) {
+    if (!isConfigured) return undefined;
+    if (!_db) _db = getFirestore(getApp(), process.env.NEXT_PUBLIC_FIREBASE_DATABASE_ID);
+    return (_db as any)[prop];
+  },
+});
 
 export enum OperationType {
   CREATE = 'create',
