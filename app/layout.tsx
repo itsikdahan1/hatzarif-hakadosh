@@ -37,7 +37,7 @@ export default function RootLayout({
   return (
     <html lang="he" dir="rtl">
       <head>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
       </head>
       <body className="min-h-screen bg-alabaster text-charcoal font-sans antialiased">
         {children}
