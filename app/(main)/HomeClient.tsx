@@ -9,7 +9,6 @@ import {
   BookOpen,
   PhoneOff,
   Coffee,
-  ArrowRight,
   ArrowLeft,
   MessageCircle,
   Youtube,
@@ -18,7 +17,7 @@ import {
   Users,
   Briefcase,
   Settings,
-  HandCoins,
+  Heart as HeartIcon,
   Stars,
   Trophy,
   Zap,
@@ -166,7 +165,7 @@ function DynamicScheduleWidget({ prayers }: { prayers: any[] }) {
         <div className="flex items-end justify-between">
           <span className="text-5xl font-bold font-mono tracking-tighter text-charcoal">{nextEvent.time}</span>
           <a href="#schedule" className="text-sm font-bold text-gold-warm hover:underline flex items-center gap-1">
-            לכל הזמנים <ArrowRight size={14} />
+            לכל הזמנים <ArrowLeft size={14} />
           </a>
         </div>
         {nextEvent.note && (
@@ -480,7 +479,7 @@ export function HomeClient() {
                   </div>
                   <h3 className="text-2xl font-serif font-bold text-charcoal mb-4">שיעורי תורה</h3>
                   <p className="text-charcoal/50 mb-8 leading-relaxed">כל זמני השיעורים, הנושאים והמרצים במקום אחד.</p>
-                  <span className="text-gold-warm font-bold flex items-center gap-2">צפייה בכל השיעורים <ArrowLeft size={16} className="rotate-180" /></span>
+                  <span className="text-gold-warm font-bold flex items-center gap-2">צפייה בכל השיעורים <ArrowLeft size={16} /></span>
                 </Link>
               </motion.div>
 
@@ -491,7 +490,7 @@ export function HomeClient() {
                   </div>
                   <h3 className="text-2xl font-serif font-bold mb-4">הקדשות ואזכרות</h3>
                   <p className="text-white/50 mb-8 leading-relaxed">לוח אזכרות עדכני ואפשרויות הקדשה לזכות ולעילוי נשמה.</p>
-                  <span className="text-gold-warm font-bold flex items-center gap-2">ללוח המלא <ArrowLeft size={16} className="rotate-180" /></span>
+                  <span className="text-gold-warm font-bold flex items-center gap-2">ללוח המלא <ArrowLeft size={16} /></span>
                 </Link>
               </motion.div>
 
@@ -502,7 +501,7 @@ export function HomeClient() {
                   </div>
                   <h3 className="text-2xl font-serif font-bold mb-4">שיעור הצעירים</h3>
                   <p className="text-white/50 mb-8 leading-relaxed">כל הפרטים על המפגש השבועי לצעירי השכונה.</p>
-                  <span className="text-white font-bold flex items-center gap-2">לפרטים והרשמה <ArrowLeft size={16} className="rotate-180" /></span>
+                  <span className="text-white font-bold flex items-center gap-2">לפרטים והרשמה <ArrowLeft size={16} /></span>
                 </Link>
               </motion.div>
 
@@ -513,7 +512,7 @@ export function HomeClient() {
                   </div>
                   <h3 className="text-2xl font-serif font-bold text-charcoal mb-4">עסקים בקהילה</h3>
                   <p className="text-charcoal/50 mb-8 leading-relaxed">תמיכה בעסקים מקומיים וחיזוק הכלכלה הקהילתית.</p>
-                  <span className="text-gold-warm font-bold flex items-center gap-2">למדריך המלא <ArrowLeft size={16} className="rotate-180" /></span>
+                  <span className="text-gold-warm font-bold flex items-center gap-2">למדריך המלא <ArrowLeft size={16} /></span>
                 </Link>
               </motion.div>
             </div>
@@ -585,7 +584,7 @@ export function HomeClient() {
                   href="/donation"
                   className="bg-charcoal text-white px-6 sm:px-10 py-3 sm:py-5 rounded-full font-bold text-base sm:text-xl flex items-center gap-3 shadow-2xl hover:bg-gold-warm transition-all"
                 >
-                  <HandCoins size={24} /> תרומה ותמיכה בפעילות
+                  <HeartIcon size={24} /> תרומה ותמיכה בפעילות
                 </Link>
               </motion.div>
             </motion.div>
