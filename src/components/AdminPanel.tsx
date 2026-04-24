@@ -31,8 +31,12 @@ import {
   Heart,
   Users,
   HandCoins,
-  Calendar
+  Calendar,
+  ImageIcon,
+  Eye,
+  Loader2
 } from 'lucide-react';
+import { MEDIA_SLOTS, saveSiteMedia } from '../hooks/useSiteMedia';
 import { motion, AnimatePresence } from 'motion/react';
 import { signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
 
@@ -41,7 +45,7 @@ interface AdminPanelProps {
 }
 
 export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
-  const [activeTab, setActiveTab] = useState<'prayers' | 'businesses' | 'lessons' | 'dedications' | 'announcements' | 'campaigns' | 'impact' | 'gabbais' | 'annual_circle'>('prayers');
+  const [activeTab, setActiveTab] = useState<'prayers' | 'businesses' | 'lessons' | 'dedications' | 'announcements' | 'campaigns' | 'impact' | 'gabbais' | 'annual_circle' | 'media'>('prayers');
   const [prayers, setPrayers] = useState<any[]>([]);
   const [businesses, setBusinesses] = useState<any[]>([]);
   const [lessons, setLessons] = useState<any[]>([]);
@@ -68,6 +72,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
   const [newAnnualCircle, setNewAnnualCircle] = useState({ title: '', price: 0, description: '', icon: 'Calendar' });
   const [newImpactStat, setNewImpactStat] = useState({ title: '', value: '', icon: 'Heart', order: 0 });
   const [newAdminEmail, setNewAdminEmail] = useState('');
+  const [siteMedia, setSiteMedia] = useState<Record<string, string>>({});
+  const [mediaEdits, setMediaEdits] = useState<Record<string, string>>({});
+  const [savingMedia, setSavingMedia] = useState<string | null>(null);
+  const [newBusiness, setNewBusiness] = useState({ name: '', category: '', description: '', image: '', whatsapp: '', approved: true });
 
   useEffect(() => {
     const unsubscribeAuth = auth.onAuthStateChanged(async (user) => {
@@ -151,6 +159,17 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
       setAdmins(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
     }, (error) => handleFirestoreError(error, OperationType.LIST, 'users'));
 
+    const unsubscribeMedia = onSnapshot(collection(db, 'site_media'), (snapshot) => {
+      const map: Record<string, string> = {};
+      snapshot.docs.forEach(d => { const data = d.data(); if (data.url) map[d.id] = data.url; });
+      setSiteMedia(map);
+      setMediaEdits(prev => {
+        const merged = { ...prev };
+        snapshot.docs.forEach(d => { if (!(d.id in merged)) merged[d.id] = d.data().url || ''; });
+        return merged;
+      });
+    }, (error) => handleFirestoreError(error, OperationType.LIST, 'site_media'));
+
     return () => {
       unsubscribePrayers();
       unsubscribeBusinesses();
@@ -163,6 +182,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
       unsubscribeCustomDonations();
       unsubscribeImpactStats();
       unsubscribeAdmins();
+      unsubscribeMedia();
     };
   }, [isAdmin]);
 
@@ -297,6 +317,26 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
     }
   };
 
+  const addBusiness = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await addDoc(collection(db, 'businesses'), newBusiness);
+      setNewBusiness({ name: '', category: '', description: '', image: '', whatsapp: '', approved: true });
+    } catch (error) {
+      handleFirestoreError(error, OperationType.CREATE, 'businesses');
+    }
+  };
+
+  const handleSaveMedia = async (slotId: string) => {
+    setSavingMedia(slotId);
+    try {
+      await saveSiteMedia(slotId, mediaEdits[slotId] || '');
+    } catch (error) {
+      handleFirestoreError(error, OperationType.UPDATE, 'site_media');
+    }
+    setSavingMedia(null);
+  };
+
   const addImpactStat = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -376,59 +416,82 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
     );
   }
 
-  return (
-    <div className="fixed inset-0 bg-alabaster z-[100] overflow-y-auto">
-      <div className="max-w-6xl mx-auto px-4 py-12">
-        <header className="flex justify-between items-center mb-12">
-          <div>
-            <h1 className="text-4xl font-serif font-bold text-charcoal">ניהול הצריף הקדוש</h1>
-            <p className="text-charcoal/60">שלום, {auth.currentUser?.displayName}</p>
-          </div>
-          <div className="flex gap-4">
-            <button 
-              onClick={handleLogout}
-              className="p-3 rounded-full bg-white border border-charcoal/10 text-charcoal/60 hover:text-red-500 transition-colors"
-              title="התנתק"
-            >
-              <LogOut size={24} />
-            </button>
-            <button 
-              onClick={onClose}
-              className="p-3 rounded-full bg-charcoal text-white hover:bg-charcoal/90 transition-all"
-            >
-              <X size={24} />
-            </button>
-          </div>
-        </header>
+  const ADMIN_TABS = [
+    { id: 'prayers', label: 'זמני תפילות', icon: Clock },
+    { id: 'lessons', label: 'שיעורי תורה', icon: BookOpen },
+    { id: 'campaigns', label: 'קמפיינים ותרומות', icon: HandCoins },
+    { id: 'impact', label: 'נתוני השפעה', icon: Heart },
+    { id: 'dedications', label: 'הקדשות ואזכרות', icon: Heart },
+    { id: 'businesses', label: 'מאגר עסקים', icon: Briefcase },
+    { id: 'media', label: 'תמונות ומדיה', icon: ImageIcon },
+    { id: 'annual_circle', label: 'מעגל השנה', icon: Calendar },
+    { id: 'gabbais', label: 'ניהול גבאים', icon: Users },
+    { id: 'announcements', label: 'הודעות מתפרצות', icon: Bell },
+  ];
 
-        <nav className="flex gap-4 mb-12 overflow-x-auto pb-2">
-          {[
-            { id: 'prayers', label: 'זמני תפילות', icon: Clock },
-            { id: 'lessons', label: 'שיעורי תורה', icon: BookOpen },
-            { id: 'campaigns', label: 'קמפיינים ותרומות', icon: HandCoins },
-            { id: 'impact', label: 'נתוני השפעה', icon: Heart },
-            { id: 'dedications', label: 'הקדשות ואזכרות', icon: Heart },
-            { id: 'businesses', label: 'מאגר עסקים', icon: Briefcase },
-            { id: 'annual_circle', label: 'מעגל השנה', icon: Calendar },
-            { id: 'gabbais', label: 'ניהול גבאים', icon: Users },
-            { id: 'announcements', label: 'הודעות מתפרצות', icon: Bell },
-          ].map(tab => (
+  return (
+    <div className="fixed inset-0 bg-alabaster z-[100] flex flex-col">
+      <header className="shrink-0 flex justify-between items-center px-4 lg:px-8 py-4 border-b border-charcoal/10 bg-white">
+        <div>
+          <h1 className="text-xl lg:text-3xl font-serif font-bold text-charcoal">ניהול הצריף הקדוש</h1>
+          <p className="text-charcoal/60 text-sm hidden sm:block">שלום, {auth.currentUser?.displayName}</p>
+        </div>
+        <div className="flex gap-3">
+          <button 
+            onClick={handleLogout}
+            className="p-2.5 rounded-full bg-alabaster border border-charcoal/10 text-charcoal/60 hover:text-red-500 transition-colors"
+            title="התנתק"
+          >
+            <LogOut size={20} />
+          </button>
+          <button 
+            onClick={onClose}
+            className="p-2.5 rounded-full bg-charcoal text-white hover:bg-charcoal/90 transition-all"
+          >
+            <X size={20} />
+          </button>
+        </div>
+      </header>
+
+      {/* Mobile: horizontal scrollable tabs */}
+      <nav className="lg:hidden flex gap-2 px-4 py-3 overflow-x-auto border-b border-charcoal/5 bg-alabaster shrink-0">
+        {ADMIN_TABS.map(tab => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id as any)}
+            className={`flex items-center gap-1.5 px-4 py-2.5 rounded-full font-bold text-xs transition-all whitespace-nowrap ${
+              activeTab === tab.id 
+              ? 'bg-gold-warm text-white shadow-md' 
+              : 'bg-white text-charcoal/60'
+            }`}
+          >
+            <tab.icon size={14} />
+            {tab.label}
+          </button>
+        ))}
+      </nav>
+
+      <div className="flex flex-1 overflow-hidden">
+        {/* Desktop: sidebar */}
+        <aside className="hidden lg:flex flex-col w-56 bg-white border-l border-charcoal/10 overflow-y-auto shrink-0 py-4 px-3">
+          {ADMIN_TABS.map(tab => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center gap-2 px-8 py-4 rounded-full font-bold transition-all whitespace-nowrap ${
+              className={`flex items-center gap-3 w-full px-4 py-3 rounded-2xl font-bold text-sm transition-all mb-1 text-right ${
                 activeTab === tab.id 
-                ? 'bg-gold-warm text-white shadow-lg' 
-                : 'bg-white text-charcoal/60 hover:bg-white/80'
+                ? 'bg-gold-warm text-white shadow-md' 
+                : 'text-charcoal/60 hover:bg-alabaster'
               }`}
             >
-              <tab.icon size={20} />
+              <tab.icon size={18} />
               {tab.label}
             </button>
           ))}
-        </nav>
+        </aside>
 
-        <main className="bg-white rounded-[3rem] p-8 md:p-12 shadow-xl border border-charcoal/5">
+        <main className="flex-1 overflow-y-auto p-4 lg:p-10">
+          <div className="max-w-5xl mx-auto bg-white rounded-[2rem] lg:rounded-[3rem] p-5 sm:p-8 lg:p-12 shadow-xl border border-charcoal/5">
           {activeTab === 'prayers' && (
             <div className="space-y-12">
               <form onSubmit={addPrayer} className="grid grid-cols-1 md:grid-cols-4 gap-6 items-end bg-alabaster p-8 rounded-[2rem]">
@@ -961,6 +1024,34 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
 
           {activeTab === 'businesses' && (
             <div className="space-y-8">
+              <form onSubmit={addBusiness} className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end bg-alabaster p-8 rounded-[2rem]">
+                <div className="md:col-span-3"><h3 className="font-bold text-xl">הוספת עסק חדש</h3></div>
+                <div className="space-y-2">
+                  <label className="text-sm font-bold text-charcoal/60">שם העסק</label>
+                  <input required value={newBusiness.name} onChange={e => setNewBusiness({...newBusiness, name: e.target.value})} placeholder="למשל: חי רוקח — נדל״ן" className="w-full px-6 py-4 rounded-2xl border border-charcoal/10 focus:ring-2 focus:ring-gold-warm outline-none" />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-bold text-charcoal/60">קטגוריה</label>
+                  <input required value={newBusiness.category} onChange={e => setNewBusiness({...newBusiness, category: e.target.value})} placeholder="למשל: טכנולוגיה" className="w-full px-6 py-4 rounded-2xl border border-charcoal/10 focus:ring-2 focus:ring-gold-warm outline-none" />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-bold text-charcoal/60">וואטסאפ</label>
+                  <input required value={newBusiness.whatsapp} onChange={e => setNewBusiness({...newBusiness, whatsapp: e.target.value})} placeholder="050-0000000" className="w-full px-6 py-4 rounded-2xl border border-charcoal/10 focus:ring-2 focus:ring-gold-warm outline-none" />
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                  <label className="text-sm font-bold text-charcoal/60">תיאור</label>
+                  <input value={newBusiness.description} onChange={e => setNewBusiness({...newBusiness, description: e.target.value})} placeholder="תיאור קצר של העסק..." className="w-full px-6 py-4 rounded-2xl border border-charcoal/10 focus:ring-2 focus:ring-gold-warm outline-none" />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-bold text-charcoal/60">תמונה (URL)</label>
+                  <input value={newBusiness.image} onChange={e => setNewBusiness({...newBusiness, image: e.target.value})} placeholder="https://..." dir="ltr" className="w-full px-6 py-4 rounded-2xl border border-charcoal/10 focus:ring-2 focus:ring-gold-warm outline-none" />
+                </div>
+                <div className="md:col-start-3">
+                  <button type="submit" className="w-full bg-charcoal text-white py-4 rounded-2xl font-bold hover:bg-charcoal/90 transition-all flex items-center justify-center gap-2">
+                    <Plus size={20} /> הוסף עסק
+                  </button>
+                </div>
+              </form>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {businesses.map(biz => (
                   <div key={biz.id} className="border border-charcoal/10 rounded-3xl overflow-hidden bg-alabaster">
@@ -1164,6 +1255,62 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
             </div>
           )}
 
+          {activeTab === 'media' && (
+            <div className="space-y-10">
+              <div className="bg-alabaster p-6 rounded-[2rem] border border-charcoal/5">
+                <div className="flex items-center gap-3 mb-2">
+                  <ImageIcon className="text-gold-warm" size={24} />
+                  <h3 className="text-xl font-bold">ניהול תמונות ומדיה</h3>
+                </div>
+                <p className="text-charcoal/50 text-sm">הדביקו כתובת URL של תמונה בכל משבצת. התמונה תופיע אוטומטית במיקום המתאים באתר.</p>
+              </div>
+
+              {Array.from(new Set(MEDIA_SLOTS.map(s => s.group))).map(group => (
+                <div key={group}>
+                  <h4 className="text-lg font-bold text-charcoal mb-4 border-b border-charcoal/10 pb-2">{group}</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {MEDIA_SLOTS.filter(s => s.group === group).map(slot => (
+                      <div key={slot.id} className="bg-alabaster rounded-2xl border border-charcoal/5 overflow-hidden">
+                        {/* Preview */}
+                        {(mediaEdits[slot.id] || siteMedia[slot.id]) && (
+                          <div className="h-32 bg-charcoal/5 relative">
+                            <img 
+                              src={mediaEdits[slot.id] || siteMedia[slot.id]} 
+                              alt={slot.label}
+                              className="w-full h-full object-cover"
+                              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                            />
+                          </div>
+                        )}
+                        <div className="p-4 space-y-2">
+                          <p className="font-bold text-sm text-charcoal">{slot.label}</p>
+                          <p className="text-[11px] text-charcoal/40 flex items-center gap-1"><Eye size={12} /> {slot.location}</p>
+                          <div className="flex gap-2">
+                            <input 
+                              value={mediaEdits[slot.id] ?? siteMedia[slot.id] ?? ''}
+                              onChange={e => setMediaEdits(prev => ({ ...prev, [slot.id]: e.target.value }))}
+                              placeholder="הדביקו כתובת URL של תמונה..."
+                              className="flex-1 px-3 py-2 rounded-xl border border-charcoal/10 text-sm focus:ring-2 focus:ring-gold-warm outline-none"
+                              dir="ltr"
+                            />
+                            <button
+                              onClick={() => handleSaveMedia(slot.id)}
+                              disabled={savingMedia === slot.id || (mediaEdits[slot.id] ?? '') === (siteMedia[slot.id] ?? '')}
+                              className="px-4 py-2 bg-charcoal text-white rounded-xl text-xs font-bold hover:bg-gold-warm transition-all disabled:opacity-30 flex items-center gap-1 shrink-0"
+                            >
+                              {savingMedia === slot.id ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}
+                              שמור
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
           {activeTab === 'gabbais' && (
             <div className="space-y-12">
               <form onSubmit={addAdmin} className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end bg-alabaster p-8 rounded-[2rem]">
@@ -1205,6 +1352,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
               </div>
             </div>
           )}
+          </div>
         </main>
       </div>
     </div>

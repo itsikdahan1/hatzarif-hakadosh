@@ -279,7 +279,7 @@ export const KaparotForm = ({ onDonate }: { onDonate: (amount: number, details: 
 /**
  * URGENT CAMPAIGN (MATANOT LAEVYONIM / KIMCHA DEPISCHA)
  */
-export const UrgentCampaignForm = ({ type, onDonate }: { type: 'matanot' | 'kimcha', onDonate: (amount: number, details: any) => void }) => {
+export const UrgentCampaignForm = ({ type, onDonate, media = {} }: { type: 'matanot' | 'kimcha', onDonate: (amount: number, details: any) => void, media?: Record<string, string> }) => {
   const [selectedMealCount, setSelectedMealCount] = useState(2);
   const [customAmount, setCustomAmount] = useState<string>('');
   
@@ -298,11 +298,14 @@ export const UrgentCampaignForm = ({ type, onDonate }: { type: 'matanot' | 'kimc
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-12">
       <div className="relative h-64 rounded-[3rem] overflow-hidden group">
         <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/40 to-transparent z-10" />
-        <img 
-          src={type === 'matanot' ? "https://images.unsplash.com/photo-1541140134513-85a161dc4a00?auto=format&fit=crop&q=80&w=1000" : "https://images.unsplash.com/photo-1594968213941-0678d9180742?auto=format&fit=crop&q=80&w=1000"} 
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" 
-          referrerPolicy="no-referrer"
-        />
+        {(type === 'matanot' ? media.special_matanot : media.special_kimcha) ? (
+          <img 
+            src={type === 'matanot' ? media.special_matanot : media.special_kimcha} 
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" 
+          />
+        ) : (
+          <div className="w-full h-full bg-charcoal/20" />
+        )}
         <div className="absolute bottom-8 right-8 z-20">
           <div className="flex items-center gap-3 bg-red-600 text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-4 animate-pulse">
             <Clock size={14} /> המועד מתקרב

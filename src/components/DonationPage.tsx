@@ -36,6 +36,7 @@ import { db, handleFirestoreError, OperationType } from "../firebase";
 import { collection, onSnapshot, query, orderBy, addDoc } from "firebase/firestore";
 import { getCurrentJewishContext, JewishContext } from "../services/jewishCalendar";
 import { MachatzitHashekelForm, KaparotForm, UrgentCampaignForm } from "./SpecialDonations";
+import { useSiteMedia } from "../hooks/useSiteMedia";
 
 // Initialize Stripe (using public key from env)
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "pk_test_placeholder");
@@ -94,7 +95,7 @@ function StripeCheckoutForm({
       <Button 
         type="submit" 
         disabled={isProcessing || !stripe}
-        className="w-full bg-charcoal hover:bg-gold-warm text-white py-8 rounded-2xl font-bold text-xl shadow-xl transition-all disabled:opacity-50"
+        className="w-full bg-charcoal hover:bg-gold-warm text-white py-5 sm:py-8 rounded-2xl font-bold text-base sm:text-xl shadow-xl transition-all disabled:opacity-50"
       >
         {isProcessing ? (
           <span className="flex items-center gap-2">
@@ -117,6 +118,7 @@ export function DonationPage({
   campaigns?: any[],
   impactStats?: any[]
 }) {
+  const siteMedia = useSiteMedia();
   const [success, setSuccess] = useState(false);
   const [checkoutStep, setCheckoutStep] = useState<"options" | "details" | "payment" | "achisomoch" | "bit">("options");
   const [isMonthly, setIsMonthly] = useState(true);
@@ -260,7 +262,7 @@ export function DonationPage({
             <Button 
               size="lg" 
               onClick={shareOnWhatsApp}
-              className="bg-[#25D366] hover:bg-[#128C7E] text-white rounded-2xl py-8 text-xl font-bold flex items-center justify-center gap-3 shadow-xl"
+              className="bg-[#25D366] hover:bg-[#128C7E] text-white rounded-2xl py-5 sm:py-8 text-base sm:text-xl font-bold flex items-center justify-center gap-3 shadow-xl"
             >
               <Share2 size={24} /> שיתוף בוואטסאפ
             </Button>
@@ -313,7 +315,7 @@ export function DonationPage({
                     {jewishContext.subtitle}
                   </div>
                 )}
-                <h2 className="text-4xl font-black text-charcoal mb-4 tracking-tight leading-tight">
+                <h2 className="text-2xl sm:text-4xl font-black text-charcoal mb-4 tracking-tight leading-tight">
                   {activeSpecialType ? `קיום מצוות ${jewishContext.title}` : 'בחרו את השותפות שלכם'}
                 </h2>
               </div>
@@ -357,7 +359,8 @@ export function DonationPage({
                     )}
                     {activeSpecialType === 'matanot-laevyonim' && (
                       <UrgentCampaignForm 
-                        type="matanot" 
+                        type="matanot"
+                        media={siteMedia}
                         onDonate={(amount) => {
                           setCustomAmount(amount.toString());
                           setCustomPurpose("מתנות לאביונים");
@@ -375,7 +378,8 @@ export function DonationPage({
                     )}
                     {activeSpecialType === 'kimcha-depischa' && (
                       <UrgentCampaignForm 
-                        type="kimcha" 
+                        type="kimcha"
+                        media={siteMedia}
                         onDonate={(amount) => {
                           setCustomAmount(amount.toString());
                           setCustomPurpose("קמחא דפסחא");
@@ -439,7 +443,7 @@ export function DonationPage({
                           });
                           setCheckoutStep("details");
                         }}
-                        className="group bg-white border-2 border-charcoal/5 hover:border-gold-warm/50 p-6 rounded-[2.5rem] flex items-center justify-between transition-all hover:shadow-xl active:scale-[0.98] text-right"
+                        className="group bg-white border-2 border-charcoal/5 hover:border-gold-warm/50 p-4 sm:p-6 rounded-2xl md:rounded-[2.5rem] flex items-center justify-between transition-all hover:shadow-xl active:scale-[0.98] text-right"
                       >
                         <div className="flex gap-5 items-center">
                           <div className="w-14 h-14 bg-gold-warm/10 rounded-2xl flex items-center justify-center text-gold-warm group-hover:bg-gold-warm group-hover:text-white transition-all">
@@ -492,7 +496,7 @@ export function DonationPage({
               className="space-y-8"
             >
               {/* Summary Header */}
-              <div className="bg-charcoal text-white p-8 rounded-[3rem] shadow-2xl relative overflow-hidden">
+              <div className="bg-charcoal text-white p-5 sm:p-8 rounded-[2rem] md:rounded-[3rem] shadow-2xl relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-gold-warm/10 rounded-full -mr-16 -mt-16" />
                 <div className="flex justify-between items-end relative z-10">
                    <div>
@@ -504,7 +508,7 @@ export function DonationPage({
                    </div>
                    <div className="text-left">
                       <p className="text-white/40 text-xs font-black uppercase tracking-widest mb-1">סכום לחיוב</p>
-                      <span className="text-4xl font-black font-sans tracking-tight">₪{totalAmount}</span>
+                      <span className="text-2xl sm:text-4xl font-black font-sans tracking-tight">₪{totalAmount}</span>
                    </div>
                 </div>
               </div>
@@ -550,7 +554,7 @@ export function DonationPage({
                     <Button 
                       disabled={!email || !name || totalAmount <= 0}
                       onClick={handleCreatePaymentIntent}
-                      className="w-full bg-charcoal hover:bg-gold-warm text-white py-8 rounded-2xl font-bold text-xl shadow-xl flex items-center justify-center gap-3 transition-all"
+                      className="w-full bg-charcoal hover:bg-gold-warm text-white py-5 sm:py-8 rounded-2xl font-bold text-base sm:text-xl shadow-xl flex items-center justify-center gap-3 transition-all"
                     >
                       <CreditCard /> תשלום באשראי / Apple Pay
                     </Button>
@@ -558,7 +562,7 @@ export function DonationPage({
                     <Button 
                       disabled={!email || !name || totalAmount <= 0}
                       onClick={() => setCheckoutStep("bit")}
-                      className="w-full bg-[#002e5d] hover:bg-[#003d7a] text-white py-8 rounded-2xl font-bold text-xl shadow-xl flex items-center justify-center gap-4 transition-all"
+                      className="w-full bg-[#002e5d] hover:bg-[#003d7a] text-white py-5 sm:py-8 rounded-2xl font-bold text-base sm:text-xl shadow-xl flex items-center justify-center gap-4 transition-all"
                     >
                       <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
                          <div className="w-4 h-4 bg-[#002e5d] rounded-full" />
@@ -569,7 +573,7 @@ export function DonationPage({
                     <Button 
                       variant="outline"
                       onClick={() => setCheckoutStep("achisomoch")}
-                      className="w-full border-2 border-charcoal/10 py-8 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 text-charcoal/60"
+                      className="w-full border-2 border-charcoal/10 py-5 sm:py-8 rounded-2xl font-bold text-base sm:text-lg flex items-center justify-center gap-3 text-charcoal/60"
                     >
                       <Building2 /> העברה / אחיסמך / קהילות
                     </Button>
@@ -584,7 +588,7 @@ export function DonationPage({
               )}
 
               {checkoutStep === "payment" && clientSecret && (
-                <div className="bg-alabaster p-8 rounded-[3rem] border border-charcoal/5 shadow-inner">
+                <div className="bg-alabaster p-5 sm:p-8 rounded-[2rem] md:rounded-[3rem] border border-charcoal/5 shadow-inner">
                   <div className="flex items-center gap-3 mb-8 text-charcoal/40 font-bold text-sm">
                     <ShieldCheck size={20} className="text-green-500" />
                     סליקה מאובטחת בתקן PCI-DSS Level 1
@@ -623,7 +627,7 @@ export function DonationPage({
                 <motion.div 
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-white p-8 rounded-[3rem] border-2 border-[#002e5d]/10 shadow-2xl space-y-8"
+                  className="bg-white p-5 sm:p-8 rounded-2xl md:rounded-[3rem] border-2 border-[#002e5d]/10 shadow-2xl space-y-6 sm:space-y-8"
                 >
                   <div className="text-center">
                     <div className="w-20 h-20 bg-[#002e5d] rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
@@ -677,7 +681,7 @@ export function DonationPage({
                 <motion.div 
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="bg-alabaster p-10 rounded-[3rem] border border-gold-warm/20 space-y-8"
+                  className="bg-alabaster p-6 sm:p-10 rounded-2xl md:rounded-[3rem] border border-gold-warm/20 space-y-6 sm:space-y-8"
                 >
                   <div className="text-center">
                     <Building2 className="mx-auto text-gold-warm mb-4" size={48} />

@@ -1,6 +1,6 @@
 export const SYNAGOGUE_INFO = {
   name: "הצריף הקדוש",
-  tagline: "בית כנסת קהילתי בראשון לציון",
+  tagline: "בית כנסת קהילתי בשכונת נאות אשלים, ראשון לציון",
   subTagline: "קהילת 'הצריף הקדוש' בנאות אשלים. מקום לתורה, תפילה ופעילות לתושבי השכונה.",
   location: "רחוב התזמורת 51, נאות אשלים, ראשון לציון",
   rabbi: "הרב אייל מרום",
@@ -23,11 +23,7 @@ export const SYNAGOGUE_INFO = {
     lessonDetails: "שיעור קליל עם הרב ניב אלמלם, תאורה נעימה וכיבוד. מתאים לכולם - דתיים, מסורתיים וחילונים.",
     whatsappCTA: "שלחו לי תזכורת לשיעור",
     whatsappMessage: "שלום, אשמח לקבל תזכורת שבועית לשיעור הצעירים ביום שני",
-    gallery: [
-      "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=600",
-      "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&q=80&w=600",
-      "https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&q=80&w=600"
-    ]
+    gallery: []
   },
   community: {
     projects: {
@@ -48,14 +44,14 @@ export const SYNAGOGUE_INFO = {
           name: "חי רוקח — נדל\"ן וסרטוני וידאו",
           category: "נדל\"ן ומדיה",
           description: "ייעוץ וליווי בנדל\"ן, וכן עריכת סרטוני וידאו מקצועיים עם AI. חבר קהילה פעיל ומסור.",
-          image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=400",
+          image: "",
           whatsapp: "050-0000000"
         },
         {
           name: "יצחק דהן — בניית אתרים",
           category: "טכנולוגיה",
           description: "בניית אתרים ומערכות דיגיטליות מקצועיות. חבר הקהילה שבנה את האתר הזה.",
-          image: "https://images.unsplash.com/photo-1547658719-da2b51169166?auto=format&fit=crop&q=80&w=400",
+          image: "",
           whatsapp: "055-9296626"
         }
       ]
@@ -65,11 +61,6 @@ export const SYNAGOGUE_INFO = {
       author: "חברי הקהילה, נאות אשלים"
     }
   },
-  synagogueGallery: [
-    "https://images.unsplash.com/photo-1445013517791-41b05179856d?auto=format&fit=crop&q=80&w=800",
-    "https://images.unsplash.com/photo-1544427920-c49ccfb85579?auto=format&fit=crop&q=80&w=800",
-    "https://images.unsplash.com/photo-1519817650390-64a93db51149?auto=format&fit=crop&q=80&w=800"
-  ],
   schedule: {
     note: "אנו מקפידים על עמידה בזמנים כדי לאפשר לכם לשלב את התפילה והשיעורים בלוח הזמנים היומי שלכם ללא עיכובים.",
     prayers: [
@@ -151,25 +142,25 @@ export const SYNAGOGUE_INFO = {
       name: "הרב אייל מרום",
       role: "רב הקהילה",
       bio: "מנהיג את הקהילה מיום היווסדה, רואה בקירוב לבבות ובבניית קהילה מגובשת שליחות עליונה.",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=300"
+      mediaSlot: "team_rabbi"
     },
     {
       name: "ר' יעקב בוזגלו שליט\"א",
       role: "מגיד שיעור שבת",
       bio: "מעביר שיעור תורה מרתק בכל שבת לאחר תפילת שחרית. שיעוריו ידועים בעומקם ובנגישותם.",
-      image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=300"
+      mediaSlot: "team_lecturer"
     },
     {
       name: "הרב ניב אלמלם",
       role: "רב הצעירים",
       bio: "מוביל את פעילות הצעירים בשכונה, מנגיש את עומק התורה לדור החדש בשפה פשוטה ואוהבת.",
-      image: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&q=80&w=300"
+      mediaSlot: "team_youth_rabbi"
     },
     {
       name: "רביבו",
       role: "גבאי בית הכנסת",
       bio: "אחראי על ניהול קבוצת הוואטסאפ הקהילתית, הניהול השוטף, זמני התפילות ורווחת המתפללים. תמיד כאן לכל שאלה ובקשה.",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=300"
+      mediaSlot: "team_gabbai"
     }
   ]
 };

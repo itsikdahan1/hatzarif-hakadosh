@@ -17,18 +17,18 @@ import { TikTokIcon } from "@/components/TikTokIcon";
 
 export function Footer() {
   return (
-    <footer id="contact" className="bg-charcoal text-white pt-32 pb-16 border-t border-white/5">
+    <footer id="contact" className="bg-charcoal text-white pt-16 md:pt-32 pb-10 md:pb-16 border-t border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-16 mb-24">
+        <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-10 md:gap-16 mb-12 md:mb-24">
           {/* Column 1: Brand & Spirit */}
           <div className="lg:col-span-1">
-            <div className="flex items-center gap-3 mb-8">
+            <div className="flex items-center gap-3 mb-6 md:mb-8">
               <div className="w-12 h-12 bg-gold-warm rounded-xl flex items-center justify-center text-charcoal shadow-inner">
                 <BookOpen size={24} />
               </div>
-              <span className="text-2xl font-serif font-bold tracking-tight">{SYNAGOGUE_INFO.name}</span>
+              <span className="text-xl md:text-2xl font-serif font-bold tracking-tight">{SYNAGOGUE_INFO.name}</span>
             </div>
-            <p className="text-white/40 leading-relaxed mb-8 text-sm italic font-serif">
+            <p className="text-white/40 leading-relaxed mb-6 md:mb-8 text-sm italic font-serif">
               &quot;{SYNAGOGUE_INFO.subTagline}&quot;
             </p>
             <div className="flex gap-4">
@@ -51,7 +51,7 @@ export function Footer() {
 
           {/* Column 2: Navigation */}
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-gold-warm mb-8">ניווט מהיר</h3>
+            <h3 className="text-xs font-bold uppercase tracking-[0.15em] md:tracking-[0.3em] text-gold-warm mb-6 md:mb-8">ניווט מהיר</h3>
             <ul className="space-y-4">
               {[
                 { label: "דף הבית", href: '/' },
@@ -75,7 +75,7 @@ export function Footer() {
 
           {/* Column 3: Contact */}
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-gold-warm mb-8">יצירת קשר</h3>
+            <h3 className="text-xs font-bold uppercase tracking-[0.15em] md:tracking-[0.3em] text-gold-warm mb-6 md:mb-8">יצירת קשר</h3>
             <ul className="space-y-6">
               <li className="flex gap-4">
                 <Phone size={18} className="text-gold-warm shrink-0" />
@@ -96,7 +96,7 @@ export function Footer() {
 
           {/* Column 4: Location */}
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-gold-warm mb-8">כתובתנו</h3>
+            <h3 className="text-xs font-bold uppercase tracking-[0.15em] md:tracking-[0.3em] text-gold-warm mb-6 md:mb-8">כתובתנו</h3>
             <p className="text-sm text-white/50 leading-relaxed mb-8">
               {SYNAGOGUE_INFO.location}
             </p>
@@ -119,7 +119,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 text-[10px] text-white/20 font-bold uppercase tracking-[0.4em]">
+        <div className="pt-8 md:pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8 text-[11px] md:text-[10px] text-white/20 font-bold uppercase tracking-[0.15em] md:tracking-[0.4em]">
           <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
             <p>© {new Date().getFullYear()} {SYNAGOGUE_INFO.name}. כל הזכויות שמורות.</p>
             <p className="hidden md:block">|</p>

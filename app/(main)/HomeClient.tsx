@@ -470,7 +470,7 @@ export function HomeClient() {
         )}
 
         {/* סקציה: ניווט מהיר לתכני הקהילה */}
-        <section className="py-24 bg-stone-100">
+        <section className="py-12 md:py-24 bg-stone-100">
           <div className="max-w-7xl mx-auto px-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               <motion.div whileHover={{ y: -10 }}>
@@ -521,11 +521,11 @@ export function HomeClient() {
         </section>
 
         {/* סקציה: לוח זמנים */}
-        <section id="schedule" className="py-24 bg-background border-t border-charcoal/5">
-          <div className="max-w-5xl mx-auto px-4 text-center mb-24">
-            <h2 className="text-3xl md:text-5xl font-bold mb-12">לוח זמנים ושיעורים</h2>
+        <section id="schedule" className="py-12 md:py-24 bg-background border-t border-charcoal/5">
+          <div className="max-w-5xl mx-auto px-4 text-center mb-12 md:mb-24">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-8 md:mb-12">לוח זמנים ושיעורים</h2>
 
-            <div className="mb-10 md:mb-20 bg-white rounded-[2rem] md:rounded-[3rem] shadow-xl overflow-hidden border border-charcoal/5 text-right">
+            <div className="mb-8 md:mb-20 bg-white rounded-2xl md:rounded-[3rem] shadow-xl overflow-hidden border border-charcoal/5 text-right">
               <div className="bg-gold-warm text-white p-6 sm:p-8">
                 <h3 className="text-2xl font-bold">עדכונים שבועיים</h3>
               </div>
@@ -551,7 +551,7 @@ export function HomeClient() {
               </div>
             </div>
 
-            <div className="bg-white rounded-[2rem] md:rounded-[3rem] shadow-xl overflow-hidden border border-charcoal/5">
+            <div className="bg-white rounded-2xl md:rounded-[3rem] shadow-xl overflow-hidden border border-charcoal/5">
               <div className="p-5 sm:p-8 md:p-16">
                 <div className="space-y-8 sm:space-y-10">
                   {SYNAGOGUE_INFO.schedule.prayers.map((prayer: any, idx: number) => (
@@ -566,23 +566,20 @@ export function HomeClient() {
                   ))}
                 </div>
               </div>
-              <div className="bg-charcoal text-white p-6 text-sm font-bold uppercase tracking-[0.2em] opacity-80">
-                {SYNAGOGUE_INFO.schedule.note}
-              </div>
             </div>
           </div>
         </section>
 
         {/* סקציה: תרומה */}
-        <section className="py-20 bg-gradient-to-b from-charcoal/[0.03] to-background border-t border-charcoal/5">
+        <section className="py-12 md:py-20 bg-gradient-to-b from-charcoal/[0.03] to-background border-t border-charcoal/5">
           <div className="max-w-2xl mx-auto px-4 text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-2xl md:text-3xl font-bold mb-6 text-charcoal">רוצה להיות שותף בפעילות?</h3>
-              <p className="text-charcoal/50 mb-10 leading-relaxed">כל תרומה מחזקת את הקהילה, את השיעורים ואת הפעילות השבועית בצריף הקדוש.</p>
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 md:mb-6 text-charcoal">רוצה להיות שותף בפעילות?</h3>
+              <p className="text-charcoal/50 mb-6 md:mb-10 leading-relaxed">כל תרומה מחזקת את הקהילה, את השיעורים ואת הפעילות השבועית בצריף הקדוש.</p>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="inline-block">
                 <Link
                   href="/donation"

@@ -182,16 +182,16 @@ export function NavBar() {
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Link 
                   href="/donation"
-                  className="hidden md:flex bg-charcoal text-white px-6 py-3 rounded-full font-bold text-sm items-center gap-2 hover:bg-gold-warm transition-all shadow-lg"
+                  className="hidden sm:flex bg-charcoal text-white px-4 lg:px-6 py-3 rounded-full font-bold text-sm items-center gap-2 hover:bg-gold-warm transition-all shadow-lg"
                 >
-                  <Coins size={18} /> תרומה לבית הכנסת
+                  <Coins size={18} /> <span className="hidden md:inline">תרומה לבית הכנסת</span><span className="md:hidden">תרומה</span>
                 </Link>
               </motion.div>
               <motion.a 
                 href={SYNAGOGUE_INFO.updatesWhatsApp}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="hidden sm:flex bg-gold-warm/10 text-gold-warm border border-gold-warm/20 px-6 py-3 rounded-full font-bold text-sm items-center gap-2 hover:bg-gold-warm hover:text-white transition-all shadow-sm"
+                className="hidden lg:flex bg-gold-warm/10 text-gold-warm border border-gold-warm/20 px-6 py-3 rounded-full font-bold text-sm items-center gap-2 hover:bg-gold-warm hover:text-white transition-all shadow-sm"
               >
                 <MessageCircle size={18} /> קבלת עדכונים
               </motion.a>

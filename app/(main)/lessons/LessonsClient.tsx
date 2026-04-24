@@ -31,7 +31,7 @@ export function LessonsClient() {
             <ArrowRight size={20} className="rotate-180" /> חזרה לדף הבית
           </Link>
           <div className="text-center mb-20">
-            <h2 className="text-5xl md:text-7xl font-bold text-charcoal mb-6">שיעורי תורה</h2>
+            <h2 className="text-3xl sm:text-5xl md:text-7xl font-bold text-charcoal mb-6">שיעורי תורה</h2>
             <div className="w-24 h-2 bg-gold-warm mx-auto mb-8 rounded-full" />
             <p className="text-xl text-charcoal/60 max-w-2xl mx-auto">
               מגוון רחב של שיעורים לאורך כל השבוע, לכל הרמות ובכל הנושאים.
@@ -46,7 +46,7 @@ export function LessonsClient() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.1 }}
-                  className="bg-alabaster p-10 rounded-[3rem] border border-charcoal/5 hover:border-gold-warm/30 transition-all group shadow-sm hover:shadow-xl"
+                  className="bg-alabaster p-6 sm:p-8 md:p-10 rounded-[2rem] md:rounded-[3rem] border border-charcoal/5 hover:border-gold-warm/30 transition-all group shadow-sm hover:shadow-xl"
                 >
                   <div className="w-16 h-16 bg-gold-warm/10 rounded-2xl flex items-center justify-center text-gold-warm group-hover:bg-gold-warm group-hover:text-white transition-all mb-8">
                     <BookOpen size={32} />
@@ -69,7 +69,7 @@ export function LessonsClient() {
                 </motion.div>
               ))
             ) : (
-              <div className="col-span-full text-center py-32 bg-alabaster rounded-[3rem] border border-dashed border-charcoal/10">
+              <div className="col-span-full text-center py-16 sm:py-32 bg-alabaster rounded-[2rem] md:rounded-[3rem] border border-dashed border-charcoal/10">
                 <BookOpen className="mx-auto text-charcoal/10 mb-4" size={64} />
                 <p className="text-charcoal/40 font-serif italic text-xl">בקרוב יעודכנו כאן זמני השיעורים החדשים...</p>
               </div>
