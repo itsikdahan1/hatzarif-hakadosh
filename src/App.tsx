@@ -1461,14 +1461,14 @@ export default function App() {
                   <Phone size={18} className="text-gold-warm shrink-0" />
                   <div>
                     <span className="block text-xs text-white/30 uppercase tracking-widest mb-1">גבאי — {SYNAGOGUE_INFO.contact.gabbaiName}</span>
-                    <a href={`tel:${SYNAGOGUE_INFO.contact.gabbai}`} className="text-sm font-bold hover:text-gold-warm transition-colors">{SYNAGOGUE_INFO.contact.gabbai}</a>
+                    <a href={`tel:+${SYNAGOGUE_INFO.contact.gabbai}`} className="text-sm font-bold hover:text-gold-warm transition-colors">{SYNAGOGUE_INFO.contact.gabbaiDisplay}</a>
                   </div>
                 </li>
                 <li className="flex gap-4">
                   <Phone size={18} className="text-gold-warm shrink-0" />
                   <div>
                     <span className="block text-xs text-white/30 uppercase tracking-widest mb-1">הרב אייל מרום</span>
-                    <a href={`tel:${SYNAGOGUE_INFO.contact.rabbi}`} className="text-sm font-bold hover:text-gold-warm transition-colors">{SYNAGOGUE_INFO.contact.rabbi}</a>
+                    <a href={`tel:+${SYNAGOGUE_INFO.contact.rabbi}`} className="text-sm font-bold hover:text-gold-warm transition-colors">{SYNAGOGUE_INFO.contact.rabbiDisplay}</a>
                   </div>
                 </li>
                 <li className="flex gap-4">

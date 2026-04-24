@@ -6,7 +6,7 @@ import { motion } from "motion/react";
 import { Clock, BookOpen, MessageCircle, ArrowRight } from "lucide-react";
 import { db, handleFirestoreError, OperationType } from "@/lib/firebase";
 import { collection, onSnapshot, query } from "firebase/firestore";
-import { Footer } from "@/components/Footer";
+
 
 export function LessonsClient() {
   const [lessons, setLessons] = useState<any[]>([]);
@@ -77,7 +77,6 @@ export function LessonsClient() {
           </div>
         </div>
       </motion.div>
-      <Footer />
     </>
   );
 }

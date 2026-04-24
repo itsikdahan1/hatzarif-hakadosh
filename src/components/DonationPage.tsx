@@ -642,13 +642,13 @@ export function DonationPage({
                   <div className="bg-alabaster p-8 rounded-3xl border border-charcoal/5 space-y-4 text-center">
                     <p className="text-sm font-bold text-charcoal/40 uppercase tracking-widest leading-none text-center w-full">מספר טלפון להעברה</p>
                     <div className="text-4xl font-black text-[#002e5d] font-sans tracking-tight">
-                      {SYNAGOGUE_INFO.contact.gabbai}
+                      {SYNAGOGUE_INFO.contact.gabbaiDisplay}
                     </div>
                     <Button 
                       variant="outline"
                       className="rounded-full px-6 border-[#002e5d]/20 text-[#002e5d] mx-auto flex"
                       onClick={() => {
-                        navigator.clipboard.writeText(SYNAGOGUE_INFO.contact.gabbai);
+                        navigator.clipboard.writeText(SYNAGOGUE_INFO.contact.gabbaiDisplay);
                       }}
                     >
                       העתק מספר טלפון

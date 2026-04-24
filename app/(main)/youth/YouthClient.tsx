@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import { Heart, Coffee, ArrowRight, ArrowLeft, MessageCircle, User } from "lucide-react";
 import { SYNAGOGUE_INFO } from "@/lib/constants";
-import { Footer } from "@/components/Footer";
+
 import { useSiteMedia } from "@/src/hooks/useSiteMedia";
 
 export function YouthClient() {
@@ -122,7 +122,6 @@ export function YouthClient() {
           </div>
         </div>
       </motion.div>
-      <Footer />
     </>
   );
 }

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import { Heart, Users, Briefcase, ArrowRight, ArrowLeft, MessageCircle } from "lucide-react";
 import { SYNAGOGUE_INFO } from "@/lib/constants";
-import { Footer } from "@/components/Footer";
+
 import { db, handleFirestoreError, OperationType } from "@/src/firebase";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 
@@ -114,7 +114,6 @@ export function BusinessClient() {
           </div>
         </div>
       </motion.div>
-      <Footer />
     </>
   );
 }

@@ -4,7 +4,6 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import { ArrowRight, MapPin, History, Target, Users, Heart, Quote, ShieldCheck, Stars, Sparkles } from "lucide-react";
 import { SYNAGOGUE_INFO } from "@/lib/constants";
-import { Footer } from "@/components/Footer";
 import { useSiteMedia } from "@/src/hooks/useSiteMedia";
 import { User } from "lucide-react";
 
@@ -135,7 +134,6 @@ export function AboutClient() {
           </div>
         </div>
       </motion.div>
-      <Footer />
     </>
   );
 }

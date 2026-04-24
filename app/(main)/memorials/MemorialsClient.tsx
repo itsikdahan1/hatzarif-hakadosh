@@ -6,7 +6,7 @@ import { motion } from "motion/react";
 import { Heart, Users, ArrowRight, Stars, Calendar } from "lucide-react";
 import { db, handleFirestoreError, OperationType } from "@/lib/firebase";
 import { collection, onSnapshot, query } from "firebase/firestore";
-import { Footer } from "@/components/Footer";
+
 
 export function MemorialsClient() {
   const [dedications, setDedications] = useState<any[]>([]);
@@ -108,7 +108,6 @@ export function MemorialsClient() {
           </div>
         </div>
       </motion.div>
-      <Footer />
     </>
   );
 }

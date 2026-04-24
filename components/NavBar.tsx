@@ -9,7 +9,7 @@ import {
   Coins,
   MessageCircle,
   Accessibility,
-  HandCoins,
+  Heart,
   Youtube,
   Instagram,
   SunMoon,
@@ -133,7 +133,7 @@ export function NavBar() {
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="text-right py-4 text-gold-warm mt-4 flex items-center justify-end gap-3"
               >
-                <HandCoins size={28} /> תמיכה ושותפות
+                <Heart size={28} /> תמיכה ושותפות
               </Link>
             </div>
 

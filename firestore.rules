@@ -47,6 +47,11 @@
 //   - date: string (required)
 //   - description: string (optional)
 //
+// Collection: site_media
+// Fields:
+//   - url: string (required, can be empty)
+//   - updatedAt: string (required, ISO date)
+//
 // ===============================================================
 
 rules_version = '2';
@@ -156,13 +161,20 @@ service cloud.firestore {
              data.value is string && data.value.size() > 0 && data.value.size() < 100;
     }
 
+    function isValidSiteMedia(data) {
+      return data.keys().hasAll(['url', 'updatedAt']) &&
+             data.url is string && data.url.size() < 2000 &&
+             data.updatedAt is string && data.updatedAt.size() > 0 && data.updatedAt.size() < 50;
+    }
+
     // ===============================================================
     // Rules
     // ===============================================================
 
     match /prayers/{prayerId} {
       allow read: if true;
-      allow write: if isAdmin() && isValidPrayer(incoming());
+      allow create, update: if isAdmin() && isValidPrayer(incoming());
+      allow delete: if isAdmin();
     }
 
     match /businesses/{businessId} {
@@ -175,39 +187,45 @@ service cloud.firestore {
     match /users/{userId} {
       allow get: if isOwner(userId) || isAdmin();
       allow list: if isAdmin();
-      allow create: if isAuthenticated() && incoming().role == 'user' && isOwner(userId);
+      allow create: if isAdmin() || (isAuthenticated() && incoming().role == 'user' && isOwner(userId));
       allow update: if isAdmin() || (isOwner(userId) && incoming().role == existing().role);
       allow delete: if isAdmin();
     }
 
     match /lessons/{lessonId} {
       allow read: if true;
-      allow write: if isAdmin() && isValidLesson(incoming());
+      allow create, update: if isAdmin() && isValidLesson(incoming());
+      allow delete: if isAdmin();
     }
 
     match /dedications/{dedicationId} {
       allow read: if true;
-      allow write: if isAdmin() && isValidDedication(incoming());
+      allow create, update: if isAdmin() && isValidDedication(incoming());
+      allow delete: if isAdmin();
     }
 
     match /memorials/{memorialId} {
       allow read: if true;
-      allow write: if isAdmin() && isValidMemorial(incoming());
+      allow create, update: if isAdmin() && isValidMemorial(incoming());
+      allow delete: if isAdmin();
     }
 
     match /campaigns/{campaignId} {
       allow read: if true;
-      allow write: if isAdmin() && isValidCampaign(incoming());
+      allow create, update: if isAdmin() && isValidCampaign(incoming());
+      allow delete: if isAdmin();
     }
 
     match /announcements/{announcementId} {
       allow read: if true;
-      allow write: if isAdmin() && isValidAnnouncement(incoming());
+      allow create, update: if isAdmin() && isValidAnnouncement(incoming());
+      allow delete: if isAdmin();
     }
 
     match /annual_circle/{circleId} {
       allow read: if true;
-      allow write: if isAdmin() && isValidAnnualCircle(incoming());
+      allow create, update: if isAdmin() && isValidAnnualCircle(incoming());
+      allow delete: if isAdmin();
     }
 
     match /custom_donations/{donationId} {
@@ -218,7 +236,14 @@ service cloud.firestore {
 
     match /impact_stats/{statId} {
       allow read: if true;
-      allow write: if isAdmin() && isValidImpactStat(incoming());
+      allow create, update: if isAdmin() && isValidImpactStat(incoming());
+      allow delete: if isAdmin();
+    }
+
+    match /site_media/{mediaId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidSiteMedia(incoming());
+      allow delete: if isAdmin();
     }
   }
 }

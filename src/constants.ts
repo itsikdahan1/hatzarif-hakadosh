@@ -45,14 +45,14 @@ export const SYNAGOGUE_INFO = {
           category: "נדל\"ן ומדיה",
           description: "ייעוץ וליווי בנדל\"ן, וכן עריכת סרטוני וידאו מקצועיים עם AI. חבר קהילה פעיל ומסור.",
           image: "",
-          whatsapp: "050-0000000"
+          whatsapp: "972528782558"
         },
         {
           name: "יצחק דהן — בניית אתרים",
           category: "טכנולוגיה",
           description: "בניית אתרים ומערכות דיגיטליות מקצועיות. חבר הקהילה שבנה את האתר הזה.",
           image: "",
-          whatsapp: "055-9296626"
+          whatsapp: "972559296626"
         }
       ]
     },
@@ -108,9 +108,11 @@ export const SYNAGOGUE_INFO = {
     ]
   },
   contact: {
-    gabbai: "053-755-3665",
+    gabbai: "972537553665",
+    gabbaiDisplay: "053-755-3665",
     gabbaiName: "רביבו",
-    rabbi: "050-979-2117",
+    rabbi: "972509792117",
+    rabbiDisplay: "050-979-2117",
     email: "office@hatzarif.org.il",
     waze: "https://waze.com/ul?q=רחוב התזמורת 51 ראשון לציון",
     googleMaps: "https://maps.google.com/?q=רחוב התזמורת 51 ראשון לציון",
