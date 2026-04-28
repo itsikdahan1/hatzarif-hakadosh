@@ -27,7 +27,7 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import { SYNAGOGUE_INFO } from "../constants";
+import { useSiteSettings } from "../hooks/useSiteSettings";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { RecentDonations } from "./RecentDonations";
@@ -118,6 +118,7 @@ export function DonationPage({
   campaigns?: any[],
   impactStats?: any[]
 }) {
+  const { settings: SYNAGOGUE_INFO } = useSiteSettings();
   const siteMedia = useSiteMedia();
   const [success, setSuccess] = useState(false);
   const [checkoutStep, setCheckoutStep] = useState<"options" | "details" | "payment" | "achisomoch" | "bit">("options");

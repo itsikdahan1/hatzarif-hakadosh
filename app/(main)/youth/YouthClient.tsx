@@ -3,12 +3,13 @@
 import Link from "next/link";
 import { motion } from "motion/react";
 import { Heart, Coffee, ArrowRight, ArrowLeft, MessageCircle, User } from "lucide-react";
-import { SYNAGOGUE_INFO } from "@/lib/constants";
+import { useSiteSettings } from "@/src/hooks/useSiteSettings";
 
 import { useSiteMedia } from "@/src/hooks/useSiteMedia";
 
 export function YouthClient() {
   const media = useSiteMedia();
+  const { settings: SYNAGOGUE_INFO } = useSiteSettings();
   return (
     <>
       <motion.div 

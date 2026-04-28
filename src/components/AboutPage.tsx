@@ -13,9 +13,10 @@ import {
   Stars,
   Sparkles
 } from "lucide-react";
-import { SYNAGOGUE_INFO } from "../constants";
+import { useSiteSettings } from "../hooks/useSiteSettings";
 
 export function AboutPage({ onBack }: { onBack: () => void }) {
+  const { settings: SYNAGOGUE_INFO } = useSiteSettings();
   return (
     <motion.div 
       initial={{ opacity: 0 }}

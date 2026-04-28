@@ -37,15 +37,17 @@ import {
   Loader2
 } from 'lucide-react';
 import { MEDIA_SLOTS, saveSiteMedia } from '../hooks/useSiteMedia';
+import { useSiteSettings, saveSiteSettings, seedSiteSettings } from '../hooks/useSiteSettings';
 import { motion, AnimatePresence } from 'motion/react';
 import { signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
+import { SiteSettingsTab } from './SiteSettingsTab';
 
 interface AdminPanelProps {
   onClose: () => void;
 }
 
 export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
-  const [activeTab, setActiveTab] = useState<'prayers' | 'businesses' | 'lessons' | 'dedications' | 'announcements' | 'campaigns' | 'impact' | 'gabbais' | 'annual_circle' | 'media'>('prayers');
+  const [activeTab, setActiveTab] = useState<'prayers' | 'businesses' | 'lessons' | 'dedications' | 'announcements' | 'campaigns' | 'impact' | 'gabbais' | 'annual_circle' | 'media' | 'site_settings'>('prayers');
   const [prayers, setPrayers] = useState<any[]>([]);
   const [businesses, setBusinesses] = useState<any[]>([]);
   const [lessons, setLessons] = useState<any[]>([]);
@@ -76,6 +78,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
   const [mediaEdits, setMediaEdits] = useState<Record<string, string>>({});
   const [savingMedia, setSavingMedia] = useState<string | null>(null);
   const [newBusiness, setNewBusiness] = useState({ name: '', category: '', description: '', image: '', whatsapp: '', approved: true });
+  const { settings: siteSettings, isLive: isFirestoreConnected, isLoading: isSettingsLoading } = useSiteSettings();
+  const [isSeeding, setIsSeeding] = useState(false);
+  const stripeConfigured = !!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
 
   useEffect(() => {
     const unsubscribeAuth = auth.onAuthStateChanged(async (user) => {
@@ -427,6 +432,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
     { id: 'annual_circle', label: 'מעגל השנה', icon: Calendar },
     { id: 'gabbais', label: 'ניהול גבאים', icon: Users },
     { id: 'announcements', label: 'הודעות מתפרצות', icon: Bell },
+    { id: 'site_settings', label: 'הגדרות אתר', icon: Icons.Settings },
   ];
 
   return (
@@ -436,7 +442,34 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
           <h1 className="text-xl lg:text-3xl font-serif font-bold text-charcoal">ניהול הצריף הקדוש</h1>
           <p className="text-charcoal/60 text-sm hidden sm:block">שלום, {auth.currentUser?.displayName}</p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex items-center gap-3">
+          {/* Connection Status Indicators */}
+          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-alabaster rounded-full border border-charcoal/5">
+            <div className="flex items-center gap-1.5" title={isFirestoreConnected ? 'Firestore מחובר - נתונים חיים' : 'Firestore לא מחובר - נתוני ברירת מחדל'}>
+              <div className={`w-2 h-2 rounded-full ${isFirestoreConnected ? 'bg-green-500 animate-pulse' : 'bg-red-400'}`} />
+              <span className="text-[10px] font-bold text-charcoal/40">DB</span>
+            </div>
+            <div className="w-px h-3 bg-charcoal/10" />
+            <div className="flex items-center gap-1.5" title={stripeConfigured ? 'Stripe מוגדר' : 'Stripe לא מוגדר - סליקה לא תעבוד'}>
+              <div className={`w-2 h-2 rounded-full ${stripeConfigured ? 'bg-green-500' : 'bg-yellow-400'}`} />
+              <span className="text-[10px] font-bold text-charcoal/40">סליקה</span>
+            </div>
+          </div>
+          {!isFirestoreConnected && !isSettingsLoading && (
+            <button
+              onClick={async () => {
+                setIsSeeding(true);
+                try { await seedSiteSettings(); } catch (e) { console.error('Seed failed', e); }
+                setIsSeeding(false);
+              }}
+              disabled={isSeeding}
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-gold-warm/10 text-gold-warm border border-gold-warm/20 rounded-full text-xs font-bold hover:bg-gold-warm hover:text-white transition-all disabled:opacity-50"
+              title="העלאת נתוני ברירת מחדל ל-Firestore"
+            >
+              {isSeeding ? <Loader2 size={14} className="animate-spin" /> : <Icons.Upload size={14} />}
+              אתחול נתונים
+            </button>
+          )}
           <button 
             onClick={handleLogout}
             className="p-2.5 rounded-full bg-alabaster border border-charcoal/10 text-charcoal/60 hover:text-red-500 transition-colors"
@@ -1352,6 +1385,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
               </div>
             </div>
           )}
+
+          {activeTab === 'site_settings' && <SiteSettingsTab settings={siteSettings} isLive={isFirestoreConnected} />}
           </div>
         </main>
       </div>

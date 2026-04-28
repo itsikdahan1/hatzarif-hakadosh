@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "motion/react";
 import { ArrowRight, MapPin, History, Target, Users, Heart, Quote, ShieldCheck, Stars, Sparkles } from "lucide-react";
-import { SYNAGOGUE_INFO } from "@/lib/constants";
+import { useSiteSettings } from "@/src/hooks/useSiteSettings";
 import { useSiteMedia } from "@/src/hooks/useSiteMedia";
 import { User } from "lucide-react";
 
@@ -11,6 +11,7 @@ import { User } from "lucide-react";
 
 export function AboutClient() {
   const media = useSiteMedia();
+  const { settings: SYNAGOGUE_INFO } = useSiteSettings();
   return (
     <>
       <motion.div 

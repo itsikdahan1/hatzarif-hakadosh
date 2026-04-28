@@ -15,7 +15,7 @@ import {
   SunMoon,
 } from "lucide-react";
 import * as Icons from "lucide-react";
-import { SYNAGOGUE_INFO } from "@/lib/constants";
+import { useSiteSettings } from "@/src/hooks/useSiteSettings";
 import { Separator } from "@/components/ui/separator";
 import { TikTokIcon } from "@/components/TikTokIcon";
 import { useAccessibility } from "@/components/AppProviders";
@@ -72,6 +72,7 @@ export function NavBar() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAccessMenuOpen, setIsAccessMenuOpen] = useState(false);
+  const { settings: SYNAGOGUE_INFO } = useSiteSettings();
 
   const navItems = [
     { href: "/", label: "זמנים" },

@@ -4,12 +4,13 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { Heart, Users, Briefcase, ArrowRight, ArrowLeft, MessageCircle } from "lucide-react";
-import { SYNAGOGUE_INFO } from "@/lib/constants";
+import { useSiteSettings } from "@/src/hooks/useSiteSettings";
 
 import { db, handleFirestoreError, OperationType } from "@/src/firebase";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 
 export function BusinessClient() {
+  const { settings: SYNAGOGUE_INFO } = useSiteSettings();
   const [businesses, setBusinesses] = useState<any[]>([]);
 
   useEffect(() => {

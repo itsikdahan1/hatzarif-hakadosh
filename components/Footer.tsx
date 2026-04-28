@@ -12,10 +12,11 @@ import {
   ExternalLink,
   Settings,
 } from "lucide-react";
-import { SYNAGOGUE_INFO } from "@/lib/constants";
+import { useSiteSettings } from "@/src/hooks/useSiteSettings";
 import { TikTokIcon } from "@/components/TikTokIcon";
 
 export function Footer() {
+  const { settings: SYNAGOGUE_INFO } = useSiteSettings();
   return (
     <footer id="contact" className="bg-charcoal text-white pt-16 md:pt-32 pb-10 md:pb-16 border-t border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

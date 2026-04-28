@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { SiteSettingsContext, useSiteSettingsLoader } from "@/src/hooks/useSiteSettings";
 
 interface AccessibilityContextType {
   fontSize: number;
@@ -60,9 +61,13 @@ export function AppProviders({ children }: { children: ReactNode }) {
     return () => { document.head.removeChild(style); };
   }, []);
 
+  const siteSettingsValue = useSiteSettingsLoader();
+
   return (
-    <AccessibilityContext.Provider value={{ fontSize, setFontSize, highContrast, setHighContrast }}>
-      {children}
-    </AccessibilityContext.Provider>
+    <SiteSettingsContext.Provider value={siteSettingsValue}>
+      <AccessibilityContext.Provider value={{ fontSize, setFontSize, highContrast, setHighContrast }}>
+        {children}
+      </AccessibilityContext.Provider>
+    </SiteSettingsContext.Provider>
   );
 }

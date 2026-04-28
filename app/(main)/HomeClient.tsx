@@ -25,7 +25,7 @@ import {
   Droplets,
 } from "lucide-react";
 import * as Icons from "lucide-react";
-import { SYNAGOGUE_INFO } from "@/lib/constants";
+import { useSiteSettings } from "@/src/hooks/useSiteSettings";
 
 import { TikTokIcon } from "@/components/TikTokIcon";
 import { db, handleFirestoreError, OperationType } from "@/lib/firebase";
@@ -122,14 +122,15 @@ function GlobalCampaignProgress({ campaigns }: { campaigns: any[] }) {
 }
 
 function DynamicScheduleWidget({ prayers }: { prayers: any[] }) {
-  const [nextEvent, setNextEvent] = useState(SYNAGOGUE_INFO.schedule.prayers[0]);
+  const { settings } = useSiteSettings();
+  const [nextEvent, setNextEvent] = useState(settings.schedule.prayers[0]);
 
   useEffect(() => {
     const updateNextEvent = () => {
       const now = new Date();
       const currentMinutes = now.getHours() * 60 + now.getMinutes();
       
-      const sourcePrayers = prayers.length > 0 ? prayers : SYNAGOGUE_INFO.schedule.prayers;
+      const sourcePrayers = prayers.length > 0 ? prayers : settings.schedule.prayers;
       
       const events = sourcePrayers.map((p: any) => {
         const [hours, minutes] = p.time.split(':').map(Number);
@@ -192,6 +193,7 @@ function HeroBackground() {
 }
 
 export function HomeClient() {
+  const { settings: SYNAGOGUE_INFO } = useSiteSettings();
   const [prayers, setPrayers] = useState<any[]>([]);
   const [lessons, setLessons] = useState<any[]>([]);
   const [dedications, setDedications] = useState<any[]>([]);
@@ -553,7 +555,7 @@ export function HomeClient() {
             <div className="bg-white rounded-2xl md:rounded-[3rem] shadow-xl overflow-hidden border border-charcoal/5">
               <div className="p-5 sm:p-8 md:p-16">
                 <div className="space-y-8 sm:space-y-10">
-                  {SYNAGOGUE_INFO.schedule.prayers.map((prayer: any, idx: number) => (
+                  {(prayers.length > 0 ? prayers : SYNAGOGUE_INFO.schedule.prayers).map((prayer: any, idx: number) => (
                     <div key={idx} className="flex justify-between items-center group">
                       <div className="text-right">
                         <span className="text-base sm:text-xl font-bold group-hover:text-gold-warm transition-colors block">{prayer.name}</span>
