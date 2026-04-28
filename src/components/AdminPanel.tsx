@@ -49,7 +49,18 @@ function ImpactStatCard({ stat }: { stat: any }) {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  const ICON_OPTIONS = ['Heart', 'BookOpen', 'Users', 'Coffee', 'Home', 'Award', 'Soup', 'HandCoins', 'Star', 'Flame'];
+  const ICON_OPTIONS: Record<string, string> = {
+    Heart: 'לב',
+    BookOpen: 'ספר',
+    Users: 'אנשים',
+    Coffee: 'כוס / ארוחה',
+    Home: 'בית',
+    Award: 'פרס',
+    Soup: 'מרק / אוכל',
+    HandCoins: 'תרומה',
+    Star: 'כוכב',
+    Flame: 'להבה',
+  };
 
   const handleSave = async () => {
     setSaving(true);
@@ -88,7 +99,7 @@ function ImpactStatCard({ stat }: { stat: any }) {
         onChange={e => setIcon(e.target.value)}
         className="w-full px-4 py-2.5 rounded-xl border border-charcoal/10 text-sm focus:ring-2 focus:ring-gold-warm outline-none bg-white"
       >
-        {ICON_OPTIONS.map(o => <option key={o} value={o}>{o}</option>)}
+        {Object.entries(ICON_OPTIONS).map(([val, label]) => <option key={val} value={val}>{label}</option>)}
       </select>
       <button
         onClick={handleSave}
@@ -215,8 +226,16 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
     }, (error) => handleFirestoreError(error, OperationType.LIST, 'custom_donations'));
 
     const qImpactStats = query(collection(db, 'impact_stats'), orderBy('order'));
-    const unsubscribeImpactStats = onSnapshot(qImpactStats, (snapshot) => {
-      setImpactStats(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    const unsubscribeImpactStats = onSnapshot(qImpactStats, async (snapshot) => {
+      if (snapshot.empty) {
+        // Auto-seed from defaults
+        const defaults = siteSettings.philanthropy.impact ?? [];
+        for (let i = 0; i < defaults.length; i++) {
+          await addDoc(collection(db, 'impact_stats'), { ...defaults[i], order: i });
+        }
+      } else {
+        setImpactStats(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      }
     }, (error) => handleFirestoreError(error, OperationType.LIST, 'impact_stats'));
 
     const qAdmins = query(collection(db, 'users'));
@@ -868,12 +887,16 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                     onChange={e => setNewImpactStat({...newImpactStat, icon: e.target.value})}
                     className="w-full px-6 py-4 rounded-2xl border border-charcoal/10 focus:ring-2 focus:ring-gold-warm outline-none appearance-none bg-white"
                   >
-                    <option value="Heart">Heart</option>
-                    <option value="BookOpen">BookOpen</option>
-                    <option value="Users">Users</option>
-                    <option value="Coffee">Coffee</option>
-                    <option value="Home">Home</option>
-                    <option value="Award">Award</option>
+                    <option value="Heart">לב</option>
+                    <option value="BookOpen">ספר</option>
+                    <option value="Users">אנשים</option>
+                    <option value="Coffee">כוס / ארוחה</option>
+                    <option value="Home">בית</option>
+                    <option value="Award">פרס</option>
+                    <option value="Soup">מרק / אוכל</option>
+                    <option value="HandCoins">תרומה</option>
+                    <option value="Star">כוכב</option>
+                    <option value="Flame">להבה</option>
                   </select>
                 </div>
                 <button type="submit" className="bg-charcoal text-white py-4 rounded-2xl font-bold hover:bg-charcoal/90 transition-all flex items-center justify-center gap-2">
@@ -882,21 +905,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
               </form>
 
               {impactStats.length === 0 ? (
-                <div className="text-center py-16 bg-alabaster rounded-[2rem] border border-dashed border-charcoal/10">
-                  <Icons.BarChart3 size={48} className="mx-auto text-charcoal/15 mb-4" />
-                  <p className="font-bold text-charcoal/40 mb-2">אין עדיין נתוני השפעה</p>
-                  <p className="text-sm text-charcoal/30 mb-6">הוסיפו נתונים ידנית למעלה, או טענו ערכי ברירת מחדל</p>
-                  <button
-                    onClick={async () => {
-                      const defaults = siteSettings.philanthropy.impact ?? [];
-                      for (let i = 0; i < defaults.length; i++) {
-                        await addDoc(collection(db, 'impact_stats'), { ...defaults[i], order: i });
-                      }
-                    }}
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-gold-warm text-white rounded-2xl font-bold text-sm hover:bg-charcoal transition-all"
-                  >
-                    <Icons.Upload size={16} /> טען נתונים מברירת מחדל
-                  </button>
+                <div className="text-center py-12 bg-alabaster rounded-[2rem] border border-charcoal/5">
+                  <Loader2 size={24} className="mx-auto text-charcoal/20 animate-spin mb-3" />
+                  <p className="text-sm text-charcoal/40">טוען נתוני ברירת מחדל...</p>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
