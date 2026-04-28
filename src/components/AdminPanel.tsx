@@ -37,6 +37,7 @@ import {
   Loader2
 } from 'lucide-react';
 import { MEDIA_SLOTS, saveSiteMedia } from '../hooks/useSiteMedia';
+import { SYNAGOGUE_INFO } from '../constants';
 import { useSiteSettings, saveSiteSettings, seedSiteSettings } from '../hooks/useSiteSettings';
 import { motion, AnimatePresence } from 'motion/react';
 import { signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
@@ -225,16 +226,25 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
       setCustomDonations(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
     }, (error) => handleFirestoreError(error, OperationType.LIST, 'custom_donations'));
 
+    const FAKE_VALUES = new Set(['18', '45', '350', '120+', '120']);
     const qImpactStats = query(collection(db, 'impact_stats'), orderBy('order'));
     const unsubscribeImpactStats = onSnapshot(qImpactStats, async (snapshot) => {
       if (snapshot.empty) {
-        // Auto-seed from defaults
-        const defaults = siteSettings.philanthropy.impact ?? [];
+        // Auto-seed from code defaults (which have value: "0")
+        const defaults = SYNAGOGUE_INFO.philanthropy.impact ?? [];
         for (let i = 0; i < defaults.length; i++) {
           await addDoc(collection(db, 'impact_stats'), { ...defaults[i], order: i });
         }
       } else {
-        setImpactStats(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        // Auto-cleanup: if ALL values are known fakes, delete and let re-seed with 0
+        const allFake = snapshot.docs.every(d => FAKE_VALUES.has(String(d.data().value)));
+        if (allFake && snapshot.docs.length > 0) {
+          for (const d of snapshot.docs) {
+            await deleteDoc(doc(db, 'impact_stats', d.id));
+          }
+        } else {
+          setImpactStats(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        }
       }
     }, (error) => handleFirestoreError(error, OperationType.LIST, 'impact_stats'));
 
@@ -911,11 +921,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                 </div>
               ) : (
                 <>
-                  <div className="flex flex-wrap justify-center gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {impactStats.map(stat => (
-                      <div key={stat.id} className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)] min-w-[220px]">
-                        <ImpactStatCard stat={stat} />
-                      </div>
+                      <ImpactStatCard key={stat.id} stat={stat} />
                     ))}
                   </div>
                   <div className="flex justify-center pt-2">

@@ -952,7 +952,7 @@ export default function App() {
 
               <GlobalCampaignProgress campaigns={campaigns} />
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-16 px-4">
+              <div className="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto mb-16 px-4">
                 {impactStats.map((stat: any, idx: number) => {
                   const Icon = (Icons as any)[stat.icon] || Heart;
                   return (
@@ -961,7 +961,7 @@ export default function App() {
                       initial={{ opacity: 0, scale: 0.9 }}
                       whileInView={{ opacity: 1, scale: 1 }}
                       transition={{ delay: idx * 0.1 }}
-                      className="bg-white/10 backdrop-blur-md p-6 rounded-[2rem] border border-white/10 shadow-sm text-center group hover:bg-white/20 transition-all"
+                      className="w-[calc(50%-8px)] md:w-[calc(25%-12px)] min-w-[140px] bg-white/10 backdrop-blur-md p-6 rounded-[2rem] border border-white/10 shadow-sm text-center group hover:bg-white/20 transition-all"
                     >
                       <div className="w-10 h-10 bg-gold-warm/10 rounded-xl flex items-center justify-center text-gold-warm mx-auto mb-4 group-hover:bg-gold-warm group-hover:text-white transition-all">
                         <Icon size={20} />
