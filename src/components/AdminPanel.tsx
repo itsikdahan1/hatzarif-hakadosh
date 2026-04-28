@@ -910,11 +910,28 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                   <p className="text-sm text-charcoal/40">טוען נתוני ברירת מחדל...</p>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {impactStats.map(stat => (
-                    <ImpactStatCard key={stat.id} stat={stat} />
-                  ))}
-                </div>
+                <>
+                  <div className="flex flex-wrap justify-center gap-6">
+                    {impactStats.map(stat => (
+                      <div key={stat.id} className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)] min-w-[220px]">
+                        <ImpactStatCard stat={stat} />
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex justify-center pt-2">
+                    <button
+                      onClick={async () => {
+                        if (!confirm('למחוק את כל הנתונים ולאפס לברירת מחדל (0)?')) return;
+                        for (const stat of impactStats) {
+                          await deleteDoc(doc(db, 'impact_stats', stat.id));
+                        }
+                      }}
+                      className="text-xs text-charcoal/30 hover:text-red-400 transition-colors underline"
+                    >
+                      איפוס לברירת מחדל
+                    </button>
+                  </div>
+                </>
               )}
             </div>
           )}

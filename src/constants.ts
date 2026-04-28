@@ -122,10 +122,10 @@ export const SYNAGOGUE_INFO = {
   philanthropy: {
     activeCampaigns: [],
     impact: [
-      { title: "משפחות נתמכות", value: "120+", icon: "Heart" },
-      { title: "שיעורי תורה בשבוע", value: "18", icon: "BookOpen" },
-      { title: "מתנדבים פעילים", value: "45", icon: "Users" },
-      { title: "ארוחות שבת וחג", value: "350", icon: "Coffee" }
+      { title: "משפחות נתמכות", value: "0", icon: "Heart" },
+      { title: "שיעורי תורה בשבוע", value: "0", icon: "BookOpen" },
+      { title: "מתנדבים פעילים", value: "0", icon: "Users" },
+      { title: "ארוחות שבת וחג", value: "0", icon: "Coffee" }
     ],
     impactLevels: [
       { amount: 50, label: "₪50", description: "סל מזון אישי למשפחה", impact: "סיוע מיידי למשפחה אחת השבוע" },
