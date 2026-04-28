@@ -2,7 +2,7 @@
 
 import { useState, useEffect, createContext, useContext } from "react";
 import { db, handleFirestoreError, OperationType } from "../firebase";
-import { doc, onSnapshot, setDoc } from "firebase/firestore";
+import { doc, onSnapshot, setDoc, getDoc } from "firebase/firestore";
 import { SYNAGOGUE_INFO } from "../constants";
 
 // Type for the site settings (mirrors SYNAGOGUE_INFO structure)
@@ -76,6 +76,9 @@ export function useSiteSettingsLoader(): SiteSettingsContextValue {
           setFirestoreData(snapshot.data());
           setIsLive(true);
         } else {
+          // Auto-seed: document doesn't exist yet — create it from defaults
+          const plain = JSON.parse(JSON.stringify(SYNAGOGUE_INFO));
+          setDoc(docRef, plain, { merge: true }).catch(() => {});
           setIsLive(false);
         }
         setIsLoading(false);

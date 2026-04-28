@@ -881,11 +881,30 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                 </button>
               </form>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {impactStats.map(stat => (
-                  <ImpactStatCard key={stat.id} stat={stat} />
-                ))}
-              </div>
+              {impactStats.length === 0 ? (
+                <div className="text-center py-16 bg-alabaster rounded-[2rem] border border-dashed border-charcoal/10">
+                  <Icons.BarChart3 size={48} className="mx-auto text-charcoal/15 mb-4" />
+                  <p className="font-bold text-charcoal/40 mb-2">אין עדיין נתוני השפעה</p>
+                  <p className="text-sm text-charcoal/30 mb-6">הוסיפו נתונים ידנית למעלה, או טענו ערכי ברירת מחדל</p>
+                  <button
+                    onClick={async () => {
+                      const defaults = siteSettings.philanthropy.impact ?? [];
+                      for (let i = 0; i < defaults.length; i++) {
+                        await addDoc(collection(db, 'impact_stats'), { ...defaults[i], order: i });
+                      }
+                    }}
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-gold-warm text-white rounded-2xl font-bold text-sm hover:bg-charcoal transition-all"
+                  >
+                    <Icons.Upload size={16} /> טען נתונים מברירת מחדל
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {impactStats.map(stat => (
+                    <ImpactStatCard key={stat.id} stat={stat} />
+                  ))}
+                </div>
+              )}
             </div>
           )}
 
@@ -1113,7 +1132,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                 <div className="md:col-span-3"><h3 className="font-bold text-xl">הוספת עסק חדש</h3></div>
                 <div className="space-y-2">
                   <label className="text-sm font-bold text-charcoal/60">שם העסק</label>
-                  <input required value={newBusiness.name} onChange={e => setNewBusiness({...newBusiness, name: e.target.value})} placeholder="למשל: חי רוקח — נדל״ן" className="w-full px-6 py-4 rounded-2xl border border-charcoal/10 focus:ring-2 focus:ring-gold-warm outline-none" />
+                  <input required value={newBusiness.name} onChange={e => setNewBusiness({...newBusiness, name: e.target.value})} placeholder="למשל: ישראל ישראלי — נדל״ן" className="w-full px-6 py-4 rounded-2xl border border-charcoal/10 focus:ring-2 focus:ring-gold-warm outline-none" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-bold text-charcoal/60">קטגוריה</label>
