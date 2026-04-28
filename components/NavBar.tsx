@@ -132,9 +132,9 @@ export function NavBar() {
               <Link 
                 href="/donation"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="text-right py-4 text-gold-warm mt-4 flex items-center justify-end gap-3"
+                className="text-right py-4 text-gold-warm mt-4 flex items-center justify-start gap-3"
               >
-                <Heart size={28} /> תמיכה ושותפות
+                תמיכה ושותפות <Heart size={28} />
               </Link>
             </div>
 

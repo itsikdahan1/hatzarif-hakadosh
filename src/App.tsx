@@ -807,9 +807,9 @@ export default function App() {
               </button>
               <button 
                 onClick={() => { setView('donation'); setIsMobileMenuOpen(false); }}
-                className="text-right py-4 text-gold-warm mt-4 flex items-center justify-end gap-3"
+                className="text-right py-4 text-gold-warm mt-4 flex items-center justify-start gap-3"
               >
-                <HandCoins size={28} /> תמיכה ושותפות
+                תמיכה ושותפות <HandCoins size={28} />
               </button>
             </div>
 
