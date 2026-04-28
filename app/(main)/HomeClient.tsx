@@ -239,7 +239,7 @@ export function HomeClient() {
       if (!snapshot.empty) {
         setImpactStats(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
       } else {
-        setImpactStats(SYNAGOGUE_INFO.philanthropy.impact);
+        setImpactStats(SYNAGOGUE_INFO.philanthropy.impact ?? []);
       }
     }, (error) => handleFirestoreError(error, OperationType.LIST, 'impact_stats'));
 

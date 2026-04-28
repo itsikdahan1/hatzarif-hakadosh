@@ -42,6 +42,66 @@ import { motion, AnimatePresence } from 'motion/react';
 import { signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
 import { SiteSettingsTab } from './SiteSettingsTab';
 
+function ImpactStatCard({ stat }: { stat: any }) {
+  const [title, setTitle] = useState(stat.title ?? '');
+  const [value, setValue] = useState(stat.value ?? '');
+  const [icon, setIcon] = useState(stat.icon ?? 'Heart');
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  const ICON_OPTIONS = ['Heart', 'BookOpen', 'Users', 'Coffee', 'Home', 'Award', 'Soup', 'HandCoins', 'Star', 'Flame'];
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      await updateDoc(doc(db, 'impact_stats', stat.id), { title, value, icon });
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+    } catch (e) {
+      console.error(e);
+    }
+    setSaving(false);
+  };
+
+  return (
+    <div className="p-5 bg-alabaster rounded-[2rem] border border-charcoal/5 space-y-3">
+      <div className="flex justify-between items-center">
+        <span className="text-xs font-bold text-charcoal/30 uppercase tracking-widest">נתון</span>
+        <button onClick={() => deleteDoc(doc(db, 'impact_stats', stat.id))} className="text-charcoal/20 hover:text-red-500 transition-colors">
+          <Trash2 size={16} />
+        </button>
+      </div>
+      <input
+        value={value}
+        onChange={e => setValue(e.target.value)}
+        placeholder="ערך (למשל: 120+)"
+        className="w-full px-4 py-2.5 rounded-xl border border-charcoal/10 text-2xl font-bold focus:ring-2 focus:ring-gold-warm outline-none"
+      />
+      <input
+        value={title}
+        onChange={e => setTitle(e.target.value)}
+        placeholder="כותרת"
+        className="w-full px-4 py-2.5 rounded-xl border border-charcoal/10 text-sm focus:ring-2 focus:ring-gold-warm outline-none"
+      />
+      <select
+        value={icon}
+        onChange={e => setIcon(e.target.value)}
+        className="w-full px-4 py-2.5 rounded-xl border border-charcoal/10 text-sm focus:ring-2 focus:ring-gold-warm outline-none bg-white"
+      >
+        {ICON_OPTIONS.map(o => <option key={o} value={o}>{o}</option>)}
+      </select>
+      <button
+        onClick={handleSave}
+        disabled={saving}
+        className="w-full flex items-center justify-center gap-2 py-2.5 bg-charcoal text-white rounded-xl text-sm font-bold hover:bg-gold-warm transition-all disabled:opacity-50"
+      >
+        {saving ? <Loader2 size={14} className="animate-spin" /> : saved ? <CheckCircle size={14} /> : <Save size={14} />}
+        {saved ? 'נשמר!' : 'שמור'}
+      </button>
+    </div>
+  );
+}
+
 interface AdminPanelProps {
   onClose: () => void;
 }
@@ -821,17 +881,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                 </button>
               </form>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {impactStats.map(stat => (
-                  <div key={stat.id} className="p-6 bg-alabaster rounded-[2rem] border border-charcoal/5 flex justify-between items-center group">
-                    <div>
-                      <h4 className="font-bold text-xl">{stat.value}</h4>
-                      <p className="text-xs text-charcoal/40 uppercase font-bold tracking-widest">{stat.title}</p>
-                    </div>
-                    <button onClick={() => deleteDoc(doc(db, 'impact_stats', stat.id))} className="text-charcoal/10 hover:text-red-500 transition-colors">
-                      <Trash2 size={18} />
-                    </button>
-                  </div>
+                  <ImpactStatCard key={stat.id} stat={stat} />
                 ))}
               </div>
             </div>
