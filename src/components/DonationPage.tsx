@@ -18,7 +18,8 @@ import {
   Loader2,
   Wallet,
   Building2,
-  Coins
+  Coins,
+  MessageCircle
 } from "lucide-react";
 import { loadStripe } from "@stripe/stripe-js";
 import {
@@ -38,8 +39,10 @@ import { getCurrentJewishContext, JewishContext } from "../services/jewishCalend
 import { MachatzitHashekelForm, KaparotForm, UrgentCampaignForm } from "./SpecialDonations";
 import { useSiteMedia } from "../hooks/useSiteMedia";
 
-// Initialize Stripe (using public key from env)
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "pk_test_placeholder");
+// Initialize Stripe — catch CDN block (kosher internet) gracefully
+const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+  ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY).catch(() => null)
+  : Promise.resolve(null);
 
 interface DonationOption {
   id: string;
@@ -132,6 +135,7 @@ export function DonationPage({
   const [error, setError] = useState<string | null>(null);
   const [jewishContext, setJewishContext] = useState<JewishContext>(getCurrentJewishContext());
   const [activeSpecialType, setActiveSpecialType] = useState<JewishContext['specialDonationType']>(null);
+  const [stripeAvailable, setStripeAvailable] = useState<boolean | null>(null);
 
   // Auto-fill test email if dev
   useEffect(() => {
@@ -140,6 +144,7 @@ export function DonationPage({
     if (context.specialDonationType && context.specialDonationType !== 'none') {
       setActiveSpecialType(context.specialDonationType);
     }
+    stripePromise.then(stripe => setStripeAvailable(!!stripe));
   }, []);
 
   const totalAmount = useMemo(() => {
@@ -590,32 +595,60 @@ export function DonationPage({
 
               {checkoutStep === "payment" && clientSecret && (
                 <div className="bg-alabaster p-5 sm:p-8 rounded-[2rem] md:rounded-[3rem] border border-charcoal/5 shadow-inner">
-                  <div className="flex items-center gap-3 mb-8 text-charcoal/40 font-bold text-sm">
-                    <ShieldCheck size={20} className="text-green-500" />
-                    סליקה מאובטחת בתקן PCI-DSS Level 1
-                  </div>
-                  <Elements 
-                    stripe={stripePromise} 
-                    options={{ 
-                      clientSecret,
-                      appearance: {
-                        theme: 'stripe',
-                        variables: {
-                          colorPrimary: '#C5A059',
-                          colorBackground: '#ffffff',
-                          colorText: '#333333',
-                          borderRadius: '16px',
-                        }
-                      }
-                    }}
-                  >
-                    <StripeCheckoutForm 
-                      amount={totalAmount} 
-                      email={email} 
-                      onSuccess={() => handlePaymentSuccess("stripe")}
-                      onError={(err) => setError(err)}
-                    />
-                  </Elements>
+                  {stripeAvailable === false ? (
+                    <div className="text-center space-y-6 py-4">
+                      <div className="w-16 h-16 bg-gold-warm/10 rounded-2xl flex items-center justify-center mx-auto">
+                        <ShieldCheck size={32} className="text-gold-warm" />
+                      </div>
+                      <div>
+                        <p className="font-bold text-charcoal text-lg mb-2">מערכת הסליקה אינה זמינה</p>
+                        <p className="text-charcoal/50 text-sm leading-relaxed">נראה שמערכת הסינון אינה מאפשרת טעינת מערכת תשלום מקוונת.<br />ניתן לתרום ישירות דרך וואטסאפ או ביט.</p>
+                      </div>
+                      <div className="flex flex-col gap-3">
+                        <a
+                          href={`https://wa.me/${SYNAGOGUE_INFO.contact.gabbai}?text=${encodeURIComponent(`שלום, אשמח לתרום ₪${totalAmount} — ${customPurpose || selectedOption?.title || 'תרומה כללית'}`)}`}
+                          className="flex items-center justify-center gap-3 bg-[#25D366] text-white py-4 px-6 rounded-2xl font-bold text-base hover:opacity-90 transition-all"
+                        >
+                          <MessageCircle size={20} /> שליחת תרומה בוואטסאפ
+                        </a>
+                        <a
+                          href={`tel:+${SYNAGOGUE_INFO.contact.gabbai}`}
+                          className="flex items-center justify-center gap-3 bg-charcoal/5 text-charcoal py-4 px-6 rounded-2xl font-bold text-base hover:bg-charcoal/10 transition-all"
+                        >
+                          <Smartphone size={20} /> {SYNAGOGUE_INFO.contact.gabbaiDisplay}
+                        </a>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="flex items-center gap-3 mb-8 text-charcoal/40 font-bold text-sm">
+                        <ShieldCheck size={20} className="text-green-500" />
+                        סליקה מאובטחת בתקן PCI-DSS Level 1
+                      </div>
+                      <Elements 
+                        stripe={stripePromise} 
+                        options={{ 
+                          clientSecret,
+                          appearance: {
+                            theme: 'stripe',
+                            variables: {
+                              colorPrimary: '#C5A059',
+                              colorBackground: '#ffffff',
+                              colorText: '#333333',
+                              borderRadius: '16px',
+                            }
+                          }
+                        }}
+                      >
+                        <StripeCheckoutForm 
+                          amount={totalAmount} 
+                          email={email} 
+                          onSuccess={() => handlePaymentSuccess("stripe")}
+                          onError={(err) => setError(err)}
+                        />
+                      </Elements>
+                    </>
+                  )}
                   {error && (
                     <div className="mt-6 p-4 bg-red-50 text-red-600 rounded-xl text-sm font-bold border border-red-100">
                       {error}

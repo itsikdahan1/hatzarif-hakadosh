@@ -952,8 +952,9 @@ export default function App() {
 
               <GlobalCampaignProgress campaigns={campaigns} />
 
+              {impactStats.filter((s: any) => String(s.value) !== '0' && s.value !== 0 && s.value !== '').length > 0 && (
               <div className="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto mb-16 px-4">
-                {impactStats.map((stat: any, idx: number) => {
+                {impactStats.filter((s: any) => String(s.value) !== '0' && s.value !== 0 && s.value !== '').map((stat: any, idx: number) => {
                   const Icon = (Icons as any)[stat.icon] || Heart;
                   return (
                     <motion.div
@@ -972,6 +973,7 @@ export default function App() {
                   );
                 })}
               </div>
+              )}
 
               {/* Featured Daily/Weekly Dedications */}
               {(dedications.some((d: any) => d.active) || memorials.some((m: any) => m.today)) && (
