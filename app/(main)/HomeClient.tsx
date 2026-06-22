@@ -180,12 +180,32 @@ function DynamicScheduleWidget({ prayers }: { prayers: any[] }) {
 }
 
 function HeroBackground() {
+  // The poster <img> is the LCP element and paints at first paint. The 835KB
+  // autoplay video is mounted only AFTER first paint, so it never competes for
+  // bandwidth / the compositing pipeline during the LCP window (that contention
+  // was adding 2-6s of element-render-delay to the hero on slow 4G). The img
+  // stays underneath, so the swap to video is seamless.
+  const [showVideo, setShowVideo] = useState(false);
+  useEffect(() => {
+    const w = window as Window & {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+    let idleId: number;
+    let timeoutId: number;
+    if (w.requestIdleCallback) {
+      idleId = w.requestIdleCallback(() => setShowVideo(true), { timeout: 2500 });
+    } else {
+      timeoutId = window.setTimeout(() => setShowVideo(true), 1200);
+    }
+    return () => {
+      if (idleId && w.cancelIdleCallback) w.cancelIdleCallback(idleId);
+      if (timeoutId) window.clearTimeout(timeoutId);
+    };
+  }, []);
+
   return (
     <>
-      {/* The poster as a real <img>: this is the LCP element and paints at first
-          paint, like any image. A <video> poster is painted late by the media
-          pipeline (large element-render-delay pushed LCP to ~6s on slow 4G).
-          Same URL as the video poster, so it is a single cached download. */}
       <img
         src="/hero-poster.webp"
         alt=""
@@ -194,17 +214,19 @@ function HeroBackground() {
         decoding="async"
         className="absolute inset-0 w-full h-full object-cover scale-105"
       />
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        poster="/hero-poster.webp"
-        preload="metadata"
-        aria-hidden="true"
-        className="absolute inset-0 w-full h-full object-cover scale-105"
-        src="/hero-video.mp4"
-      />
+      {showVideo && (
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="/hero-poster.webp"
+          preload="auto"
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover scale-105"
+          src="/hero-video.mp4"
+        />
+      )}
     </>
   );
 }
