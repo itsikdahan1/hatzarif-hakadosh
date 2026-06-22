@@ -11,3 +11,7 @@ next-env.d.ts
 firebase-applet-config.json
 firebase-blueprint.json
 tsconfig.tsbuildinfo
+
+# Local Lighthouse / scratch reports
+lx.json
+lh-*.json
