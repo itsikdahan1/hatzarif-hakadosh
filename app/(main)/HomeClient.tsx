@@ -181,17 +181,31 @@ function DynamicScheduleWidget({ prayers }: { prayers: any[] }) {
 
 function HeroBackground() {
   return (
-    <video
-      autoPlay
-      muted
-      loop
-      playsInline
-      poster="/hero-poster.webp"
-      preload="metadata"
-      aria-hidden="true"
-      className="w-full h-full object-cover scale-105"
-      src="/hero-video.mp4"
-    />
+    <>
+      {/* The poster as a real <img>: this is the LCP element and paints at first
+          paint, like any image. A <video> poster is painted late by the media
+          pipeline (large element-render-delay pushed LCP to ~6s on slow 4G).
+          Same URL as the video poster, so it is a single cached download. */}
+      <img
+        src="/hero-poster.webp"
+        alt=""
+        aria-hidden="true"
+        fetchPriority="high"
+        decoding="async"
+        className="absolute inset-0 w-full h-full object-cover scale-105"
+      />
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        poster="/hero-poster.webp"
+        preload="metadata"
+        aria-hidden="true"
+        className="absolute inset-0 w-full h-full object-cover scale-105"
+        src="/hero-video.mp4"
+      />
+    </>
   );
 }
 
