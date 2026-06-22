@@ -23,9 +23,31 @@ import {
   Zap,
   Calendar,
   Droplets,
+  Home,
+  Award,
+  Soup,
+  HandCoins,
+  Star,
+  Flame,
 } from "lucide-react";
-import * as Icons from "lucide-react";
 import { useSiteSettings } from "@/src/hooks/useSiteSettings";
+
+// Explicit map of the icons the admin can pick for impact stats. Using a map of
+// named imports (instead of `import * as Icons` + dynamic lookup) lets the
+// bundler tree-shake lucide-react — the namespace import pulled the entire
+// icon library (~hundreds of KB) into the homepage bundle.
+const IMPACT_ICONS: Record<string, typeof Heart> = {
+  Heart,
+  BookOpen,
+  Users,
+  Coffee,
+  Home,
+  Award,
+  Soup,
+  HandCoins,
+  Star,
+  Flame,
+};
 
 import { TikTokIcon } from "@/components/TikTokIcon";
 import { db, handleFirestoreError, OperationType } from "@/lib/firebase";
@@ -335,7 +357,7 @@ export function HomeClient() {
               {impactStats.filter((s: any) => String(s.value) !== '0' && s.value !== 0 && s.value !== '').length > 0 && (
               <div className="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto mb-16 px-4">
                 {impactStats.filter((s: any) => String(s.value) !== '0' && s.value !== 0 && s.value !== '').map((stat: any, idx: number) => {
-                  const Icon = (Icons as any)[stat.icon] || Heart;
+                  const Icon = IMPACT_ICONS[stat.icon] || Heart;
                   return (
                     <motion.div
                       key={idx}
