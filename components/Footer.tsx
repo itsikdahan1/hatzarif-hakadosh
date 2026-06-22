@@ -34,13 +34,14 @@ export function Footer() {
             </p>
             <div className="flex gap-4">
               {[
-                { icon: TikTokIcon, href: SYNAGOGUE_INFO.social.tiktok },
-                { icon: Youtube, href: SYNAGOGUE_INFO.social.youtube },
-                { icon: Instagram, href: SYNAGOGUE_INFO.social.instagram }
+                { icon: TikTokIcon, href: SYNAGOGUE_INFO.social.tiktok, label: "טיקטוק" },
+                { icon: Youtube, href: SYNAGOGUE_INFO.social.youtube, label: "יוטיוב" },
+                { icon: Instagram, href: SYNAGOGUE_INFO.social.instagram, label: "אינסטגרם" }
               ].map((social, i) => (
-                <motion.a 
+                <motion.a
                   key={i}
                   href={social.href}
+                  aria-label={social.label}
                   whileHover={{ y: -3, backgroundColor: 'rgba(212, 175, 55, 0.2)' }}
                   className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center text-white/40 hover:text-gold-warm transition-colors"
                 >

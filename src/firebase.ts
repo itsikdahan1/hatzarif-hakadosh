@@ -1,4 +1,4 @@
-import { initializeApp, FirebaseApp } from 'firebase/app';
+import { initializeApp, getApps, FirebaseApp } from 'firebase/app';
 import { Auth, getAuth } from 'firebase/auth';
 import { Firestore, getFirestore } from 'firebase/firestore';
 
@@ -13,10 +13,21 @@ const firebaseConfig = {
 
 const isConfigured = !!firebaseConfig.apiKey;
 
-// Initialize Firebase only when env vars are present (safe for build time)
-const app: FirebaseApp = isConfigured ? initializeApp(firebaseConfig) : (null as any);
-export const auth: Auth = isConfigured ? getAuth(app) : (null as any);
+// Initialize Firebase app + Firestore eagerly (cheap, and used across the public site).
+const app: FirebaseApp = isConfigured ? (getApps()[0] ?? initializeApp(firebaseConfig)) : (null as any);
 export const db: Firestore = isConfigured ? getFirestore(app, process.env.NEXT_PUBLIC_FIREBASE_DATABASE_ID!) : (null as any);
+
+// Lazy Auth — initializing Firebase Auth eagerly pulled its helper iframe
+// (https://<authDomain>/__/auth/iframe.js, ~90KB) plus a getProjectConfig request
+// onto the homepage critical path (~1.8s on slow 4G), even though only the admin
+// area ever needs auth. We defer getAuth() until something actually asks for it,
+// so the public site never loads it.
+let _auth: Auth | null = null;
+export function getAuthInstance(): Auth {
+  if (!isConfigured) return null as any;
+  if (!_auth) _auth = getAuth(app);
+  return _auth;
+}
 
 export enum OperationType {
   CREATE = 'create',
@@ -47,15 +58,18 @@ export interface FirestoreErrorInfo {
 }
 
 export function handleFirestoreError(error: unknown, operationType: OperationType, path: string | null) {
+  // Read the lazily-initialized auth instance without forcing it to load
+  // (most Firestore reads on the public site happen with no auth at all).
+  const currentUser = _auth?.currentUser;
   const errInfo: FirestoreErrorInfo = {
     error: error instanceof Error ? error.message : String(error),
     authInfo: {
-      userId: auth.currentUser?.uid,
-      email: auth.currentUser?.email,
-      emailVerified: auth.currentUser?.emailVerified,
-      isAnonymous: auth.currentUser?.isAnonymous,
-      tenantId: auth.currentUser?.tenantId,
-      providerInfo: auth.currentUser?.providerData.map(provider => ({
+      userId: currentUser?.uid,
+      email: currentUser?.email,
+      emailVerified: currentUser?.emailVerified,
+      isAnonymous: currentUser?.isAnonymous,
+      tenantId: currentUser?.tenantId,
+      providerInfo: currentUser?.providerData.map(provider => ({
         providerId: provider.providerId,
         displayName: provider.displayName,
         email: provider.email,

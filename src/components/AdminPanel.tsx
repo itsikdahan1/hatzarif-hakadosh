@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import * as Icons from 'lucide-react';
-import { db, auth, handleFirestoreError, OperationType } from '../firebase';
+import { db, getAuthInstance, handleFirestoreError, OperationType } from '../firebase';
 import { 
   collection, 
   onSnapshot, 
@@ -153,6 +153,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
   const { settings: siteSettings, isLive: isFirestoreConnected, isLoading: isSettingsLoading } = useSiteSettings();
   const [isSeeding, setIsSeeding] = useState(false);
   const stripeConfigured = !!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+  // Initialize Firebase Auth on demand — only the admin area needs it.
+  const auth = getAuthInstance();
 
   useEffect(() => {
     const unsubscribeAuth = auth.onAuthStateChanged(async (user) => {
