@@ -73,8 +73,8 @@ function GlobalCampaignProgress({ campaigns }: { campaigns: any[] }) {
   const percentage = Math.min(100, (activeCampaign.current / activeCampaign.target) * 100);
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
+    <motion.div
+      initial={false}
       animate={{ opacity: 1, y: 0 }}
       className="max-w-4xl mx-auto px-4 mb-20"
     >
@@ -147,8 +147,8 @@ function DynamicScheduleWidget({ prayers }: { prayers: any[] }) {
   }, [prayers]);
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, scale: 0.9 }}
+    <motion.div
+      initial={false}
       animate={{ opacity: 1, scale: 1 }}
       className="bg-white/95 backdrop-blur-md border border-gold-warm/30 rounded-3xl p-8 shadow-2xl max-w-md mx-auto relative overflow-hidden group"
     >
