@@ -278,7 +278,7 @@ export function HomeClient() {
           
           <div className="relative z-10 text-center px-4 max-w-5xl mx-auto mb-20">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.2, ease: "easeOut" }}
             >
