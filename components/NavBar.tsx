@@ -13,8 +13,9 @@ import {
   Youtube,
   Instagram,
   SunMoon,
+  X,
+  Menu,
 } from "lucide-react";
-import * as Icons from "lucide-react";
 import { useSiteSettings } from "@/src/hooks/useSiteSettings";
 import { Separator } from "@/components/ui/separator";
 import { TikTokIcon } from "@/components/TikTokIcon";
@@ -115,7 +116,7 @@ export function NavBar() {
                 aria-label="סגירת תפריט"
                 className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center text-white/40 hover:text-white"
               >
-                <Icons.X size={24} />
+                <X size={24} />
               </button>
             </div>
 
@@ -205,7 +206,7 @@ export function NavBar() {
                 aria-label="פתיחת תפריט"
                 className="lg:hidden w-12 h-12 bg-charcoal/5 rounded-xl flex items-center justify-center text-charcoal hover:bg-charcoal/10 transition-all"
               >
-                <Icons.Menu size={24} />
+                <Menu size={24} />
               </button>
             </div>
           </div>

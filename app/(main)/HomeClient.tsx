@@ -186,7 +186,7 @@ function HeroBackground() {
       muted
       loop
       playsInline
-      poster="/hero-poster.jpg"
+      poster="/hero-poster.webp"
       preload="metadata"
       aria-hidden="true"
       className="w-full h-full object-cover scale-105"
