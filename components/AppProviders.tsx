@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { MotionConfig } from "motion/react";
 import { SiteSettingsContext, useSiteSettingsLoader } from "@/src/hooks/useSiteSettings";
 
 interface AccessibilityContextType {
@@ -66,7 +67,10 @@ export function AppProviders({ children }: { children: ReactNode }) {
   return (
     <SiteSettingsContext.Provider value={siteSettingsValue}>
       <AccessibilityContext.Provider value={{ fontSize, setFontSize, highContrast, setHighContrast }}>
-        {children}
+        {/* מכבד prefers-reduced-motion בכל אנימציות motion באתר */}
+        <MotionConfig reducedMotion="user">
+          {children}
+        </MotionConfig>
       </AccessibilityContext.Provider>
     </SiteSettingsContext.Provider>
   );

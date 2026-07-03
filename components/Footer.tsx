@@ -42,7 +42,7 @@ export function Footer() {
                   key={i}
                   href={social.href}
                   aria-label={social.label}
-                  whileHover={{ y: -3, backgroundColor: 'rgba(212, 175, 55, 0.2)' }}
+                  whileHover={{ y: -3, backgroundColor: 'rgba(197, 160, 89, 0.18)' }}
                   className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center text-white/40 hover:text-gold-warm transition-colors"
                 >
                   <social.icon size={20} />
@@ -121,19 +121,19 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="pt-8 md:pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8 text-[11px] md:text-[10px] text-white/20 font-bold uppercase tracking-[0.15em] md:tracking-[0.4em]">
+        <div className="pt-8 md:pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8 text-[11px] text-white/30 font-bold uppercase tracking-[0.15em] md:tracking-[0.25em]">
           <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
             <p>© {new Date().getFullYear()} {SYNAGOGUE_INFO.name}. כל הזכויות שמורות.</p>
             <p className="hidden md:block">|</p>
             <p>מעוצב בחרדת קודש עבור קהילת נאות אשלים</p>
             <p className="hidden md:block">|</p>
-            <a 
-              href="https://wa.me/972559296626" 
-              target="_blank" 
+            <a
+              href="https://wa.me/972559296626"
+              target="_blank"
               rel="noopener noreferrer"
               className="hover:text-gold-warm transition-colors normal-case tracking-normal"
             >
-              נבנה ע״י יצחק דהן 💡
+              נבנה ע״י יצחק דהן
             </a>
           </div>
           

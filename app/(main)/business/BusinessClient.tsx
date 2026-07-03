@@ -25,14 +25,10 @@ export function BusinessClient() {
 
   return (
     <>
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="bg-background min-h-screen pb-32"
-      >
+      <div className="bg-background min-h-screen pb-32">
         <div className="max-w-7xl mx-auto px-4 pt-12">
-          <Link href="/" className="flex items-center gap-2 text-charcoal/40 font-bold mb-12 hover:text-charcoal transition-colors">
-            <ArrowRight size={20} className="rotate-180" /> חזרה לדף הבית
+          <Link href="/" className="inline-flex items-center gap-2 text-charcoal/40 font-bold mb-12 hover:text-charcoal transition-colors group">
+            <ArrowRight size={20} className="rotate-180 group-hover:-translate-x-1 transition-transform" /> חזרה לדף הבית
           </Link>
 
           <div className="bg-white rounded-[2rem] md:rounded-[4rem] p-6 sm:p-8 md:p-12 lg:p-20 shadow-2xl border border-charcoal/5 relative overflow-hidden mb-12 md:mb-20">
@@ -77,19 +73,20 @@ export function BusinessClient() {
             <h3 className="text-xl sm:text-2xl md:text-3xl font-serif font-bold text-center text-charcoal/40 uppercase tracking-wider md:tracking-widest">מדריך העסקים של הקהילה</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
               {displayList.map((biz: any, idx: number) => (
-                <motion.div 
+                <motion.div
                   key={idx}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.05 }}
-                  whileHover={{ y: -10 }}
-                  className="bg-white rounded-2xl md:rounded-[2.5rem] overflow-hidden border border-charcoal/5 shadow-lg group"
+                  transition={{ delay: Math.min(idx * 0.05, 0.35), duration: 0.4, ease: "easeOut" }}
+                  whileHover={{ y: -6 }}
+                  className="bg-white rounded-2xl md:rounded-[2.5rem] overflow-hidden border border-charcoal/5 shadow-lg hover:shadow-xl transition-shadow group"
                 >
                   <div className="aspect-video relative overflow-hidden">
-                    <img 
-                      src={biz.image} 
-                      alt={biz.name} 
-                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                    <img
+                      src={biz.image}
+                      alt={biz.name}
+                      loading="lazy"
+                      className="w-full h-full object-cover [@media(hover:hover)]:grayscale group-hover:grayscale-0 transition-all duration-700"
                       referrerPolicy="no-referrer"
                     />
                     <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-sm px-4 py-1.5 rounded-full text-xs font-bold text-charcoal shadow-sm">
@@ -114,7 +111,7 @@ export function BusinessClient() {
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
     </>
   );
 }

@@ -11,12 +11,14 @@ import { collection, onSnapshot, query } from "firebase/firestore";
 export function MemorialsClient() {
   const [dedications, setDedications] = useState<any[]>([]);
   const [memorials, setMemorials] = useState<any[]>([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const qDedications = query(collection(db, 'dedications'));
     const unsubDedications = onSnapshot(qDedications, (snapshot) => {
       setDedications(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-    }, (error) => handleFirestoreError(error, OperationType.LIST, 'dedications'));
+      setLoaded(true);
+    }, (error) => { handleFirestoreError(error, OperationType.LIST, 'dedications'); setLoaded(true); });
 
     const qMemorials = query(collection(db, 'memorials'));
     const unsubMemorials = onSnapshot(qMemorials, (snapshot) => {
@@ -28,29 +30,37 @@ export function MemorialsClient() {
 
   return (
     <>
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="bg-charcoal min-h-screen text-white pb-32"
-      >
+      <div className="bg-charcoal min-h-screen text-white pb-32">
         <div className="max-w-7xl mx-auto px-4 pt-12">
-          <Link href="/" className="flex items-center gap-2 text-white/40 font-bold mb-12 hover:text-white transition-colors">
-            <ArrowRight size={20} className="rotate-180" /> חזרה לדף הבית
+          <Link href="/" className="inline-flex items-center gap-2 text-white/40 font-bold mb-12 hover:text-white transition-colors group">
+            <ArrowRight size={20} className="rotate-180 group-hover:-translate-x-1 transition-transform" /> חזרה לדף הבית
           </Link>
-          
+
           <div className="grid lg:grid-cols-2 gap-12 md:gap-24">
             <div>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8 md:mb-12 flex items-center gap-3 md:gap-4">
                 <Heart className="text-gold-warm shrink-0" size={32} /> הקדשות וזכויות
               </h2>
               <div className="space-y-6">
-                {dedications.length > 0 ? (
+                {!loaded ? (
+                  [0, 1].map((idx) => (
+                    <div
+                      key={idx}
+                      className="bg-white/5 border border-white/10 p-5 sm:p-6 md:p-8 rounded-2xl md:rounded-[2.5rem] animate-pulse"
+                      style={{ animationDelay: `${idx * 150}ms` }}
+                      aria-hidden="true"
+                    >
+                      <div className="h-6 w-3/4 bg-white/10 rounded-full mb-4" />
+                      <div className="h-4 w-1/3 bg-gold-warm/20 rounded-full" />
+                    </div>
+                  ))
+                ) : dedications.length > 0 ? (
                   dedications.map((dedication: any, idx: number) => (
-                    <motion.div 
+                    <motion.div
                       key={dedication.id}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: idx * 0.1 }}
+                      initial={{ opacity: 0, y: 14 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: Math.min(idx * 0.06, 0.3), duration: 0.4, ease: "easeOut" }}
                       className={`bg-white/5 border p-5 sm:p-6 md:p-8 rounded-2xl md:rounded-[2.5rem] hover:bg-white/10 transition-all ${dedication.active ? 'border-gold-warm/40 bg-gold-warm/5' : 'border-white/10'}`}
                     >
                       <div className="flex justify-between items-start mb-4">
@@ -66,7 +76,7 @@ export function MemorialsClient() {
                   ))
                 ) : (
                   <div className="p-12 border border-dashed border-white/10 rounded-[2.5rem] text-center">
-                    <p className="text-white/30 text-xl">ניתן להקדיש יום לימוד לעילוי נשמה או להצלחה.</p>
+                    <p className="text-white/40 text-xl">ניתן להקדיש יום לימוד לעילוי נשמה או להצלחה.</p>
                   </div>
                 )}
               </div>
@@ -80,11 +90,11 @@ export function MemorialsClient() {
                 <div className="p-4 sm:p-6 md:p-10 space-y-4 md:space-y-6">
                   {memorials.length > 0 ? (
                     memorials.map((memorial: any, idx: number) => (
-                      <motion.div 
+                      <motion.div
                         key={memorial.id}
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: idx * 0.05 }}
+                        transition={{ delay: Math.min(idx * 0.05, 0.3), duration: 0.35, ease: "easeOut" }}
                         className={`flex flex-col sm:flex-row justify-between sm:items-center gap-3 sm:gap-0 py-4 sm:py-6 px-4 sm:px-6 md:px-8 -mx-4 sm:-mx-6 md:-mx-8 border-b border-white/5 last:border-0 hover:bg-white/5 transition-all ${memorial.today ? 'bg-gold-warm/10 border-gold-warm/20' : ''}`}
                       >
                         <div className="flex items-center gap-6">
@@ -100,14 +110,14 @@ export function MemorialsClient() {
                       </motion.div>
                     ))
                   ) : (
-                    <p className="text-white/30 text-center py-20 italic text-xl">אין אזכרות קרובות לעדכון...</p>
+                    <p className="text-white/40 text-center py-20 italic text-xl">אין אזכרות קרובות לעדכון...</p>
                   )}
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
     </>
   );
 }

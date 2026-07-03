@@ -102,7 +102,7 @@ export function NavBar() {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed inset-0 z-[100] bg-charcoal flex flex-col p-8 sm:hidden"
+            className="fixed inset-0 z-[100] bg-charcoal flex flex-col p-8 overflow-y-auto lg:hidden"
           >
             <div className="flex justify-between items-center mb-16">
               <div className="flex items-center gap-3">
@@ -122,11 +122,12 @@ export function NavBar() {
 
             <div className="flex flex-col gap-6 text-2xl font-bold text-white/60">
               {mobileNavItems.map(item => (
-                <Link 
+                <Link
                   key={item.href}
                   href={item.href}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`text-right py-4 border-b border-white/5 ${pathname === item.href ? 'text-gold-warm' : ''}`}
+                  aria-current={pathname === item.href ? 'page' : undefined}
+                  className={`text-right py-4 border-b border-white/5 transition-colors hover:text-white ${pathname === item.href ? 'text-gold-warm' : ''}`}
                 >
                   {item.label}
                 </Link>
@@ -167,7 +168,8 @@ export function NavBar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`px-3 py-2 rounded-lg hover:text-gold-warm hover:bg-gold-warm/5 transition-all ${pathname === item.href ? 'text-gold-warm' : ''}`}
+                  aria-current={pathname === item.href ? 'page' : undefined}
+                  className={`px-3 py-2 rounded-lg hover:text-gold-warm hover:bg-gold-warm/5 transition-all ${pathname === item.href ? 'text-gold-warm bg-gold-warm/5' : ''}`}
                 >
                   {item.label}
                 </Link>
