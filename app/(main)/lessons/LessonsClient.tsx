@@ -65,7 +65,7 @@ export function LessonsClient() {
                   <div className="w-16 h-16 bg-gold-warm/10 rounded-2xl flex items-center justify-center text-gold-warm group-hover:bg-gold-warm group-hover:text-white transition-all mb-8">
                     <BookOpen size={32} />
                   </div>
-                  <h3 className="text-2xl font-serif font-bold text-charcoal mb-2">{lesson.title}</h3>
+                  <h3 className="text-2xl font-bold text-charcoal mb-2">{lesson.title}</h3>
                   <p className="text-gold-warm font-bold text-lg mb-6">{lesson.lecturer}</p>
 
                   <div className="space-y-4 text-charcoal/60">

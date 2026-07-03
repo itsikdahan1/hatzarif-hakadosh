@@ -1,3 +1,4 @@
+@import "@fontsource/suez-one/400.css";
 @import "@fontsource/frank-ruhl-libre/400.css";
 @import "@fontsource/frank-ruhl-libre/500.css";
 @import "@fontsource/frank-ruhl-libre/700.css";
@@ -14,6 +15,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
+  /* גופן הכותרות: עברי-מסורתי בנפח מודרני. הסריף (FRL) נשאר לציטוטים נטויים */
+  --font-display: "Suez One", "Frank Ruhl Libre", serif;
   --font-serif: "Frank Ruhl Libre", serif;
   --font-sans: "Assistant", ui-sans-serif, system-ui, sans-serif;
   /* Heaviest imported weight is 800 — keep font-black real, never synthesized */
@@ -143,7 +146,9 @@
     @apply bg-alabaster text-charcoal font-sans antialiased;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-serif;
+    font-family: var(--font-display);
+    /* Suez One מגיע במשקל תצוגה יחיד - בלי הדגשה מלאכותית מרוחה */
+    font-synthesis: none;
   }
   html {
     @apply font-sans;
@@ -194,10 +199,15 @@
 
 /* World-Class Typography Polish */
 h1, h2, h3 {
-  letter-spacing: -0.02em;
-  line-height: 1.1;
+  /* גופן תצוגה עברי לא מהדקים - הצפיפות מובנית בו */
+  letter-spacing: 0;
+  line-height: 1.15;
 }
 
-.font-serif {
+.font-serif, .font-display {
   font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+}
+
+.font-display {
+  font-synthesis: none;
 }

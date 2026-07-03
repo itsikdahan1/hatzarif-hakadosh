@@ -27,7 +27,7 @@ export function Footer() {
               <div className="w-12 h-12 bg-gold-warm rounded-xl flex items-center justify-center text-charcoal shadow-inner">
                 <BookOpen size={24} />
               </div>
-              <span className="text-xl md:text-2xl font-serif font-bold tracking-tight">{SYNAGOGUE_INFO.name}</span>
+              <span className="text-xl md:text-2xl font-display font-bold">{SYNAGOGUE_INFO.name}</span>
             </div>
             <p className="text-white/40 leading-relaxed mb-6 md:mb-8 text-sm italic font-serif">
               &quot;{SYNAGOGUE_INFO.subTagline}&quot;

@@ -64,7 +64,7 @@ export function YouthClient() {
           <div className="mb-20 md:mb-40">
              <div className="flex items-center gap-6 mb-16">
                 <div className="h-px flex-grow bg-white/10" />
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-serif font-bold text-white/40 uppercase tracking-[0.1em] sm:tracking-[0.2em] md:tracking-[0.3em]">רגעים מהשיעור</h3>
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white/40 uppercase tracking-[0.1em] sm:tracking-[0.2em] md:tracking-[0.3em]">רגעים מהשיעור</h3>
                 <div className="h-px flex-grow bg-white/10" />
              </div>
              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -100,7 +100,7 @@ export function YouthClient() {
                    <p className="text-lg sm:text-xl md:text-2xl text-white/80 leading-relaxed italic font-serif">
                      &quot;{SYNAGOGUE_INFO.rabbiQuote}&quot;
                    </p>
-                   <p className="mt-4 md:mt-6 font-bold text-gold-warm text-lg md:text-xl">— {SYNAGOGUE_INFO.rabbi}</p>
+                   <p className="mt-4 md:mt-6 font-bold text-gold-warm text-lg md:text-xl">- {SYNAGOGUE_INFO.rabbi}</p>
                 </div>
              </div>
              <div className="grid grid-cols-2 gap-4 sm:gap-6 md:gap-8">

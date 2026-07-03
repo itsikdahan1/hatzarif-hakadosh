@@ -183,7 +183,7 @@ function DynamicScheduleWidget({ prayers }: { prayers: any[] }) {
           </div>
           <div className="text-right">
             <p className="text-xs font-bold text-gold-warm uppercase tracking-[0.2em] mb-1">התפילה הקרובה</p>
-            <h3 className="text-2xl font-serif font-bold text-charcoal">{nextEvent.name}</h3>
+            <h3 className="text-2xl font-bold text-charcoal">{nextEvent.name}</h3>
           </div>
         </div>
         <div className="flex items-end justify-between">
@@ -342,7 +342,7 @@ export function HomeClient() {
               transition={{ duration: 1.2, ease: "easeOut" }}
             >
               <JewishContextBanner />
-              <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-serif font-black mb-8 tracking-tight text-white leading-none drop-shadow-2xl">
+              <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-8 text-white leading-none drop-shadow-2xl">
                 {SYNAGOGUE_INFO.name}
               </h1>
               <p className="text-xl md:text-2xl text-white/80 mb-10 md:mb-16 leading-relaxed max-w-3xl mx-auto italic font-serif drop-shadow">
@@ -470,13 +470,13 @@ export function HomeClient() {
                   <Calendar size={14} className="text-gold-warm/80" />
                   <span className="text-xs font-bold tracking-widest text-white/60">{shabbatInfo.hebrewDate}</span>
                 </div>
-                <div className="text-3xl sm:text-4xl md:text-6xl font-serif font-black leading-tight text-gold-warm drop-shadow-sm">
+                <div className="text-3xl sm:text-4xl md:text-6xl font-display font-black leading-tight text-gold-warm drop-shadow-sm">
                   {shabbatInfo.parashaName}
                 </div>
                 {shabbatInfo.pirkeiAvotChapter && (
                   <p className="mt-4 text-lg text-white/60 font-bold">
                     <BookOpen size={16} className="inline ml-2 text-gold-warm" />
-                    פרקי אבות — פרק {
+                    פרקי אבות - פרק {
                       ['א׳', 'ב׳', 'ג׳', 'ד׳', 'ה׳', 'ו׳'][shabbatInfo.pirkeiAvotChapter - 1]
                     }
                   </p>
@@ -547,7 +547,7 @@ export function HomeClient() {
                   <div className="w-16 h-16 bg-gold-warm/10 rounded-2xl flex items-center justify-center text-gold-warm group-hover:bg-gold-warm group-hover:text-white transition-all mb-8">
                     <BookOpen size={32} />
                   </div>
-                  <h3 className="text-2xl font-serif font-bold text-charcoal mb-4">שיעורי תורה</h3>
+                  <h3 className="text-2xl font-bold text-charcoal mb-4">שיעורי תורה</h3>
                   <p className="text-charcoal/50 mb-8 leading-relaxed">כל זמני השיעורים, הנושאים והמרצים במקום אחד.</p>
                   <span className="text-gold-warm font-bold flex items-center gap-2">צפייה בכל השיעורים <ArrowLeft size={16} /></span>
                 </Link>
@@ -558,7 +558,7 @@ export function HomeClient() {
                   <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center text-gold-warm mb-8">
                     <Heart size={32} />
                   </div>
-                  <h3 className="text-2xl font-serif font-bold mb-4">הקדשות ואזכרות</h3>
+                  <h3 className="text-2xl font-bold mb-4">הקדשות ואזכרות</h3>
                   <p className="text-white/50 mb-8 leading-relaxed">לוח אזכרות עדכני ואפשרויות הקדשה לזכות ולעילוי נשמה.</p>
                   <span className="text-gold-warm font-bold flex items-center gap-2">ללוח המלא <ArrowLeft size={16} /></span>
                 </Link>
@@ -569,7 +569,7 @@ export function HomeClient() {
                   <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center text-gold-warm mb-8">
                     <Coffee size={32} />
                   </div>
-                  <h3 className="text-2xl font-serif font-bold mb-4">שיעור הצעירים</h3>
+                  <h3 className="text-2xl font-bold mb-4">שיעור הצעירים</h3>
                   <p className="text-white/50 mb-8 leading-relaxed">כל הפרטים על המפגש השבועי לצעירי השכונה.</p>
                   <span className="text-white font-bold flex items-center gap-2">לפרטים והרשמה <ArrowLeft size={16} /></span>
                 </Link>
@@ -580,7 +580,7 @@ export function HomeClient() {
                   <div className="w-16 h-16 bg-gold-warm/10 rounded-2xl flex items-center justify-center text-gold-warm group-hover:bg-gold-warm group-hover:text-white transition-all mb-8">
                     <Briefcase size={32} />
                   </div>
-                  <h3 className="text-2xl font-serif font-bold text-charcoal mb-4">עסקים בקהילה</h3>
+                  <h3 className="text-2xl font-bold text-charcoal mb-4">עסקים בקהילה</h3>
                   <p className="text-charcoal/50 mb-8 leading-relaxed">תמיכה בעסקים מקומיים וחיזוק הכלכלה הקהילתית.</p>
                   <span className="text-gold-warm font-bold flex items-center gap-2">למדריך המלא <ArrowLeft size={16} /></span>
                 </Link>

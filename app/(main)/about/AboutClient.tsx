@@ -22,7 +22,7 @@ export function AboutClient() {
 
           <div className="text-center mb-12 md:mb-24 relative">
             <div>
-              <h1 className="text-3xl sm:text-5xl md:text-8xl font-serif font-bold text-charcoal mb-6 leading-tight">
+              <h1 className="text-3xl sm:text-5xl md:text-8xl font-bold text-charcoal mb-6 leading-tight">
                 הסיפור של <span className="text-gold-warm">הצריף</span>
               </h1>
               <div className="w-32 h-2 bg-gold-warm mx-auto mb-10 rounded-full" />
@@ -38,7 +38,7 @@ export function AboutClient() {
             <motion.div whileHover={{ y: -5 }} className="bg-white p-6 sm:p-8 md:p-12 rounded-[2rem] md:rounded-[3.5rem] border border-charcoal/5 shadow-xl relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-gold-warm/5 rounded-full -mr-16 -mt-16" />
               <History className="text-gold-warm mb-8" size={56} />
-              <h3 className="text-3xl font-bold text-charcoal mb-6 font-serif">השורשים שלנו</h3>
+              <h3 className="text-3xl font-bold text-charcoal mb-6">השורשים שלנו</h3>
               <p className="text-charcoal/60 leading-relaxed text-lg font-serif">
                 קהילת &quot;הצריף הקדוש&quot; החלה את דרכה מתוך צורך עמוק של תושבי שכונת נאות אשלים במקום תפילה וקהילה מאחד. מה שהתחיל כמניין קטן גדל והפך למרכז רוחני וחברתי שוקק חיים, המארח מאות אנשים לאורך כל השבוע.
               </p>
@@ -46,7 +46,7 @@ export function AboutClient() {
             <motion.div whileHover={{ y: -5 }} className="bg-charcoal p-6 sm:p-8 md:p-12 rounded-[2rem] md:rounded-[3.5rem] border border-white/10 shadow-2xl relative overflow-hidden text-white">
               <div className="absolute top-0 left-0 w-32 h-32 bg-white/5 rounded-full -ml-16 -mt-16" />
               <Target className="text-gold-warm mb-8" size={56} />
-              <h3 className="text-3xl font-bold text-white mb-6 font-serif">החזון והשליחות</h3>
+              <h3 className="text-3xl font-bold text-white mb-6">החזון והשליחות</h3>
               <p className="text-white/60 leading-relaxed text-lg font-serif">
                 אנחנו שואפים להיות בית פתוח לכל יהודי, ללא קשר למקום שבו הוא נמצא. המטרה שלנו היא להנגיש את היופי של מסורת ישראל בצורה נעימה, מכבדת ורלוונטית לימינו, תוך יצירת רשת ביטחון קהילתית וחברתית חזקה בשכונה.
               </p>

@@ -109,7 +109,7 @@ export function NavBar() {
                 <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center text-white">
                   <BookOpen size={20} />
                 </div>
-                <span className="text-xl font-serif font-bold text-white">{SYNAGOGUE_INFO.name}</span>
+                <span className="text-xl font-display font-bold text-white">{SYNAGOGUE_INFO.name}</span>
               </div>
               <button
                 onClick={() => setIsMobileMenuOpen(false)}
@@ -160,7 +160,7 @@ export function NavBar() {
               <div className="w-12 h-12 bg-charcoal rounded-xl flex items-center justify-center text-alabaster shadow-lg transform rotate-3 hover:rotate-0 transition-transform">
                 <BookOpen size={24} />
               </div>
-              <span className="text-xl sm:text-2xl font-serif font-bold tracking-tight text-charcoal">{SYNAGOGUE_INFO.name}</span>
+              <span className="text-xl sm:text-2xl font-display font-bold text-charcoal">{SYNAGOGUE_INFO.name}</span>
             </Link>
 
             <div className="hidden lg:flex items-center gap-1 text-[13px] font-bold text-charcoal/60">

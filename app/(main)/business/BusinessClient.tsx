@@ -70,7 +70,7 @@ export function BusinessClient() {
           </div>
 
           <div className="space-y-12">
-            <h3 className="text-xl sm:text-2xl md:text-3xl font-serif font-bold text-center text-charcoal/40 uppercase tracking-wider md:tracking-widest">מדריך העסקים של הקהילה</h3>
+            <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-center text-charcoal/40 uppercase tracking-wider md:tracking-widest">מדריך העסקים של הקהילה</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
               {displayList.map((biz: any, idx: number) => (
                 <motion.div
