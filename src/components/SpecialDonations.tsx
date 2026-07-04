@@ -56,7 +56,7 @@ export const MachatzitHashekelForm = ({ onDonate }: { onDonate: (amount: number,
         <div className="absolute top-0 right-0 w-32 h-32 bg-gold-warm/5 rounded-full -mr-16 -mt-16" />
         <div className="relative z-10 flex flex-col md:flex-row gap-8 items-center justify-between">
           <div>
-            <h3 className="text-3xl font-serif font-bold text-charcoal mb-2">זכר למחצית השקל</h3>
+            <h3 className="text-3xl font-bold text-charcoal mb-2">זכר למחצית השקל</h3>
             <p className="text-charcoal/60 leading-relaxed max-w-sm">
               לפי מנהג הספרדים (שווי 9.6 גרם כסף טהור). תרומה עבור כל אחד מבני הבית, כולל עוברים.
             </p>
@@ -166,7 +166,7 @@ export const KaparotForm = ({ onDonate }: { onDonate: (amount: number, details: 
   return (
     <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="space-y-12">
       <div className="text-center">
-        <h3 className="text-5xl font-serif font-bold text-charcoal mb-4">פדיון כפרות</h3>
+        <h3 className="text-5xl font-bold text-charcoal mb-4">פדיון כפרות</h3>
         <p className="text-xl text-charcoal/40 italic">"זה חליפתי, זה תמורתי, זה כפרתי..."</p>
       </div>
 

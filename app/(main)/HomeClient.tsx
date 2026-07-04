@@ -23,9 +23,31 @@ import {
   Zap,
   Calendar,
   Droplets,
+  Home,
+  Award,
+  Soup,
+  HandCoins,
+  Star,
+  Flame,
 } from "lucide-react";
-import * as Icons from "lucide-react";
 import { useSiteSettings } from "@/src/hooks/useSiteSettings";
+
+// Explicit map of the icons the admin can pick for impact stats. Using a map of
+// named imports (instead of `import * as Icons` + dynamic lookup) lets the
+// bundler tree-shake lucide-react — the namespace import pulled the entire
+// icon library (~hundreds of KB) into the homepage bundle.
+const IMPACT_ICONS: Record<string, typeof Heart> = {
+  Heart,
+  BookOpen,
+  Users,
+  Coffee,
+  Home,
+  Award,
+  Soup,
+  HandCoins,
+  Star,
+  Flame,
+};
 
 import { TikTokIcon } from "@/components/TikTokIcon";
 import { db, handleFirestoreError, OperationType } from "@/lib/firebase";
@@ -58,7 +80,8 @@ function JewishContextBanner() {
         {context.title}: {context.subtitle}
       </span>
       {context.isUrgent && (
-        <span className="flex items-center gap-1 bg-red-500 text-white px-2 py-0.5 rounded-full text-[10px] font-black animate-bounce mr-2">
+        <span className="flex items-center gap-1.5 bg-red-500 text-white px-2.5 py-0.5 rounded-full text-[11px] font-black mr-2">
+          <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
           דחוף
         </span>
       )}
@@ -73,8 +96,8 @@ function GlobalCampaignProgress({ campaigns }: { campaigns: any[] }) {
   const percentage = Math.min(100, (activeCampaign.current / activeCampaign.target) * 100);
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
+    <motion.div
+      initial={false}
       animate={{ opacity: 1, y: 0 }}
       className="max-w-4xl mx-auto px-4 mb-20"
     >
@@ -100,13 +123,13 @@ function GlobalCampaignProgress({ campaigns }: { campaigns: any[] }) {
 
           <div className="space-y-4">
              <div className="h-4 bg-white/5 rounded-full overflow-hidden p-1 border border-white/5">
-                <motion.div 
+                <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${percentage}%` }}
                   transition={{ duration: 1.5, ease: "easeOut" }}
                   className="h-full bg-gradient-to-r from-gold-warm to-amber-500 rounded-full relative"
                 >
-                   <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(255,255,255,0.2)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.2)_50%,rgba(255,255,255,0.2)_75%,transparent_75%,transparent)] bg-[length:20px_20px] animate-[progress-stripe_1s_linear_infinite]" />
+                   <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(255,255,255,0.2)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.2)_50%,rgba(255,255,255,0.2)_75%,transparent_75%,transparent)] bg-[length:20px_20px]" />
                 </motion.div>
              </div>
              <div className="flex justify-between text-xs font-black uppercase tracking-widest text-white/40">
@@ -147,8 +170,8 @@ function DynamicScheduleWidget({ prayers }: { prayers: any[] }) {
   }, [prayers]);
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, scale: 0.9 }}
+    <motion.div
+      initial={false}
       animate={{ opacity: 1, scale: 1 }}
       className="bg-white/95 backdrop-blur-md border border-gold-warm/30 rounded-3xl p-8 shadow-2xl max-w-md mx-auto relative overflow-hidden group"
     >
@@ -160,7 +183,7 @@ function DynamicScheduleWidget({ prayers }: { prayers: any[] }) {
           </div>
           <div className="text-right">
             <p className="text-xs font-bold text-gold-warm uppercase tracking-[0.2em] mb-1">התפילה הקרובה</p>
-            <h3 className="text-2xl font-serif font-bold text-charcoal">{nextEvent.name}</h3>
+            <h3 className="text-2xl font-bold text-charcoal">{nextEvent.name}</h3>
           </div>
         </div>
         <div className="flex items-end justify-between">
@@ -180,15 +203,54 @@ function DynamicScheduleWidget({ prayers }: { prayers: any[] }) {
 }
 
 function HeroBackground() {
+  // The poster <img> is the LCP element and paints at first paint. The 835KB
+  // autoplay video is mounted only AFTER first paint, so it never competes for
+  // bandwidth / the compositing pipeline during the LCP window (that contention
+  // was adding 2-6s of element-render-delay to the hero on slow 4G). The img
+  // stays underneath, so the swap to video is seamless.
+  const [showVideo, setShowVideo] = useState(false);
+  useEffect(() => {
+    const w = window as Window & {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+    let idleId: number;
+    let timeoutId: number;
+    if (w.requestIdleCallback) {
+      idleId = w.requestIdleCallback(() => setShowVideo(true), { timeout: 2500 });
+    } else {
+      timeoutId = window.setTimeout(() => setShowVideo(true), 1200);
+    }
+    return () => {
+      if (idleId && w.cancelIdleCallback) w.cancelIdleCallback(idleId);
+      if (timeoutId) window.clearTimeout(timeoutId);
+    };
+  }, []);
+
   return (
-    <video
-      autoPlay
-      muted
-      loop
-      playsInline
-      className="w-full h-full object-cover scale-105"
-      src="/hero-video.mp4"
-    />
+    <>
+      <img
+        src="/hero-poster.webp"
+        alt=""
+        aria-hidden="true"
+        fetchPriority="high"
+        decoding="async"
+        className="absolute inset-0 w-full h-full object-cover scale-105"
+      />
+      {showVideo && (
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="/hero-poster.webp"
+          preload="auto"
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover scale-105"
+          src="/hero-video.mp4"
+        />
+      )}
+    </>
   );
 }
 
@@ -275,12 +337,12 @@ export function HomeClient() {
           
           <div className="relative z-10 text-center px-4 max-w-5xl mx-auto mb-20">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.2, ease: "easeOut" }}
             >
               <JewishContextBanner />
-              <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-serif font-black mb-8 tracking-tight text-white leading-none drop-shadow-2xl">
+              <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-8 text-white leading-none drop-shadow-2xl">
                 {SYNAGOGUE_INFO.name}
               </h1>
               <p className="text-xl md:text-2xl text-white/80 mb-10 md:mb-16 leading-relaxed max-w-3xl mx-auto italic font-serif drop-shadow">
@@ -296,13 +358,14 @@ export function HomeClient() {
               {impactStats.filter((s: any) => String(s.value) !== '0' && s.value !== 0 && s.value !== '').length > 0 && (
               <div className="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto mb-16 px-4">
                 {impactStats.filter((s: any) => String(s.value) !== '0' && s.value !== 0 && s.value !== '').map((stat: any, idx: number) => {
-                  const Icon = (Icons as any)[stat.icon] || Heart;
+                  const Icon = IMPACT_ICONS[stat.icon] || Heart;
                   return (
                     <motion.div
                       key={idx}
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: idx * 0.1 }}
+                      initial={{ opacity: 0, y: 14 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "-40px" }}
+                      transition={{ delay: idx * 0.06, duration: 0.4, ease: "easeOut" }}
                       className="w-[calc(50%-8px)] md:w-[calc(25%-12px)] min-w-[140px] bg-white/10 backdrop-blur-md p-6 rounded-[2rem] border border-white/10 shadow-sm text-center group hover:bg-white/20 transition-all"
                     >
                       <div className="w-10 h-10 bg-gold-warm/10 rounded-xl flex items-center justify-center text-gold-warm mx-auto mb-4 group-hover:bg-gold-warm group-hover:text-white transition-all">
@@ -331,14 +394,14 @@ export function HomeClient() {
                   <div className="space-y-4">
                     {dedications.filter((d: any) => d.active).map((d: any) => (
                       <div key={d.id} className="text-lg font-serif italic leading-relaxed">
-                        &quot;{d.content}&quot; {d.donorName && <span className="text-sm font-bold text-charcoal/40 not-italic">({d.donorName})</span>}
+                        &quot;{d.content}&quot; {d.donorName && <span className="text-sm font-bold text-white/50 not-italic">({d.donorName})</span>}
                       </div>
                     ))}
                     {memorials.filter((m: any) => m.today).map((m: any) => (
-                      <div key={m.id} className="flex items-center justify-center gap-3 font-bold text-charcoal">
-                        <div className="w-2 h-2 bg-charcoal rounded-full" />
+                      <div key={m.id} className="flex items-center justify-center gap-3 font-bold text-white">
+                        <div className="w-2 h-2 bg-gold-warm rounded-full" />
                         <span>אזכרה היום: {m.name}</span>
-                        <div className="w-2 h-2 bg-charcoal rounded-full" />
+                        <div className="w-2 h-2 bg-gold-warm rounded-full" />
                       </div>
                     ))}
                   </div>
@@ -346,26 +409,29 @@ export function HomeClient() {
               )}
 
               <div className="flex flex-wrap justify-center gap-8 mb-12">
-                <motion.a 
+                <motion.a
                   href={SYNAGOGUE_INFO.social.tiktok}
                   target="_blank"
-                  whileHover={{ scale: 1.1, color: "#000" }}
+                  aria-label="טיקטוק"
+                  whileHover={{ scale: 1.08 }}
                   className="text-white/40 hover:text-white transition-colors"
                 >
                   <TikTokIcon className="w-8 h-8" />
                 </motion.a>
-                <motion.a 
+                <motion.a
                   href={SYNAGOGUE_INFO.social.youtube}
                   target="_blank"
-                  whileHover={{ scale: 1.1, color: "#FF0000" }}
+                  aria-label="יוטיוב"
+                  whileHover={{ scale: 1.08 }}
                   className="text-white/40 hover:text-white transition-colors"
                 >
                   <Youtube size={32} />
                 </motion.a>
-                <motion.a 
+                <motion.a
                   href={SYNAGOGUE_INFO.social.instagram}
                   target="_blank"
-                  whileHover={{ scale: 1.1, color: "#E1306C" }}
+                  aria-label="אינסטגרם"
+                  whileHover={{ scale: 1.08 }}
                   className="text-white/40 hover:text-white transition-colors"
                 >
                   <Instagram size={32} />
@@ -378,7 +444,7 @@ export function HomeClient() {
 
         {/* סקציה: פרשת השבוע */}
         {shabbatInfo && (
-          <section className="py-16 relative overflow-hidden text-white" style={{background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%)'}}>
+          <section className="py-16 relative overflow-hidden text-white" style={{background: 'linear-gradient(150deg, #2b2b2b 0%, #303b46 55%, #3c4d5f 100%)'}}>
             {/* טקסטורה גיאומטרית */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
               {/* קווים אלכסוניים עדינים */}
@@ -395,16 +461,16 @@ export function HomeClient() {
               <div className="absolute -bottom-24 -left-24 w-[400px] h-[400px] rounded-full border border-white/5" />
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full border border-white/[0.03]" />
               {/* נקודת אור עדינה */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full" style={{background: 'radial-gradient(ellipse, rgba(212,175,55,0.08) 0%, transparent 70%)'}} />
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full" style={{background: 'radial-gradient(ellipse, rgba(197,160,89,0.1) 0%, transparent 70%)'}} />
             </div>
             <div className="max-w-4xl mx-auto px-4 relative z-10">
               {/* פרשת השבוע + תאריך */}
               <div className="text-center mb-10">
                 <div className="inline-flex items-center gap-3 bg-white/5 border border-white/10 px-5 py-2 rounded-full mb-6 backdrop-blur-sm">
                   <Calendar size={14} className="text-gold-warm/80" />
-                  <span className="text-xs font-bold uppercase tracking-[0.25em] text-white/50 font-mono">{shabbatInfo.hebrewDate}</span>
+                  <span className="text-xs font-bold tracking-widest text-white/60">{shabbatInfo.hebrewDate}</span>
                 </div>
-                <div className="text-3xl sm:text-4xl md:text-6xl font-serif font-black leading-tight" style={{background: 'linear-gradient(135deg, #d4af37 0%, #f5e38a 50%, #d4af37 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text'}}>
+                <div className="text-3xl sm:text-4xl md:text-6xl font-display font-black leading-tight text-gold-warm drop-shadow-sm">
                   {shabbatInfo.parashaName}
                 </div>
                 {shabbatInfo.pirkeiAvotChapter && (
@@ -476,45 +542,45 @@ export function HomeClient() {
         <section className="py-12 md:py-24 bg-stone-100">
           <div className="max-w-7xl mx-auto px-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              <motion.div whileHover={{ y: -10 }}>
+              <motion.div whileHover={{ y: -6 }}>
                 <Link href="/lessons" className="bg-alabaster p-6 sm:p-8 md:p-10 rounded-[2rem] md:rounded-[3rem] border border-charcoal/5 hover:border-gold-warm/30 transition-all cursor-pointer group shadow-sm block">
                   <div className="w-16 h-16 bg-gold-warm/10 rounded-2xl flex items-center justify-center text-gold-warm group-hover:bg-gold-warm group-hover:text-white transition-all mb-8">
                     <BookOpen size={32} />
                   </div>
-                  <h3 className="text-2xl font-serif font-bold text-charcoal mb-4">שיעורי תורה</h3>
+                  <h3 className="text-2xl font-bold text-charcoal mb-4">שיעורי תורה</h3>
                   <p className="text-charcoal/50 mb-8 leading-relaxed">כל זמני השיעורים, הנושאים והמרצים במקום אחד.</p>
                   <span className="text-gold-warm font-bold flex items-center gap-2">צפייה בכל השיעורים <ArrowLeft size={16} /></span>
                 </Link>
               </motion.div>
 
-              <motion.div whileHover={{ y: -10 }}>
+              <motion.div whileHover={{ y: -6 }}>
                 <Link href="/memorials" className="bg-charcoal p-6 sm:p-8 md:p-10 rounded-[2rem] md:rounded-[3rem] text-white transition-all cursor-pointer group shadow-xl block">
                   <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center text-gold-warm mb-8">
                     <Heart size={32} />
                   </div>
-                  <h3 className="text-2xl font-serif font-bold mb-4">הקדשות ואזכרות</h3>
+                  <h3 className="text-2xl font-bold mb-4">הקדשות ואזכרות</h3>
                   <p className="text-white/50 mb-8 leading-relaxed">לוח אזכרות עדכני ואפשרויות הקדשה לזכות ולעילוי נשמה.</p>
                   <span className="text-gold-warm font-bold flex items-center gap-2">ללוח המלא <ArrowLeft size={16} /></span>
                 </Link>
               </motion.div>
 
-              <motion.div whileHover={{ y: -10 }}>
+              <motion.div whileHover={{ y: -6 }}>
                 <Link href="/youth" className="bg-slate-blue p-6 sm:p-8 md:p-10 rounded-[2rem] md:rounded-[3rem] text-white transition-all cursor-pointer group shadow-xl block">
                   <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center text-gold-warm mb-8">
                     <Coffee size={32} />
                   </div>
-                  <h3 className="text-2xl font-serif font-bold mb-4">שיעור הצעירים</h3>
+                  <h3 className="text-2xl font-bold mb-4">שיעור הצעירים</h3>
                   <p className="text-white/50 mb-8 leading-relaxed">כל הפרטים על המפגש השבועי לצעירי השכונה.</p>
                   <span className="text-white font-bold flex items-center gap-2">לפרטים והרשמה <ArrowLeft size={16} /></span>
                 </Link>
               </motion.div>
 
-              <motion.div whileHover={{ y: -10 }}>
+              <motion.div whileHover={{ y: -6 }}>
                 <Link href="/business" className="bg-alabaster p-6 sm:p-8 md:p-10 rounded-[2rem] md:rounded-[3rem] border border-charcoal/5 hover:border-gold-warm/30 transition-all cursor-pointer group shadow-sm block">
                   <div className="w-16 h-16 bg-gold-warm/10 rounded-2xl flex items-center justify-center text-gold-warm group-hover:bg-gold-warm group-hover:text-white transition-all mb-8">
                     <Briefcase size={32} />
                   </div>
-                  <h3 className="text-2xl font-serif font-bold text-charcoal mb-4">עסקים בקהילה</h3>
+                  <h3 className="text-2xl font-bold text-charcoal mb-4">עסקים בקהילה</h3>
                   <p className="text-charcoal/50 mb-8 leading-relaxed">תמיכה בעסקים מקומיים וחיזוק הכלכלה הקהילתית.</p>
                   <span className="text-gold-warm font-bold flex items-center gap-2">למדריך המלא <ArrowLeft size={16} /></span>
                 </Link>

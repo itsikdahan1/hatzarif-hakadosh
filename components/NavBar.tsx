@@ -13,8 +13,9 @@ import {
   Youtube,
   Instagram,
   SunMoon,
+  X,
+  Menu,
 } from "lucide-react";
-import * as Icons from "lucide-react";
 import { useSiteSettings } from "@/src/hooks/useSiteSettings";
 import { Separator } from "@/components/ui/separator";
 import { TikTokIcon } from "@/components/TikTokIcon";
@@ -101,30 +102,32 @@ export function NavBar() {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed inset-0 z-[100] bg-charcoal flex flex-col p-8 sm:hidden"
+            className="fixed inset-0 z-[100] bg-charcoal flex flex-col p-8 overflow-y-auto lg:hidden"
           >
             <div className="flex justify-between items-center mb-16">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center text-white">
                   <BookOpen size={20} />
                 </div>
-                <span className="text-xl font-serif font-bold text-white">{SYNAGOGUE_INFO.name}</span>
+                <span className="text-xl font-display font-bold text-white">{SYNAGOGUE_INFO.name}</span>
               </div>
-              <button 
+              <button
                 onClick={() => setIsMobileMenuOpen(false)}
+                aria-label="סגירת תפריט"
                 className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center text-white/40 hover:text-white"
               >
-                <Icons.X size={24} />
+                <X size={24} />
               </button>
             </div>
 
             <div className="flex flex-col gap-6 text-2xl font-bold text-white/60">
               {mobileNavItems.map(item => (
-                <Link 
+                <Link
                   key={item.href}
                   href={item.href}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`text-right py-4 border-b border-white/5 ${pathname === item.href ? 'text-gold-warm' : ''}`}
+                  aria-current={pathname === item.href ? 'page' : undefined}
+                  className={`text-right py-4 border-b border-white/5 transition-colors hover:text-white ${pathname === item.href ? 'text-gold-warm' : ''}`}
                 >
                   {item.label}
                 </Link>
@@ -140,9 +143,9 @@ export function NavBar() {
 
             <div className="mt-auto pt-10 border-t border-white/5 space-y-6">
               <div className="flex justify-center gap-8">
-                <a href={SYNAGOGUE_INFO.social.tiktok} className="text-white/20"><TikTokIcon className="w-6 h-6" /></a>
-                <a href={SYNAGOGUE_INFO.social.youtube} className="text-white/20"><Youtube size={24} /></a>
-                <a href={SYNAGOGUE_INFO.social.instagram} className="text-white/20"><Instagram size={24} /></a>
+                <a href={SYNAGOGUE_INFO.social.tiktok} aria-label="טיקטוק" className="text-white/20"><TikTokIcon className="w-6 h-6" /></a>
+                <a href={SYNAGOGUE_INFO.social.youtube} aria-label="יוטיוב" className="text-white/20"><Youtube size={24} /></a>
+                <a href={SYNAGOGUE_INFO.social.instagram} aria-label="אינסטגרם" className="text-white/20"><Instagram size={24} /></a>
               </div>
               <p className="text-center text-[10px] text-white/20 uppercase tracking-[0.4em]">קהילת נאות אשלים</p>
             </div>
@@ -157,7 +160,7 @@ export function NavBar() {
               <div className="w-12 h-12 bg-charcoal rounded-xl flex items-center justify-center text-alabaster shadow-lg transform rotate-3 hover:rotate-0 transition-transform">
                 <BookOpen size={24} />
               </div>
-              <span className="text-xl sm:text-2xl font-serif font-bold tracking-tight text-charcoal">{SYNAGOGUE_INFO.name}</span>
+              <span className="text-xl sm:text-2xl font-display font-bold text-charcoal">{SYNAGOGUE_INFO.name}</span>
             </Link>
 
             <div className="hidden lg:flex items-center gap-1 text-[13px] font-bold text-charcoal/60">
@@ -165,7 +168,8 @@ export function NavBar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`px-3 py-2 rounded-lg hover:text-gold-warm hover:bg-gold-warm/5 transition-all ${pathname === item.href ? 'text-gold-warm' : ''}`}
+                  aria-current={pathname === item.href ? 'page' : undefined}
+                  className={`px-3 py-2 rounded-lg hover:text-gold-warm hover:bg-gold-warm/5 transition-all ${pathname === item.href ? 'text-gold-warm bg-gold-warm/5' : ''}`}
                 >
                   {item.label}
                 </Link>
@@ -173,8 +177,10 @@ export function NavBar() {
             </div>
 
             <div className="flex items-center gap-2 sm:gap-4">
-              <button 
+              <button
                 onClick={() => setIsAccessMenuOpen(!isAccessMenuOpen)}
+                aria-label="הגדרות נגישות ותצוגה"
+                aria-expanded={isAccessMenuOpen}
                 className={`p-3 rounded-full transition-all ${isAccessMenuOpen ? 'bg-charcoal text-white shadow-lg' : 'bg-charcoal/5 text-charcoal/40 hover:bg-charcoal/10'}`}
               >
                 <Accessibility size={20} />
@@ -197,11 +203,12 @@ export function NavBar() {
                 <MessageCircle size={18} /> קבלת עדכונים
               </motion.a>
 
-              <button 
+              <button
                 onClick={() => setIsMobileMenuOpen(true)}
+                aria-label="פתיחת תפריט"
                 className="lg:hidden w-12 h-12 bg-charcoal/5 rounded-xl flex items-center justify-center text-charcoal hover:bg-charcoal/10 transition-all"
               >
-                <Icons.Menu size={24} />
+                <Menu size={24} />
               </button>
             </div>
           </div>

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import * as Icons from 'lucide-react';
-import { db, auth, handleFirestoreError, OperationType } from '../firebase';
+import { db, getAuthInstance, handleFirestoreError, OperationType } from '../firebase';
 import { 
   collection, 
   onSnapshot, 
@@ -153,6 +153,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
   const { settings: siteSettings, isLive: isFirestoreConnected, isLoading: isSettingsLoading } = useSiteSettings();
   const [isSeeding, setIsSeeding] = useState(false);
   const stripeConfigured = !!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+  // Initialize Firebase Auth on demand — only the admin area needs it.
+  const auth = getAuthInstance();
 
   useEffect(() => {
     const unsubscribeAuth = auth.onAuthStateChanged(async (user) => {
@@ -478,7 +480,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
           <div className="w-20 h-20 bg-gold-warm/10 rounded-full flex items-center justify-center mx-auto mb-8">
             <Clock className="text-gold-warm" size={40} />
           </div>
-          <h2 className="text-3xl font-serif font-bold mb-4 text-charcoal">כניסת גבאי</h2>
+          <h2 className="text-3xl font-bold mb-4 text-charcoal">כניסת גבאי</h2>
           <p className="text-charcoal/60 mb-8 leading-relaxed">
             המערכת מיועדת לניהול זמני תפילות, קמפיינים, מאגר עסקים והודעות קהילה.
           </p>
@@ -528,7 +530,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
     <div className="fixed inset-0 bg-alabaster z-[100] flex flex-col">
       <header className="shrink-0 flex justify-between items-center px-4 lg:px-8 py-4 border-b border-charcoal/10 bg-white">
         <div>
-          <h1 className="text-xl lg:text-3xl font-serif font-bold text-charcoal">ניהול הצריף הקדוש</h1>
+          <h1 className="text-xl lg:text-3xl font-bold text-charcoal">ניהול הצריף הקדוש</h1>
           <p className="text-charcoal/60 text-sm hidden sm:block">שלום, {auth.currentUser?.displayName}</p>
         </div>
         <div className="flex items-center gap-3">

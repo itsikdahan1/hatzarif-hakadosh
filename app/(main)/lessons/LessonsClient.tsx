@@ -10,25 +10,23 @@ import { collection, onSnapshot, query } from "firebase/firestore";
 
 export function LessonsClient() {
   const [lessons, setLessons] = useState<any[]>([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const q = query(collection(db, 'lessons'));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       setLessons(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-    }, (error) => handleFirestoreError(error, OperationType.LIST, 'lessons'));
+      setLoaded(true);
+    }, (error) => { handleFirestoreError(error, OperationType.LIST, 'lessons'); setLoaded(true); });
     return () => unsubscribe();
   }, []);
 
   return (
     <>
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="bg-white min-h-screen pb-32"
-      >
+      <div className="bg-white min-h-screen pb-32">
         <div className="max-w-7xl mx-auto px-4 pt-12">
-          <Link href="/" className="flex items-center gap-2 text-charcoal/40 font-bold mb-12 hover:text-charcoal transition-colors">
-            <ArrowRight size={20} className="rotate-180" /> חזרה לדף הבית
+          <Link href="/" className="inline-flex items-center gap-2 text-charcoal/40 font-bold mb-12 hover:text-charcoal transition-colors group">
+            <ArrowRight size={20} className="rotate-180 group-hover:-translate-x-1 transition-transform" /> חזרה לדף הבית
           </Link>
           <div className="text-center mb-20">
             <h2 className="text-3xl sm:text-5xl md:text-7xl font-bold text-charcoal mb-6">שיעורי תורה</h2>
@@ -39,21 +37,37 @@ export function LessonsClient() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {lessons.length > 0 ? (
+            {!loaded ? (
+              // שלד-טעינה תואם-פריסה: הכרטיסים "נדלקים" בזה אחר זה, אפס CLS
+              [0, 1, 2].map((idx) => (
+                <div
+                  key={idx}
+                  className="bg-alabaster p-6 sm:p-8 md:p-10 rounded-[2rem] md:rounded-[3rem] border border-charcoal/5 animate-pulse"
+                  style={{ animationDelay: `${idx * 150}ms` }}
+                  aria-hidden="true"
+                >
+                  <div className="w-16 h-16 bg-charcoal/5 rounded-2xl mb-8" />
+                  <div className="h-6 w-2/3 bg-charcoal/10 rounded-full mb-4" />
+                  <div className="h-4 w-1/3 bg-gold-warm/20 rounded-full mb-8" />
+                  <div className="h-4 w-1/2 bg-charcoal/5 rounded-full mb-3" />
+                  <div className="h-4 w-2/5 bg-charcoal/5 rounded-full" />
+                </div>
+              ))
+            ) : lessons.length > 0 ? (
               lessons.map((lesson, idx) => (
-                <motion.div 
+                <motion.div
                   key={lesson.id}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.1 }}
+                  transition={{ delay: Math.min(idx * 0.06, 0.3), duration: 0.4, ease: "easeOut" }}
                   className="bg-alabaster p-6 sm:p-8 md:p-10 rounded-[2rem] md:rounded-[3rem] border border-charcoal/5 hover:border-gold-warm/30 transition-all group shadow-sm hover:shadow-xl"
                 >
                   <div className="w-16 h-16 bg-gold-warm/10 rounded-2xl flex items-center justify-center text-gold-warm group-hover:bg-gold-warm group-hover:text-white transition-all mb-8">
                     <BookOpen size={32} />
                   </div>
-                  <h3 className="text-2xl font-serif font-bold text-charcoal mb-2">{lesson.title}</h3>
+                  <h3 className="text-2xl font-bold text-charcoal mb-2">{lesson.title}</h3>
                   <p className="text-gold-warm font-bold text-lg mb-6">{lesson.lecturer}</p>
-                  
+
                   <div className="space-y-4 text-charcoal/60">
                     <div className="flex items-center gap-3">
                       <Clock size={18} className="text-gold-warm" />
@@ -76,7 +90,7 @@ export function LessonsClient() {
             )}
           </div>
         </div>
-      </motion.div>
+      </div>
     </>
   );
 }

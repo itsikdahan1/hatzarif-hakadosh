@@ -290,13 +290,15 @@ export function DonationPage({
     <div className="min-h-screen bg-white selection:bg-gold-warm/20 flex flex-col" dir="rtl">
       <LiveDonationTicker />
       
-      <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md px-4 py-4 flex items-center justify-between border-b border-charcoal/5">
-        <button 
+      {/* נדבק מתחת ל-NavBar של האתר (h-20) - לא מתחרה איתו על top-0 */}
+      <header className="sticky top-20 z-40 bg-white/90 backdrop-blur-md px-4 py-4 flex items-center justify-between border-b border-charcoal/5">
+        <button
           onClick={() => {
             if (checkoutStep === "options") onBack();
             else if (checkoutStep === "achisomoch") setCheckoutStep("details");
             else setCheckoutStep("options");
           }}
+          aria-label="חזרה"
           className="p-2 hover:bg-charcoal/5 rounded-full transition-colors text-charcoal/80"
         >
           <ArrowLeft size={24} />
@@ -457,12 +459,12 @@ export function DonationPage({
                           </div>
                           <div>
                             <div className="font-sans font-black text-3xl text-charcoal">₪{tier.amount}</div>
-                            <div className="text-xs font-bold text-charcoal/60 uppercase tracking-widest">{tier.description}</div>
+                            <div className="text-xs font-bold text-charcoal/60 tracking-wide">{tier.description}</div>
                           </div>
                         </div>
-                        <div className="max-w-[120px] text-left">
-                          <div className="text-[10px] font-black text-gold-warm uppercase tracking-tighter leading-tight opacity-40 group-hover:opacity-100 transition-opacity">האימפקט שלך:</div>
-                          <div className="text-xs font-bold text-charcoal leading-tight opacity-40 group-hover:opacity-100 transition-opacity">{tier.impact}</div>
+                        <div className="max-w-[130px] text-left">
+                          <div className="text-[11px] font-black text-gold-warm leading-tight opacity-70 group-hover:opacity-100 transition-opacity">האימפקט שלך:</div>
+                          <div className="text-xs font-bold text-charcoal leading-tight opacity-60 group-hover:opacity-100 transition-opacity">{tier.impact}</div>
                         </div>
                       </button>
                     ))}
@@ -765,18 +767,13 @@ export function DonationPage({
               <div className="font-black text-[10px] uppercase tracking-[0.3em]">PCI Compliant</div>
               <div className="font-black text-[10px] uppercase tracking-[0.3em]">SSL Encryption</div>
             </div>
-            <p className="text-[10px] text-charcoal/30 max-w-sm mx-auto leading-relaxed">
+            <p className="text-[11px] text-charcoal/40 max-w-sm mx-auto leading-relaxed">
               המידע שלך מוצפן ומוגן. פרטי האשראי אינם נשמרים על שרתי הארגון. התרומה מוכרת לצורכי מס לפי סעיף 46 לפקודת מס הכנסה.
             </p>
           </div>
 
         </div>
       </main>
-
-      <footer className="py-12 px-6 text-center text-charcoal/20 border-t border-charcoal/5 bg-alabaster/30">
-        <p className="text-xs font-serif font-bold uppercase tracking-widest mb-1">{SYNAGOGUE_INFO.name}</p>
-        <p className="text-[10px]">© 2026 טכנולוגיה בשירות הרוח</p>
-      </footer>
     </div>
   );
 }

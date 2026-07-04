@@ -14,26 +14,22 @@ export function AboutClient() {
   const { settings: SYNAGOGUE_INFO } = useSiteSettings();
   return (
     <>
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="bg-alabaster min-h-screen pb-32"
-      >
+      <div className="bg-alabaster min-h-screen pb-32">
         <div className="max-w-7xl mx-auto px-4 pt-12">
           <Link href="/" className="flex items-center gap-2 text-charcoal/40 font-bold mb-12 hover:text-charcoal transition-colors group">
             <ArrowRight size={20} className="rotate-180 group-hover:-translate-x-1 transition-transform" /> חזרה לדף הבית
           </Link>
 
           <div className="text-center mb-12 md:mb-24 relative">
-            <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.8 }}>
-              <h1 className="text-3xl sm:text-5xl md:text-8xl font-serif font-bold text-charcoal mb-6 leading-tight">
+            <div>
+              <h1 className="text-3xl sm:text-5xl md:text-8xl font-bold text-charcoal mb-6 leading-tight">
                 הסיפור של <span className="text-gold-warm">הצריף</span>
               </h1>
               <div className="w-32 h-2 bg-gold-warm mx-auto mb-10 rounded-full" />
               <p className="text-lg sm:text-xl md:text-2xl text-charcoal/60 max-w-3xl mx-auto leading-relaxed font-serif italic">
                 &quot;בית שהוא לב פועם בשכונת נאות אשלים. מקום שבו כל אחד מוצא את החלק שלו בפסיפס הקהילתי.&quot;
               </p>
-            </motion.div>
+            </div>
             <div className="absolute -top-20 -right-20 w-64 h-64 bg-gold-warm/5 rounded-full blur-3xl" />
             <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl" />
           </div>
@@ -42,7 +38,7 @@ export function AboutClient() {
             <motion.div whileHover={{ y: -5 }} className="bg-white p-6 sm:p-8 md:p-12 rounded-[2rem] md:rounded-[3.5rem] border border-charcoal/5 shadow-xl relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-gold-warm/5 rounded-full -mr-16 -mt-16" />
               <History className="text-gold-warm mb-8" size={56} />
-              <h3 className="text-3xl font-bold text-charcoal mb-6 font-serif">השורשים שלנו</h3>
+              <h3 className="text-3xl font-bold text-charcoal mb-6">השורשים שלנו</h3>
               <p className="text-charcoal/60 leading-relaxed text-lg font-serif">
                 קהילת &quot;הצריף הקדוש&quot; החלה את דרכה מתוך צורך עמוק של תושבי שכונת נאות אשלים במקום תפילה וקהילה מאחד. מה שהתחיל כמניין קטן גדל והפך למרכז רוחני וחברתי שוקק חיים, המארח מאות אנשים לאורך כל השבוע.
               </p>
@@ -50,7 +46,7 @@ export function AboutClient() {
             <motion.div whileHover={{ y: -5 }} className="bg-charcoal p-6 sm:p-8 md:p-12 rounded-[2rem] md:rounded-[3.5rem] border border-white/10 shadow-2xl relative overflow-hidden text-white">
               <div className="absolute top-0 left-0 w-32 h-32 bg-white/5 rounded-full -ml-16 -mt-16" />
               <Target className="text-gold-warm mb-8" size={56} />
-              <h3 className="text-3xl font-bold text-white mb-6 font-serif">החזון והשליחות</h3>
+              <h3 className="text-3xl font-bold text-white mb-6">החזון והשליחות</h3>
               <p className="text-white/60 leading-relaxed text-lg font-serif">
                 אנחנו שואפים להיות בית פתוח לכל יהודי, ללא קשר למקום שבו הוא נמצא. המטרה שלנו היא להנגיש את היופי של מסורת ישראל בצורה נעימה, מכבדת ורלוונטית לימינו, תוך יצירת רשת ביטחון קהילתית וחברתית חזקה בשכונה.
               </p>
@@ -65,9 +61,9 @@ export function AboutClient() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-12">
               {(SYNAGOGUE_INFO as any).team.map((member: any, idx: number) => (
-                <motion.div key={idx} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.2 }} className="group">
+                <motion.div key={idx} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ delay: idx * 0.08, duration: 0.45, ease: "easeOut" }} className="group">
                   <div className="relative mb-8">
-                    <div className="aspect-[4/5] rounded-[3rem] overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700 shadow-xl group-hover:shadow-2xl bg-charcoal/5">
+                    <div className="aspect-[4/5] rounded-[3rem] overflow-hidden [@media(hover:hover)]:grayscale group-hover:grayscale-0 transition-all duration-700 shadow-xl group-hover:shadow-2xl bg-charcoal/5">
                       {media[member.mediaSlot] ? (
                         <img src={media[member.mediaSlot]} alt={member.name} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" />
                       ) : (
@@ -134,7 +130,7 @@ export function AboutClient() {
             <p className="text-charcoal/40 font-bold uppercase tracking-[0.3em] text-sm">הרב אייל מרום</p>
           </div>
         </div>
-      </motion.div>
+      </div>
     </>
   );
 }

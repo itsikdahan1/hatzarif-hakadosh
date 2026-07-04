@@ -12,14 +12,10 @@ export function YouthClient() {
   const { settings: SYNAGOGUE_INFO } = useSiteSettings();
   return (
     <>
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="bg-slate-blue min-h-screen text-white pb-32"
-      >
+      <div className="bg-slate-blue min-h-screen text-white pb-32">
         <div className="max-w-7xl mx-auto px-4 pt-12">
-          <Link href="/" className="flex items-center gap-2 text-white/40 font-bold mb-12 hover:text-white transition-colors">
-            <ArrowRight size={20} className="rotate-180" /> חזרה לדף הבית
+          <Link href="/" className="inline-flex items-center gap-2 text-white/40 font-bold mb-12 hover:text-white transition-colors group">
+            <ArrowRight size={20} className="rotate-180 group-hover:-translate-x-1 transition-transform" /> חזרה לדף הבית
           </Link>
 
           <div className="grid lg:grid-cols-2 gap-12 md:gap-24 items-center mb-20 md:mb-40">
@@ -68,7 +64,7 @@ export function YouthClient() {
           <div className="mb-20 md:mb-40">
              <div className="flex items-center gap-6 mb-16">
                 <div className="h-px flex-grow bg-white/10" />
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-serif font-bold text-white/40 uppercase tracking-[0.1em] sm:tracking-[0.2em] md:tracking-[0.3em]">רגעים מהשיעור</h3>
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white/40 uppercase tracking-[0.1em] sm:tracking-[0.2em] md:tracking-[0.3em]">רגעים מהשיעור</h3>
                 <div className="h-px flex-grow bg-white/10" />
              </div>
              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -79,7 +75,7 @@ export function YouthClient() {
                       whileHover={{ scale: 1.02 }}
                       className="aspect-video rounded-[2.5rem] overflow-hidden border border-white/10"
                     >
-                      <img src={img} alt={`רגע מהשיעור ${idx + 1}`} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" />
+                      <img src={img} alt={`רגע מהשיעור ${idx + 1}`} className="w-full h-full object-cover [@media(hover:hover)]:grayscale hover:grayscale-0 transition-all duration-700" />
                     </motion.div>
                   ) : null
                 ))}
@@ -122,7 +118,7 @@ export function YouthClient() {
              </div>
           </div>
         </div>
-      </motion.div>
+      </div>
     </>
   );
 }
