@@ -13,20 +13,20 @@ export interface MediaSlot {
 
 export const MEDIA_SLOTS: MediaSlot[] = [
   // צוות ההנהגה (דף אודות)
-  { id: "team_rabbi", label: "תמונת הרב אייל מרום", location: "דף אודות — צוות ההנהגה", group: "צוות" },
-  { id: "team_lecturer", label: "תמונת ר' יעקב בוזגלו", location: "דף אודות — צוות ההנהגה", group: "צוות" },
-  { id: "team_youth_rabbi", label: "תמונת הרב ניב אלמלם", location: "דף אודות — צוות ההנהגה", group: "צוות" },
-  { id: "team_gabbai", label: "תמונת הגבאי רביבו", location: "דף אודות — צוות ההנהגה", group: "צוות" },
+  { id: "team_rabbi", label: "תמונת הרב אייל מרום", location: "דף אודות - צוות ההנהגה", group: "צוות" },
+  { id: "team_lecturer", label: "תמונת ר' יעקב בוזגלו", location: "דף אודות - צוות ההנהגה", group: "צוות" },
+  { id: "team_youth_rabbi", label: "תמונת הרב ניב אלמלם", location: "דף אודות - צוות ההנהגה", group: "צוות" },
+  { id: "team_gabbai", label: "תמונת הגבאי רביבו", location: "דף אודות - צוות ההנהגה", group: "צוות" },
   // דף שיעור הצעירים
-  { id: "youth_hero", label: "תמונה ראשית — דף צעירים", location: "דף שיעור הצעירים — תמונה גדולה עליונה", group: "שיעור צעירים" },
-  { id: "youth_gallery_1", label: "גלריית צעירים — תמונה 1", location: "דף שיעור הצעירים — \"רגעים מהשיעור\"", group: "שיעור צעירים" },
-  { id: "youth_gallery_2", label: "גלריית צעירים — תמונה 2", location: "דף שיעור הצעירים — \"רגעים מהשיעור\"", group: "שיעור צעירים" },
-  { id: "youth_gallery_3", label: "גלריית צעירים — תמונה 3", location: "דף שיעור הצעירים — \"רגעים מהשיעור\"", group: "שיעור צעירים" },
+  { id: "youth_hero", label: "תמונה ראשית - דף צעירים", location: "דף שיעור הצעירים - תמונה גדולה עליונה", group: "שיעור צעירים" },
+  { id: "youth_gallery_1", label: "גלריית צעירים - תמונה 1", location: "דף שיעור הצעירים - \"רגעים מהשיעור\"", group: "שיעור צעירים" },
+  { id: "youth_gallery_2", label: "גלריית צעירים - תמונה 2", location: "דף שיעור הצעירים - \"רגעים מהשיעור\"", group: "שיעור צעירים" },
+  { id: "youth_gallery_3", label: "גלריית צעירים - תמונה 3", location: "דף שיעור הצעירים - \"רגעים מהשיעור\"", group: "שיעור צעירים" },
   // דף אודות
-  { id: "about_synagogue", label: "תמונת בית הכנסת מבפנים", location: "דף אודות — בלוק שקיפות ואמינות", group: "בית הכנסת" },
+  { id: "about_synagogue", label: "תמונת בית הכנסת מבפנים", location: "דף אודות - בלוק שקיפות ואמינות", group: "בית הכנסת" },
   // תרומות מיוחדות
-  { id: "special_matanot", label: "תמונת מתנות לאביונים", location: "דף תרומות — קמפיין מתנות לאביונים", group: "תרומות מיוחדות" },
-  { id: "special_kimcha", label: "תמונת קמחא דפסחא", location: "דף תרומות — קמפיין קמחא דפסחא", group: "תרומות מיוחדות" },
+  { id: "special_matanot", label: "תמונת מתנות לאביונים", location: "דף תרומות - קמפיין מתנות לאביונים", group: "תרומות מיוחדות" },
+  { id: "special_kimcha", label: "תמונת קמחא דפסחא", location: "דף תרומות - קמפיין קמחא דפסחא", group: "תרומות מיוחדות" },
 ];
 
 export function useSiteMedia() {

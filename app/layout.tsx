@@ -4,7 +4,7 @@ import { SYNAGOGUE_INFO } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: {
-    default: `${SYNAGOGUE_INFO.name} — קהילת נאות אשלים`,
+    default: `${SYNAGOGUE_INFO.name} - קהילת נאות אשלים`,
     template: `%s | ${SYNAGOGUE_INFO.name}`,
   },
   description: SYNAGOGUE_INFO.tagline,
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     "בית כנסת נאות אשלים",
   ],
   openGraph: {
-    title: `${SYNAGOGUE_INFO.name} — בית כנסת בנאות אשלים, ראשון לציון`,
+    title: `${SYNAGOGUE_INFO.name} - בית כנסת בנאות אשלים, ראשון לציון`,
     description: SYNAGOGUE_INFO.tagline,
     locale: "he_IL",
     type: "website",

@@ -18,7 +18,7 @@ export function SiteSettingsTab({ settings, isLive }: SiteSettingsTabProps) {
   const [saved, setSaved] = useState(false);
   const [seeding, setSeeding] = useState(false);
 
-  // Editable fields — initialized from live settings
+  // Editable fields - initialized from live settings
   const [name, setName] = useState(settings.name);
   const [tagline, setTagline] = useState(settings.tagline);
   const [subTagline, setSubTagline] = useState(settings.subTagline);
@@ -131,7 +131,7 @@ export function SiteSettingsTab({ settings, isLive }: SiteSettingsTabProps) {
         {isLive ? <CheckCircle size={20} className="text-green-600 shrink-0" /> : <AlertCircle size={20} className="text-amber-600 shrink-0" />}
         <div className="flex-1">
           <p className={`text-sm font-bold ${isLive ? 'text-green-800' : 'text-amber-800'}`}>
-            {isLive ? 'הנתונים מסונכרנים עם Firestore — שינויים יופיעו באתר מיד.' : 'אין עדיין נתונים ב-Firestore — האתר מציג ברירות מחדל מהקוד.'}
+            {isLive ? 'הנתונים מסונכרנים עם Firestore - שינויים יופיעו באתר מיד.' : 'אין עדיין נתונים ב-Firestore - האתר מציג ברירות מחדל מהקוד.'}
           </p>
         </div>
         {!isLive && (
@@ -238,15 +238,15 @@ export function SiteSettingsTab({ settings, isLive }: SiteSettingsTabProps) {
           <div className="space-y-5">
             <div><label className={labelClass}>הערה כללית על לוח הזמנים</label><textarea value={scheduleNote} onChange={e => setScheduleNote(e.target.value)} className={inputClass + " min-h-[60px]"} /></div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              <div><label className={labelClass}>שיעור יום שני — כותרת</label><input value={mondayTitle} onChange={e => setMondayTitle(e.target.value)} className={inputClass} /></div>
-              <div><label className={labelClass}>שיעור יום שני — שעה</label><input value={mondayTime} onChange={e => setMondayTime(e.target.value)} className={inputClass} /></div>
-              <div className="md:col-span-2"><label className={labelClass}>שיעור יום שני — תיאור</label><textarea value={mondayDesc} onChange={e => setMondayDesc(e.target.value)} className={inputClass + " min-h-[60px]"} /></div>
+              <div><label className={labelClass}>שיעור יום שני - כותרת</label><input value={mondayTitle} onChange={e => setMondayTitle(e.target.value)} className={inputClass} /></div>
+              <div><label className={labelClass}>שיעור יום שני - שעה</label><input value={mondayTime} onChange={e => setMondayTime(e.target.value)} className={inputClass} /></div>
+              <div className="md:col-span-2"><label className={labelClass}>שיעור יום שני - תיאור</label><textarea value={mondayDesc} onChange={e => setMondayDesc(e.target.value)} className={inputClass + " min-h-[60px]"} /></div>
             </div>
           </div>
         </div>
       )}
 
-      {/* Save Button — always visible */}
+      {/* Save Button - always visible */}
       <div className="sticky bottom-0 bg-white/90 backdrop-blur-md p-4 -mx-5 sm:-mx-8 lg:-mx-12 px-5 sm:px-8 lg:px-12 border-t border-charcoal/5 flex items-center justify-between">
         <div className="flex items-center gap-2">
           {saved && <span className="text-green-600 text-sm font-bold flex items-center gap-1"><CheckCircle size={16} /> נשמר בהצלחה!</span>}

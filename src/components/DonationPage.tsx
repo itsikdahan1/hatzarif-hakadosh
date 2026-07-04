@@ -39,7 +39,7 @@ import { getCurrentJewishContext, JewishContext } from "../services/jewishCalend
 import { MachatzitHashekelForm, KaparotForm, UrgentCampaignForm } from "./SpecialDonations";
 import { useSiteMedia } from "../hooks/useSiteMedia";
 
-// Initialize Stripe — catch CDN block (kosher internet) gracefully
+// Initialize Stripe - catch CDN block (kosher internet) gracefully
 const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
   ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY).catch(() => null)
   : Promise.resolve(null);
@@ -606,7 +606,7 @@ export function DonationPage({
                       </div>
                       <div className="flex flex-col gap-3">
                         <a
-                          href={`https://wa.me/${SYNAGOGUE_INFO.contact.gabbai}?text=${encodeURIComponent(`שלום, אשמח לתרום ₪${totalAmount} — ${customPurpose || selectedOption?.title || 'תרומה כללית'}`)}`}
+                          href={`https://wa.me/${SYNAGOGUE_INFO.contact.gabbai}?text=${encodeURIComponent(`שלום, אשמח לתרום ₪${totalAmount} - ${customPurpose || selectedOption?.title || 'תרומה כללית'}`)}`}
                           className="flex items-center justify-center gap-3 bg-[#25D366] text-white py-4 px-6 rounded-2xl font-bold text-base hover:opacity-90 transition-all"
                         >
                           <MessageCircle size={20} /> שליחת תרומה בוואטסאפ

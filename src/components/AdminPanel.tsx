@@ -1168,7 +1168,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                 <div className="md:col-span-3"><h3 className="font-bold text-xl">הוספת עסק חדש</h3></div>
                 <div className="space-y-2">
                   <label className="text-sm font-bold text-charcoal/60">שם העסק</label>
-                  <input required value={newBusiness.name} onChange={e => setNewBusiness({...newBusiness, name: e.target.value})} placeholder="למשל: ישראל ישראלי — נדל״ן" className="w-full px-6 py-4 rounded-2xl border border-charcoal/10 focus:ring-2 focus:ring-gold-warm outline-none" />
+                  <input required value={newBusiness.name} onChange={e => setNewBusiness({...newBusiness, name: e.target.value})} placeholder="למשל: ישראל ישראלי - נדל״ן" className="w-full px-6 py-4 rounded-2xl border border-charcoal/10 focus:ring-2 focus:ring-gold-warm outline-none" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-bold text-charcoal/60">קטגוריה</label>

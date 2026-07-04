@@ -76,7 +76,7 @@ export function useSiteSettingsLoader(): SiteSettingsContextValue {
           setFirestoreData(snapshot.data());
           setIsLive(true);
         } else {
-          // Auto-seed: document doesn't exist yet — create it from defaults
+          // Auto-seed: document doesn't exist yet - create it from defaults
           const plain = JSON.parse(JSON.stringify(SYNAGOGUE_INFO));
           setDoc(docRef, plain, { merge: true }).catch(() => {});
           setIsLive(false);
@@ -100,7 +100,7 @@ export function useSiteSettingsLoader(): SiteSettingsContextValue {
 
 /**
  * Save site settings to Firestore. Called from admin panel.
- * Only saves the provided partial — deep-merged on read.
+ * Only saves the provided partial - deep-merged on read.
  */
 export async function saveSiteSettings(data: Partial<SiteSettings>) {
   await setDoc(doc(db, "site_settings", "main"), data, { merge: true });

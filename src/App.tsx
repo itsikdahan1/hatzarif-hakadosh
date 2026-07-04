@@ -394,7 +394,7 @@ function YouthView({ onBack }: { onBack: () => void }) {
                  <p className="text-2xl text-white/80 leading-relaxed italic font-serif">
                    "{SYNAGOGUE_INFO.rabbiQuote}"
                  </p>
-                 <p className="mt-6 font-bold text-gold-warm text-xl">— {SYNAGOGUE_INFO.rabbi}</p>
+                 <p className="mt-6 font-bold text-gold-warm text-xl">- {SYNAGOGUE_INFO.rabbi}</p>
               </div>
            </div>
            <div className="grid grid-cols-2 gap-8">
@@ -1066,7 +1066,7 @@ export default function App() {
                 {shabbatInfo.pirkeiAvotChapter && (
                   <p className="mt-4 text-lg text-white/60 font-bold">
                     <BookOpen size={16} className="inline ml-2 text-gold-warm" />
-                    פרקי אבות — פרק {
+                    פרקי אבות - פרק {
                       ['א׳', 'ב׳', 'ג׳', 'ד׳', 'ה׳', 'ו׳'][shabbatInfo.pirkeiAvotChapter - 1]
                     }
                   </p>
@@ -1114,7 +1114,7 @@ export default function App() {
                 )}
               </div>
 
-              {/* שקט בתפילה — משולב בבלוק */}
+              {/* שקט בתפילה - משולב בבלוק */}
               <div className="max-w-xl mx-auto text-center border-t border-white/10 pt-8">
                 <div className="flex justify-center mb-4">
                   <div className="w-14 h-14 border border-white/15 rounded-full flex items-center justify-center text-white/50">
@@ -1462,7 +1462,7 @@ export default function App() {
                 <li className="flex gap-4">
                   <Phone size={18} className="text-gold-warm shrink-0" />
                   <div>
-                    <span className="block text-xs text-white/30 uppercase tracking-widest mb-1">גבאי — {SYNAGOGUE_INFO.contact.gabbaiName}</span>
+                    <span className="block text-xs text-white/30 uppercase tracking-widest mb-1">גבאי - {SYNAGOGUE_INFO.contact.gabbaiName}</span>
                     <a href={`tel:+${SYNAGOGUE_INFO.contact.gabbai}`} className="text-sm font-bold hover:text-gold-warm transition-colors">{SYNAGOGUE_INFO.contact.gabbaiDisplay}</a>
                   </div>
                 </li>

@@ -104,7 +104,7 @@ export function YouthClient() {
                    <p className="text-lg sm:text-xl md:text-2xl text-white/80 leading-relaxed italic font-serif">
                      &quot;{SYNAGOGUE_INFO.rabbiQuote}&quot;
                    </p>
-                   <p className="mt-4 md:mt-6 font-bold text-gold-warm text-lg md:text-xl">— {SYNAGOGUE_INFO.rabbi}</p>
+                   <p className="mt-4 md:mt-6 font-bold text-gold-warm text-lg md:text-xl">- {SYNAGOGUE_INFO.rabbi}</p>
                 </div>
              </div>
              <div className="grid grid-cols-2 gap-4 sm:gap-6 md:gap-8">

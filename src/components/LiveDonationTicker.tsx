@@ -66,7 +66,7 @@ export function LiveDonationTicker() {
           </span>
           <span className="text-white/40 text-xs">תרם עכשיו</span>
           <span className="text-gold-warm font-black text-sm">₪{current.amount.toLocaleString()}</span>
-          <span className="hidden md:inline text-white/20 text-[10px] uppercase tracking-widest">— {current.purpose}</span>
+          <span className="hidden md:inline text-white/20 text-[10px] uppercase tracking-widest">- {current.purpose}</span>
         </motion.div>
       </AnimatePresence>
     </div>
