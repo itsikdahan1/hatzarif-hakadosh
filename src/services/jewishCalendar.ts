@@ -139,6 +139,10 @@ export async function getShabbatWeeklyInfo(date: Date = new Date()): Promise<Sha
     }
   }
 
+  // פרשות מחוברות מגיעות מ-hebcal/kosher-zmanim עם מקף עברי עילי (מטות־מסעי) -
+  // סגנון האתר משתמש במקף רגיל בלבד.
+  parashaName = parashaName.replace(/[־–—]/g, '-');
+
   // Hebrew date
   const hebrewDate = formatter.format(jc);
   const hebrewMonth = formatter.formatMonth(jc);
